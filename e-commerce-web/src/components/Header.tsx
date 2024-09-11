@@ -1,13 +1,15 @@
 import { Heart, ShoppingCart } from "lucide-react"
+import { Input } from "@/components/ui/input"
+
 
 const Header = () => {
     return (
         <main className="flex justify-between max-w-[1440px] p-2 bg-black text-white mx-auto items-center">
             <div className="flex items-center">
-                Header
+                {`<>`}ECOMMERCE
             </div>
             <div className="flex items-center">
-                Header
+                <Input />
             </div>
             <div className="flex gap-3 items-center">
                 <Heart strokeWidth={1} />
