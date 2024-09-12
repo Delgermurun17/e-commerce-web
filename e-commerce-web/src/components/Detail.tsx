@@ -2,6 +2,7 @@
 
 import { Heart } from "lucide-react"
 import { useState } from "react"
+import { Button } from "./ui/button"
 
 
 export const Detail= () => {
@@ -14,14 +15,16 @@ export const Detail= () => {
     ]
     const [selectedPhoto, setSelectedPhoto] = useState("p1")
     const productSize = [
-        { size: "S"},
-        { size: "M"},
-        { size: "L"},
-        { size: "XL"},
-        { size: "2XL"},
+        { size: "S", out: ""},
+        { size: "M", out: "M"},
+        { size: "L", out: "L"},
+        { size: "XL", out: ""},
+        { size: "2XL", out: ""},
     ]
-    const [selectedSize, setSelectedSize] = useState("S")
+    const defaultSize = productSize.find(pr => pr.out === "")?.size || "";
+    const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
     const[isSaved, setIsSaved]=useState<boolean>(false)
+    const [number, setNumber] = useState<number>(1)
 
     return (
         <div className="w-[1040px] mx-auto flex flex-col gap-20 mt-[100px]">
@@ -39,21 +42,26 @@ export const Detail= () => {
                                 <div>new</div>
                                 <div className="flex gap-2 items-center">
                                     <div>product name</div>
-                                    <div className="size-10 flex justify-center items-center"><Heart onClick={()=>setIsSaved(x =>!x)} strokeWidth={1} fill={`${isSaved ? "black" : "transparent"}`}/> </div>
+                                    <div className="size-10 flex justify-center items-center"><Heart onClick={()=>setIsSaved(x =>!x)} strokeWidth={1} fill={`${isSaved ? "black" : "transparent"}`} className="duration-500"/> </div>
                                 </div>
                                 <div>product details</div>
                             </div>
                             <div className="flex flex-col gap-2">
                                 <div>Size</div>
                                 <div className="flex gap-1">{productSize.map((pr) => (
-                                    <div onClick={() => setSelectedSize(pr.size)} className={`size-8 rounded-full border border-black cursor-pointer font-normal text-xs text-center content-center ${selectedSize === pr.size ? "bg-black text-white" : ""}`} key={pr.size}>{pr.size}</div>
+                                    <div onClick={() => pr.out === "" && setSelectedSize(pr.size)} className={`size-8 rounded-full border border-black cursor-pointer font-normal text-xs text-center content-center ${selectedSize === pr.size ? "bg-black text-white duration-500" : "duration-300"} ${pr.size === pr.out ? "bg-[#E4E4E7] opacity-50 text-black cursor-not-allowed" : ""}`} key={pr.size}>{pr.size}</div>
                                 ))}</div>
                             </div>
-                            <div>- 1 +</div>
+                            <div className="flex gap-1">
+                                <div onClick={() => setNumber(number - 1)} className="size-8 rounded-full border border-black cursor-pointer text-center content-center">-</div>
+                                {/* <input value={number} onChange={(e) => setNumber(Number(e.target.value))} className="size-8 text-center content-center text-xs font-normal outline-none" type="text"/> */}
+                                <div className="size-8 text-center content-center text-xs font-normal outline-none">{number}</div>
+                                <div onClick={() => setNumber(number + 1)} className="size-8 rounded-full border border-black cursor-pointer text-center content-center">+</div>
+                            </div>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <div>price</div>
-                            <div>Sagsand nemeh</div>
+                            <div className="text-xl font-bold tracking-wide ">120’000₮</div>
+                            <Button>Сагсанд нэмэх</Button>
                         </div>
                     </div>
                     <div>unelgee</div>
