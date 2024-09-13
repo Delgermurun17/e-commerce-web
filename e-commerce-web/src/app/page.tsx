@@ -1,9 +1,9 @@
-import ProductCard from "@/components/productCard";
+import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
     <main>
-      <ProductCard/> 
+      <Footer />
     </main>
   );
 }
