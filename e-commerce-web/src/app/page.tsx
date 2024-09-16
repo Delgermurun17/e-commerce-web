@@ -1,3 +1,5 @@
+import PaymentSection from "@/components/PaymentSection";
+
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import CarouselPlugin from "@/components/carousel";
@@ -6,6 +8,8 @@ import ProductCard from "@/components/productCard";
 
 export default function Home() {
   return (
+    <main>
+      <PaymentSection/>
       <Footer />
      <Header/> 
     </main>
