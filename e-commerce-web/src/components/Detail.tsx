@@ -154,7 +154,7 @@ export const Detail= () => {
                     </div>
                 </div>
             </div>
-            <div>Holbootoi baraa a</div>
+            <div>Holbootoi baraa</div>
         </div>
     )
 }
