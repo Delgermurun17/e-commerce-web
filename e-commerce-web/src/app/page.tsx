@@ -1,11 +1,9 @@
-import Categories from "@/components/categories";
-import ProductCard from "@/components/productCard";
+import Userpage from "@/components/user";
 
 export default function Home() {
   return (
     <main>
-      {/* <ProductCard/>  */}
-      <Categories/>
+      <Userpage />
     </main>
   );
 }
