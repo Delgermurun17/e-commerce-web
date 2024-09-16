@@ -7,7 +7,7 @@ export default function Home() {
     <main>
       <Save />
       {/* <ProductCard/>  */}
-      <Categories/>
+      
     </main>
   );
 }
