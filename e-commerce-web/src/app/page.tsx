@@ -11,8 +11,6 @@ export default function Home() {
           <ProductCard key={index} className={index === 7 || index === 8 ? ` col-span-2 row-span-2` : ``} />
         ))}
       </div>
-
-    </main>
       <Userpage />
       <Save />
       {/* <ProductCard/>  */}
