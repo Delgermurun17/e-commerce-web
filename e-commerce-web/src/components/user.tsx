@@ -87,31 +87,31 @@ export default function Userpage() {
                 <label htmlFor="surname" className="font-medium leading-[14px] text-sm">
                   Овог:
                 </label>
-                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 focus:ring-green" />
+                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="name" className="font-medium leading-[14px] text-sm">
                   Нэр:
                 </label>
-                <input id="name" className="h-7 rounded-2xl border border-zinc-200" />
+                <input id="name" className="h-7 rounded-2xl border border-zinc-200 p-3" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="phone" className="font-medium leading-[14px] text-sm">
                   Утасны дугаар:
                 </label>
-                <input id="phone" className="h-7 rounded-2xl border border-zinc-200" />
+                <input id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="font-medium leading-[14px] text-sm">
                   Имэйл хаяг:
                 </label>
-                <input id="email" className="h-7 rounded-2xl border border-zinc-200" />
+                <input id="email" className="h-7 rounded-2xl border border-zinc-200 p-3" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="address" className="font-medium leading-[14px] text-sm">
                   Хаяг:
                 </label>
-                <input id="address" className="h-24 rounded-2xl border border-zinc-200" />
+                <input id="address" className="h-24 rounded-2xl border border-zinc-200 p-3" />
               </div>
               <div className="flex justify-end">
                 <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>

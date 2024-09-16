@@ -1,3 +1,4 @@
+import { BuyStopTwo } from "@/components/buy-steps-2";
 import PaymentSection from "@/components/PaymentSection";
 
 import { Footer } from "@/components/Footer";
@@ -8,7 +9,8 @@ import ProductCard from "@/components/productCard";
 
 export default function Home() {
   return (
-    <main>
+      <BuyStopTwo />
+    </main>
       <PaymentSection/>
       <Footer />
      <Header/> 
@@ -24,7 +26,6 @@ export default function Home() {
       </div>
       <Userpage />
       <Save />
-      {/* <ProductCard/>  */}
           </main>
 
   );
