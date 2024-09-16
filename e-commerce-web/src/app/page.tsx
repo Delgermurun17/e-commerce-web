@@ -1,3 +1,4 @@
+import Header from "@/components/Header";
 import CarouselPlugin from "@/components/carousel";
 import ProductCard from "@/components/productCard";
 
@@ -5,6 +6,8 @@ import ProductCard from "@/components/productCard";
 export default function Home() {
   return (
     <main>
+     <Header/> 
+    </main>
       <div className="md:px-[14%] px-[5%] max-w-[1600px] mx-auto pt-[5%] mb-4">
         <CarouselPlugin/>
       </div>
