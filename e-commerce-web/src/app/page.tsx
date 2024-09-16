@@ -1,11 +1,10 @@
+import PaymentSection from "@/components/PaymentSection";
 
-import ProductCard from "@/components/productCard";
 
 export default function Home() {
   return (
     <main>
-      {/* <ProductCard/>  */}
-      
+      <PaymentSection/>
     </main>
   );
 }
