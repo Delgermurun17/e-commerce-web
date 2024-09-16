@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
