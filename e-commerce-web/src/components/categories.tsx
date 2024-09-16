@@ -2,6 +2,7 @@
 import { Checkbox } from "@/components/ui/checkbox"
 import { useQueryState } from 'nuqs'
 
+
 type Category = {
     id: string;
     name: string;
@@ -21,7 +22,7 @@ export default function Categories() {
     const [selectedCategoriesQuery, setSelectedCategoriesQuery] = useQueryState('selectedCategories', { defaultValue: '' });
     const selectedCategories = selectedCategoriesQuery.split(',')
 
-    const [selectedSizesQuery, setSelectedSizesQuey] = useQueryState('selectedSizes', { defaultValue: '' });
+    const [selectedSizesQuery, setSelectedSizesQuery] = useQueryState('selectedSizes', { defaultValue: '' });
     const selectedSizes = selectedSizesQuery.split(',')
 
     const handleCategoryChange = (id: string, checked: boolean | string) => {
@@ -31,7 +32,7 @@ export default function Categories() {
     };
 
     const handleSizeChange = (size: string, checked: boolean | string) => {
-        setSelectedSizesQuey(checked
+        setSelectedSizesQuery(checked
             ? [...selectedSizes, size].join(',')
             : selectedSizes.filter(s => s !== size).join(','));
     };

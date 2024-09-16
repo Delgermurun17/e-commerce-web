@@ -19,7 +19,7 @@ export default function ProductCard(props: Props) {
                     <Heart fill={`${isSaved ? "black" : "transparent"}`} className={`${isSaved ? 'text-black' : 'text-black'} duration-500  text-2xl`} />
                 </button>
             </div>
-            <div className="text-base">
+            <div className="md:text-base text-sm">
                 <p className="font-normal">Product Name</p>
                 <p className="font-bold">Price₮</p>
             </div>
