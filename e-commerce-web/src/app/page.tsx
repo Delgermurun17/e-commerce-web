@@ -1,3 +1,9 @@
+import { BuyStopFour } from "@/components/buy-step-4";
+
+export default function Home() {
+  return (
+    <main>
+      <BuyStopFour />
 import { BuyStopTwo } from "@/components/buy-steps-2";
 import PaymentSection from "@/components/PaymentSection";
 
