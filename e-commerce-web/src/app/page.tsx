@@ -14,7 +14,10 @@ export default function Home() {
           <ProductCard key={index} className={index === 6 || index === 7 ? ` col-span-2 row-span-2` : ``} />
         ))}
       </div>
+      <Userpage />
+      <Save />
+      {/* <ProductCard/>  */}
+          </main>
 
-    </main>
   );
 }
