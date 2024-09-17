@@ -1,5 +1,6 @@
 import { Heart, Search, ShoppingCart } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const Header = () => {
     return (
@@ -27,7 +28,8 @@ const Header = () => {
                         </svg>
                         <p className="text-sm">ECOMMERCE</p>
                     </div>
-                    <button className="text-slate-300 text-sm">Ангилал</button>
+                    <Link href={"/category"}>
+                    <button className="text-slate-300 text-sm">Ангилал</button></Link>
                 </div>
                 <div className="flex items-center rounded-full bg-zinc-900 border-none px-4 w-[300px]">
                     <Search />
