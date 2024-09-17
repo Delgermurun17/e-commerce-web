@@ -15,7 +15,7 @@ export function BuyStopTwo() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-5 bg-gray-100 p-[350px] px-[750px]">
-      <div className="flex flex-col gap-4 bg-white py-8 px-6 rounded-2xl max-w-[333px] w-full">
+      <div className="flex flex-col gap-4 bg-white py-8 px-6 rounded-2xl w-[333px]">
         <div className="font-bold text-lg leading-7">
           Сагс
           <span className="font-normal text-zinc-500">
@@ -45,7 +45,7 @@ export function BuyStopTwo() {
         </div>
       </div>
 
-      <div className="max-w-[687px] w-full bg-white p-8 rounded-2xl">
+      <div className="w-[687px] bg-white p-8 rounded-2xl">
         <div className="font-semibold text-lg leading-7">
           2. Хүргэлтийн мэдээлэл оруулах
         </div>
