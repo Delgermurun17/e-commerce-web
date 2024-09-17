@@ -1,9 +1,4 @@
 import { BuyStopFour } from "@/components/buy-step-4";
-
-export default function Home() {
-  return (
-    <main>
-      <BuyStopFour />
 import { BuyStopTwo } from "@/components/buy-steps-2";
 import PaymentSection from "@/components/PaymentSection";
 
@@ -12,15 +7,14 @@ import Header from "@/components/Header";
 import CarouselPlugin from "@/components/carousel";
 import ProductCard from "@/components/productCard";
 
-
 export default function Home() {
   return (
+    <main>
+      <BuyStopFour />
       <BuyStopTwo />
-    </main>
       <PaymentSection/>
       <Footer />
      <Header/> 
-    </main>
       <div className="md:px-[14%] px-[5%] max-w-[1600px] mx-auto pt-[5%] mb-4">
         <CarouselPlugin/>
       </div>
