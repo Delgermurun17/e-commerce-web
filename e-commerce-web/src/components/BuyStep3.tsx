@@ -4,8 +4,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { StepBack } from "lucide-react";
 
-export default function BuyStepThree() {
+interface BuyStepOneProps {
+    onBack: () => void;
+  }
+
+export default function BuyStepThree({ onBack }: BuyStepOneProps) {
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
 
     useEffect(() => {
@@ -123,7 +128,7 @@ export default function BuyStepThree() {
                             ))}
                         </div>
                     </div>
-                    <Button className="bg-white text-black hover:bg-slate-100 border">Буцах</Button>
+                    <Button onClick={onBack} className="bg-white text-black hover:bg-slate-100 border">Буцах</Button>
                 </div>
             </div>
         </div>

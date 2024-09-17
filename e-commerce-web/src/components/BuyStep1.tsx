@@ -18,7 +18,11 @@ const initialCardData: CardData[] = [
     { id: 4, title: "Local Styles Crewneck", price: 150000, stock: 10 },
 ];
 
-export default function BuyStepOne() {
+interface BuyStepOneProps {
+    onNext: () => void;
+}
+
+export default function BuyStepOne({ onNext }: BuyStepOneProps) {
     const step: number = 1;
     const [cards, setCards] = useState<CardData[]>(initialCardData);
     const [filledCards, setFilledCards] = useState<Set<number>>(new Set());
@@ -113,7 +117,7 @@ export default function BuyStepOne() {
                                             </div>
                                             <p className="font-bold text-sm leading-5">
                                                     {(quantities[card.id] || 1) * card.price}₮
-                                            </p>
+                                        </p>
                                         </div>
                                     </div>
                                     <div>
@@ -133,7 +137,7 @@ export default function BuyStepOne() {
                     </div>
                 </div>
                 <div className="flex justify-end">
-                    <Button className="px-9">Худалдан авах</Button>
+                    <Button className="px-9" onClick={onNext}>Худалдан авах</Button>
                 </div>
             </div>
         </div>

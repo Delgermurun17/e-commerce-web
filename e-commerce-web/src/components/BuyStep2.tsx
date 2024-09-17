@@ -8,14 +8,19 @@ const products = [
   { id: 3, name: "Classic Denim Jacket", quantity: 1, price: 180000 },
 ];
 
-export function BuyStepTwo() {
+interface BuyStepOneProps {
+  onNext: () => void;
+  onBack: () => void;
+}
+
+export function BuyStepTwo({ onNext, onBack }: BuyStepOneProps) {
   const totalPrice = products.reduce((total, product) => {
     return total + product.quantity * product.price;
   }, 0);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-5 bg-gray-100 p-[350px] px-[750px]">
-      <div className="flex flex-col gap-4 bg-white py-8 px-6 rounded-2xl w-[333px]">
+    <div className="flex flex-col lg:flex-row gap-5 bg-gray-100 w-[1040px] mx-auto">
+      <div className="flex flex-col gap-4 bg-white py-8 px-6 rounded-2xl w-[333px] h-full">
         <div className="font-bold text-lg leading-7">
           Сагс
           <span className="font-normal text-zinc-500">
@@ -122,10 +127,10 @@ export function BuyStepTwo() {
         </div>
 
         <div className="flex justify-between">
-          <Button className="w-[114px] bg-white hover:bg-zinc-200 text-black border">
+          <Button onClick={onBack} className="w-[114px] bg-white hover:bg-zinc-200 text-black border">
             Буцах
           </Button>
-          <Button className="w-[212px] hover:bg-gray-800">Төлбөр төлөх</Button>
+          <Button onClick={onNext} className="w-[212px] hover:bg-gray-800">Төлбөр төлөх</Button>
         </div>
       </div>
     </div>
