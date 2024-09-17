@@ -1,11 +1,12 @@
 import { BuyStopFour } from "@/components/buy-step-4";
 import { BuyStopTwo } from "@/components/buy-steps-2";
 import PaymentSection from "@/components/PaymentSection";
-
 import { Footer } from "@/components/Footer";
 import Header from "@/components/Header";
 import CarouselPlugin from "@/components/carousel";
 import ProductCard from "@/components/productCard";
+import Userpage from "@/components/user";
+import { Save } from "@/components/Save";
 
 export default function Home() {
   return (
