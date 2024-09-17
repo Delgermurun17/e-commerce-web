@@ -19,10 +19,10 @@ export const Detail= () => {
         setNumber(1)
     }
     const product = [
-        { size: "S", stock: 0 },
-        { size: "M", stock: 0 },
-        { size: "L", stock: 0 },
-        { size: "XL", stock: 0 },
+        { size: "S", stock: 19 },
+        { size: "M", stock: 5 },
+        { size: "L", stock: 3 },
+        { size: "XL", stock: 10 },
         { size: "2XL", stock: 0 },
     ];
     const defaultSize = product.find(pr => pr.stock > 0)?.size || "";
