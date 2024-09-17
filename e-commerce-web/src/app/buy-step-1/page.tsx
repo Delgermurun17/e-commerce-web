@@ -1,9 +1,9 @@
-import BuyStep1 from "@/components/buyStep-1";
+import BuyStepOne from "@/components/BuyStep1";
 
 export default function Page() {
     return (
         <main className="bg-gray-100 py-52">
-            <BuyStep1 />
+            <BuyStepOne />
         </main>
     );
   }

@@ -8,7 +8,7 @@ const products = [
   { id: 3, name: "Classic Denim Jacket", quantity: 1, price: 180000 },
 ];
 
-export function BuyStopTwo() {
+export function BuyStepTwo() {
   const totalPrice = products.reduce((total, product) => {
     return total + product.quantity * product.price;
   }, 0);

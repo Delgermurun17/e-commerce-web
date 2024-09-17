@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import Image from "next/image";
 
-export default function PaymentSection() {
+export default function BuyStepThree() {
     const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 minutes in seconds
 
     useEffect(() => {

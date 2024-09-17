@@ -1,9 +1,9 @@
-import PaymentSection from "@/components/PaymentSection";
+import BuyStepThree from "@/components/BuyStep3";
 
 export default function Page() {
     return (
         <main className="bg-gray-100 py-52">
-            <PaymentSection />
+            <BuyStepThree />
         </main>
     );
   }

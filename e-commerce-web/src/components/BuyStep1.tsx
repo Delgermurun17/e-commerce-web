@@ -18,7 +18,7 @@ const initialCardData: CardData[] = [
     { id: 4, title: "Local Styles Crewneck", price: 150000, stock: 10 },
 ];
 
-export default function BuyStep1() {
+export default function BuyStepOne() {
     const step: number = 1;
     const [cards, setCards] = useState<CardData[]>(initialCardData);
     const [filledCards, setFilledCards] = useState<Set<number>>(new Set());

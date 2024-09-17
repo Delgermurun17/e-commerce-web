@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export function BuyStopFour() {
+export function BuyStepFour() {
 
   return (
  <div className="bg-gray-100 py-[168px]">
