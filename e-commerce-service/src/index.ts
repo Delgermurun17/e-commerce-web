@@ -1,12 +1,21 @@
 import express from 'express';
+import { connect } from './config/mongodb';
+import { userRouter } from './router/UserRouter';
+import { authRouter } from './router/AuthRouter';
 
 const app = express();
-const port = 3003;
+const port = 4000;
+connect()
+
+app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('Hello, TypeScript with Express!');
+
 });
 
+app.use(userRouter)
+app.use(authRouter)
+
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running on http://localhost:${port}`);
 });
