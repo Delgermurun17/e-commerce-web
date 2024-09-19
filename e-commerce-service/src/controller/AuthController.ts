@@ -9,9 +9,10 @@ const SALT_SECRET = process.env.SALT_SECRET || ""
 const ACCESS_TOKET_SECRET = process.env.ACCESS_TOKET_SECRET || ""
 export const register = async (req: Request, res: Response) => {
     try {
+        const createdAt = new Date().toISOString()
         const { email, password } = req.body
         const hashedPassword = await bcrypt.hash(String(password), Number(SALT_SECRET))
-        await UserModel.create({ email, password: hashedPassword })
+        await UserModel.create({ email, password: hashedPassword, createdAt })
         res.send("Successfully registered!")
     } catch (error) {
         res.sendStatus(400)
