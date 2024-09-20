@@ -5,8 +5,7 @@ import ProductCard from "@/components/productCard";
 
 export default function Home() {
   return (
-    <main>
-        <Header/> 
+    <main> 
       <div className="md:px-[14%] px-[5%] max-w-[1600px] mx-auto pt-[5%] mb-4">
         <CarouselPlugin/>
       </div>
@@ -16,7 +15,6 @@ export default function Home() {
           <ProductCard key={index} className={index === 6 || index === 7 ? ` col-span-2 row-span-2` : ``} />
         ))}
       </div>
-        <Footer />
           </main>
 
   );
