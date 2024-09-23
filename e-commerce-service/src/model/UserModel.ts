@@ -12,7 +12,11 @@ const schema = new Schema({
         required: [true, "Please provide a password!"],
         unique: false
     },
-    phoneNumber:String,
+    phoneNumber:{
+        type:String,
+        required: false,
+        unique: true
+    },
     address: String,
     zipCode: Number,
     cartId: String,
