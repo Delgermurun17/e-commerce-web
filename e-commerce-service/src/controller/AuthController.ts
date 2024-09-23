@@ -37,9 +37,6 @@ export const login = async (req: Request, res: Response) => {
             return res.send({accessToken})
         }
 
-
-
-
         res.status(401).send("Password is incorrect!")
     } catch (error) {
         res.sendStatus(401)

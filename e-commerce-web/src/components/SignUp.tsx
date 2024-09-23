@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Toaster, toast } from "sonner";
 import './styles.css'; // Import your custom styles
 import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
  
 export default function SignUp() {
@@ -86,7 +87,8 @@ function submit() {
       .then(() => {
         toast.success("Амжилттай бүртгүүллээ.", { className: 'custom-toast success' });
         reset()
-    })
+        window.location.href = "/login";
+      })
     .catch(() => {
         toast.error("Имэйл хаяг бүртгэлтэй байна.", { className: 'custom-toast error' });
     })
@@ -97,29 +99,29 @@ function submit() {
     };
  
   return (
-    <div className="flex flex-col gap-6 items-center justify-center h-[800px]">
+    <div className="flex flex-col gap-6 items-center pt-[100px] h-[800px]">
         <div className="py-2 font-medium text-2xl">Бүртгүүлэх</div>
-        <div>
+        <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-1">
-              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px]"  placeholder="Нэр" value={name} onChange={(e) => setName(e.target.value)} />
+              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black"  placeholder="Нэр" value={name} onChange={(e) => setName(e.target.value)} />
               {nameConfirm && (!name ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нэр оруулна уу</div> : null)}
               {name && namelengthConfirm && (name.length < 2 ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нэр богино байна</div> : null)}
             </div>
             <div className="flex flex-col gap-1">
-              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px]" type="email" placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black" type="email" placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value)} />
               {emailConfirm && (!email ? <div className="px-3 text-[#E11D48] text-xs font-normal">Имэйл хаяг оруулна уу</div> : null)}
               {emailValidConfirm && (!emailIsValid ? <div className="px-3 text-[#E11D48] text-xs font-normal">Зөв имэйл хаяг оруулна уу</div> : null)}
             </div>
             <div className="flex flex-col gap-1 relative">
-              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px]" type={showPassword ? 'text' : 'password'} placeholder="Нууц үг" value={password} onChange={(e) => setPassword(e.target.value)}/>
+              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black" type={showPassword ? 'text' : 'password'} placeholder="Нууц үг" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 {password && (showPassword ? <Eye size={16} onClick={ShowPassword}  className="absolute right-3 top-2.5 text-sm cursor-pointer"/> : <EyeOff size={16} onClick={ShowPassword}  className="absolute right-3 top-2.5 text-sm cursor-pointer"/>)}
               {passwordEmpty && (!password ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нууц үг оруулна уу</div> : null)}
               {password && passwordLengthConfrim && (password.length < 8 ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нууц үг богино байна</div> : null)}
               {passwordValidConfirm && (!passwordValid ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нууц үг шаардлага хангахгүй байна</div> : null)}
             </div>
             <div className="flex flex-col gap-1 relative">
-              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px]" type={showPasswordConfirm ? 'text' : 'password'} placeholder="Нууц үг давтах" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}/>
+              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black" type={showPasswordConfirm ? 'text' : 'password'} placeholder="Нууц үг давтах" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}/>
               {passwordConfirm && (showPasswordConfirm ? <Eye onClick={ShowPasswordConfirm}  className="absolute right-3 top-2.5 text-sm cursor-pointer" size={16} /> : <EyeOff onClick={ShowPasswordConfirm}  className="absolute right-3 top-2.5 text-sm cursor-pointer" size={16} />)}
               {passwordConfirm && (!passwordsAreSame ? <div className="px-3 text-[#E11D48] text-xs font-normal">Давтсан нууц үг буруу байна</div> : null)}
               {passwordConfirmEmpty &&(!passwordConfirm ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нууц үг давтаж оруулна уу</div> : null)}
@@ -134,6 +136,7 @@ function submit() {
                 Үүсгэх
             </Button>
             </div>
+            <Link href={"/login"}><Button className="w-[334px] bg-white border !border-[#2563EB] text-[#2563EB]">Нэвтрэх</Button></Link>
         </div>
         <Toaster />
         </div>
