@@ -49,10 +49,12 @@ export function Save() {
   };
 
   return (
-    <div className="flex flex-col gap-4 ml-32 mt-52">
+    <div className="flex flex-col gap-4 items-center py-64">
+      <div className="mr-[420px]">
       <h1 className="font-bold text-xl leading-7">
         Хадгалсан бараа <span className="text-zinc-600 font-medium">({savedCount})</span>
       </h1>
+      </div>
       <div className="flex flex-col gap-4 max-w-[622px] w-full">
         {/* Card-уудыг гаргах */}
         {cards.map((card) => (
