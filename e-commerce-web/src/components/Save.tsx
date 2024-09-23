@@ -71,9 +71,11 @@ export function Save() {
                 <h1 className="font-normal text-base leading-6">{card.title}</h1>
                 <p className="font-bold text-sm leading-5">{card.price}</p>
               </div>
-              <Button className="mt-2 mb-4 w-20 h-7 bg-blue-600 rounded-[14px] hover:bg-blue-500">
+              <div>
+              <Button className="mt-2 mb-4 w-20 h-7 bg-blue-600 rounded-[14px px-3 py-1">
                 <p className="font-medium text-sm leading-5 text-white">Сагслах</p>
               </Button>
+              </div>
             </div>
             <div>
               <button
