@@ -13,8 +13,19 @@ export const getProduct = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        const { name, email, password, phoneNumber } = req.body
-        const user = await ProductModel.create({ name, email, password, phoneNumber })
+        const { productName,
+            description,
+            productCode,
+            price,
+            quantity, } = req.body
+
+        const user = await ProductModel.create({
+            productName,
+            description,
+            productCode,
+            price,
+            quantity,
+        })
         res.send(user)
     }
     catch (error) {
@@ -23,9 +34,19 @@ export const createProduct = async (req: Request, res: Response) => {
 }
 export const updateProduct = async (req: Request, res: Response) => {
     try {
-        const { name, email, password, phoneNumber } = req.body;
+        const { productName,
+            description,
+            productCode,
+            price,
+            quantity, } = req.body;
         const { id } = req.params;
-        const update = await ProductModel.findByIdAndUpdate(id, { name, email, password, phoneNumber })
+        const update = await ProductModel.findByIdAndUpdate(id, {
+            productName,
+            description,
+            productCode,
+            price,
+            quantity,
+        })
         res.send(update)
     }
     catch (error) {
