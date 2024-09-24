@@ -10,8 +10,8 @@ const Page: React.FC = () => {
     const [step, setStep] = useState<number>(1); 
 
     return (
-        <main className="bg-gray-100 py-52">
-            <div className="flex justify-center items-center mb-40">
+        <main className="bg-gray-100 h-[1000px] pt-8">
+            <div className="flex justify-center items-center mb-14">
                 <div className={`size-8 p-[4px_12px] rounded-full border border-black text-base font-normal flex justify-center ${step > 0 ? "!border-[#2563EB] bg-[#2563EB] text-white !font-bold" : ""}`}>
                     {step > 1 ? <div className="content-center"><Check size={16}/></div> : <div>1</div>}
                 </div>
