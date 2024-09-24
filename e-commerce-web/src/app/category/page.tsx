@@ -4,8 +4,7 @@ import { Suspense } from "react";
 
 export default function Page() {
   return (
-    <div className="h-[2500px]">
-    <div className="md:px-[14%] px-[5%] grid grid-cols-4 max-w-[1600px] mx-auto gap-2 pt-14">
+    <div className="md:px-[14%] px-[5%] grid grid-cols-4 max-w-[1600px] mx-auto gap-2 pt-14 pb-24">
       <div>
         <Suspense>
           <Categories />
