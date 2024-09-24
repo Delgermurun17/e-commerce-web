@@ -7,7 +7,7 @@ import { LuPhone } from "react-icons/lu";
 
 export function Footer() {
     return (
-        <div className="w-full bg-black fixed bottom-0">
+        <div className="w-full bg-black">
             <div className="mx-auto w-[1040px] max-w-[1440px] h-72 flex flex-col gap-11 py-16 px-">
                 <div className="flex justify-between items-center">
 
