@@ -37,8 +37,8 @@ const Header = () => {
                     </div>
                 </div>
                 <div className="flex gap-6 items-center">
-                        <Heart className="relative" strokeWidth={1} />
-                        <ShoppingCart strokeWidth={1} />
+                        <Link href={"/saved"}><Heart strokeWidth={1} /></Link>
+                        <Link href={"/order"}><ShoppingCart strokeWidth={1} /></Link>
                     <div className="flex gap-2 text-sm font-medium">
                         
                         <Link href={"/signup"}><button className="rounded-full p-2 border border-blue-900 hover:opacity-85 duration-150 h-9">
