@@ -46,8 +46,8 @@ export default function Userpage() {
   const totalAmount = orders.reduce((sum, order) => sum + order.quantity * order.price, 0);
 
   return (
-    <div className="bg-gray-100 py-16 px-48">
-      <div className="flex gap-5 mt-16">
+    <div className="bg-gray-100 pt-[100px] h-[800px] flex justify-center">
+      <div className="flex gap-5">
         <div className="flex flex-col gap-1">
           <div
             className={`${
@@ -75,43 +75,42 @@ export default function Userpage() {
           </div>
         </div>
 
-        <div className="w-full max-w-[620px]">
+        <div className="w-[620px]">
           <p className="font-bold text-lg leading-7">{activeSection}</p>
-          <div className="py-7">
+          <div className="py-6">
             <hr />
           </div>
-
           {activeSection === "Хэрэглэгчийн хэсэг" && (
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <label htmlFor="surname" className="font-medium leading-[14px] text-sm">
                   Овог:
                 </label>
-                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3" />
+                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="name" className="font-medium leading-[14px] text-sm">
                   Нэр:
                 </label>
-                <input id="name" className="h-7 rounded-2xl border border-zinc-200 p-3" />
+                <input id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="phone" className="font-medium leading-[14px] text-sm">
                   Утасны дугаар:
                 </label>
-                <input id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3" />
+                <input id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="font-medium leading-[14px] text-sm">
                   Имэйл хаяг:
                 </label>
-                <input id="email" className="h-7 rounded-2xl border border-zinc-200 p-3" />
+                <input id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="address" className="font-medium leading-[14px] text-sm">
+                <label htmlFor="address" className="font-medium leading-[14px] text-sm ">
                   Хаяг:
                 </label>
-                <input id="address" className="h-24 rounded-2xl border border-zinc-200 p-3" />
+                <textarea id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none	" />
               </div>
               <div className="flex justify-end">
                 <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
