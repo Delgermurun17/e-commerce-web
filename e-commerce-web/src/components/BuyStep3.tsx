@@ -103,7 +103,7 @@ export default function BuyStepThree({ onBack }: BuyStepOneProps) {
     ];
 
     return (
-        <div className="h-screen bg-gray-100 pt-32">
+        <div className="h-screen bg-gray-100">
             <div className="bg-white w-[687px] h-[656.7px] rounded-2xl mx-auto">
                 <div className="p-8">
                     <div className="font-semibold text-lg">3. Төлбөр төлөлт</div>
