@@ -20,7 +20,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-
+import { Button } from "@/components/ui/button"
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Toaster } from "@/components/ui/toaster"
+import { useToast } from "@/hooks/use-toast"
 
 
 export default function Page() {
@@ -30,6 +33,16 @@ export default function Page() {
     const [price, setPrice] = useState<number | string>('');
     const [quantity, setQuantity] = useState<number | string>('');
     const [products, setProducts] = useState<Product[]>([])
+    const [loading, setLoading]=useState<boolean>(false)
+
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const create = searchParams.get('create')
+    const editingId = searchParams.get('editing')
+    const open = create === "new" || !!editingId
+    const { toast } = useToast()
+
+
     interface Product {
         _id: string;
         productName: String,
@@ -61,7 +74,7 @@ export default function Page() {
             .then(data => setProducts(data))
     }
 
-    function deleteProduct(id) {
+    function deleteProduct(id: string) {
         fetch(`http://localhost:4000/products/${id}`,
             {
                 method: 'DELETE'
@@ -69,17 +82,73 @@ export default function Page() {
 
     }
 
+    function updateProduct(id:string) {
+        setLoading(true)
+
+        fetch(`http://localhost:4000/products/${id}`,
+            {
+                method: "PUT",
+                body: JSON.stringify({
+                    productName,
+                    description,
+                    productCode,
+                    price,
+                    quantity,
+                }),
+                headers: { "Content-type": "application/json; charset=UTF-8" }
+            }
+        )
+            .then(() => {
+                setLoading(false);
+                toast({description: "Successfully updated."});
+                reset()
+                onClose()
+            })
+    }
+    function reset() {
+        setProductName(""),
+            setDescription(""),
+            setProductCode(""),
+            setPrice(""),
+            setQuantity("")
+    }
+    
+    useEffect(() => {
+        if (editingId) {
+            getProductById(editingId)
+        }
+    }, [editingId])
+
+    function getProductById(id : string) {
+        // console.log(editingId)
+        fetch(`http://localhost:4000/products/${id}`)
+            .then(res => res.json())
+            .then((data) => {
+                // console.log(data)
+                setProductName(data.productName),
+                setDescription(data.description),
+                setProductCode(data.productCode),
+                setPrice(data.price),
+                setQuantity(data.quantity)
+            })
+    }
+
     useEffect(() => {
         getProducts();
     }, [products]);
+
+    function onClose() {
+        router.push('?')
+    }
 
 
 
     return (
         <div className="w-[80%]">
-            <Dialog>
-                <DialogTrigger>+Add a product</DialogTrigger>
-                <DialogContent>
+            <Toaster/>
+            <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button>
+            <Dialog open={open}>
+                <DialogContent onClose={() => router.push('?')}>
                     <DialogHeader>
                         <DialogTitle>Are you absolutely sure?</DialogTitle>
                         <DialogDescription>
@@ -110,7 +179,10 @@ export default function Page() {
                                 type="number"
                                 onChange={e => setQuantity(e.target.value)}
                             />
-                            <button onClick={createProduct}>Submit</button>
+                            {editingId ?
+                                (<Button onClick={()=>updateProduct(editingId)}>Update product information</Button>) :
+                                (<Button onClick={() => { createProduct(); onClose() }}>Submit</Button>)}
+
                         </DialogDescription>
                     </DialogHeader>
                 </DialogContent>
@@ -140,7 +212,7 @@ export default function Page() {
                             <TableCell>sold</TableCell>
                             <TableCell >date</TableCell>
                             <TableCell className="text-right text-[4px] flex gap-4">
-                                <button ><Pencil /></button>
+                                <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button>
                                 <button onClick={() => deleteProduct(p._id)}><Trash2 /></button>
                             </TableCell>
                         </TableRow>

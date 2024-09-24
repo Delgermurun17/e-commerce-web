@@ -11,6 +11,17 @@ export const getProduct = async (req: Request, res: Response) => {
     }
 }
 
+export const getProductById= async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const users = await ProductModel.findById(id)
+        res.send(users)
+    }
+    catch (error) {
+        res.status(400).json({ errorMessage: "Error" })
+    }
+}
+
 export const createProduct = async (req: Request, res: Response) => {
     try {
         const { productName,
