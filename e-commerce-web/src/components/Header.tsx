@@ -1,11 +1,10 @@
 import { Heart, Search, ShoppingCart } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
 const Header = () => {
     return (
-        <header className="max-w-full p-2 bg-black text-white mx-auto">
-            <div className="max-w-[1440px] mx-auto flex justify-between py-3 px-5">
+        <header className="w-full bg-black text-white p-[16px_24px] mx-auto">
+            <div className="max-w-[1392px] mx-auto flex justify-between h-9">
                 <div className="flex items-center gap-8">
                     <div className="flex gap-2 items-center">
                         <svg
@@ -29,28 +28,25 @@ const Header = () => {
                         <p className="text-sm">ECOMMERCE</p>
                     </div>
                     <Link href={"/category"}>
-                    <button className="text-slate-300 text-sm">Ангилал</button></Link>
+                    <button className="text-sm font-normal">Ангилал</button></Link>
                 </div>
-                <div className="flex items-center rounded-full bg-zinc-900 border-none px-4 w-[300px]">
-                    <Search />
-                    <Input
-                        type="search"
-                        placeholder="Бүтээгдэхүүн хайх"
-                        className="border-none text-zinc-500"
-                    />
+                <div className="rounded-full p-[8px_16px] bg-[#18181B] w-[300px] h-10">
+                    <div className="flex gap-2 items-center">
+                    <div className="size-6 flex justify-center items-center"><Search strokeWidth={1} size={20}/></div>
+                    <input type="search" placeholder="Бүтээгдэхүүн хайх" className="bg-transparent outline-none"/>
+                    </div>
                 </div>
-                <div className="flex gap-5 items-center">
-                    <div className="gap-6 flex">
+                <div className="flex gap-6 items-center">
                         <Heart className="relative" strokeWidth={1} />
                         <ShoppingCart strokeWidth={1} />
-                    </div>
-                    <div className="flex gap-2">
-                        <button className="rounded-full p-2 hover:bg-opacity-80 border border-blue-900 hover:opacity-80">
+                    <div className="flex gap-2 text-sm font-medium">
+                        
+                        <Link href={"/signup"}><button className="rounded-full p-2 border border-blue-900 hover:opacity-85 duration-150 h-9">
                             Бүртгүүлэх
-                        </button>
-                        <button className="bg-blue-600 rounded-3xl p-2 hover:bg-blue-500 px-4">
+                        </button></Link>
+                        <Link href={"/login"}><button className="bg-blue-600 rounded-3xl hover:opacity-85 p-[8px_12px] h-9">
                             Нэвтрэх
-                        </button>
+                        </button></Link>
                     </div>
                 </div>
             </div>

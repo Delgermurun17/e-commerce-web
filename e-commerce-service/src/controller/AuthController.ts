@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken"
 
 
 const SALT_SECRET = process.env.SALT_SECRET || ""
-const ACCESS_TOKET_SECRET = process.env.ACCESS_TOKET_SECRET || ""
+const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "";
 export const register = async (req: Request, res: Response) => {
     try {
         const createdAt = new Date().toISOString()
@@ -22,26 +22,27 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body
-        const user = await UserModel.findOne({ email })
-        if (!user) return res.status(401).send("User doesn't found!")
-        const isEqual = await bcrypt.compare(String(password), user.password)
-        if (isEqual) {
-            const accessToken = jwt.sign(
-                { userId: user._id, email },
-                ACCESS_TOKET_SECRET,
-                {
-                    expiresIn: "2h"
-                }
-            )
-            return res.send({accessToken})
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required!" });
         }
 
+        const user = await UserModel.findOne({ email });
+        if (!user) return res.status(401).json({ message: "User not found!" });
 
+        const isEqual = await bcrypt.compare(password, user.password);
+        if (isEqual) {
+            const accessToken = jwt.sign(
+                { userId: user._id, email: user.email },
+                ACCESS_TOKEN_SECRET,
+                { expiresIn: "2h" }
+            );
+            return res.json({ accessToken });
+        }
 
-
-        res.status(401).send("Password is incorrect!")
+        res.status(403).json({ message: "Password is incorrect!" });
     } catch (error) {
-        res.sendStatus(401)
+        console.error(error);
+        res.status(500).json({ message: "An error occurred during login.", error });
     }
-}
+};

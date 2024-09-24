@@ -1,9 +1,9 @@
-import LogIn from "@/components/logIn";
+import Login from "@/components/Login";
 
 export default function page() {
     return (
         <div>
-            <LogIn />
+            <Login />
         </div>
     )
 }
