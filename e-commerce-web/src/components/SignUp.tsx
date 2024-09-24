@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Toaster, toast } from "sonner";
-import './styles.css'; // Import your custom styles
+import './styles.css'; 
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
@@ -87,7 +87,9 @@ function submit() {
       .then(() => {
         toast.success("Амжилттай бүртгүүллээ.", { className: 'custom-toast success' });
         reset()
-        window.location.href = "/login";
+        setTimeout(() => {
+          window.location.href = "/login";
+      }, 2000);
       })
     .catch(() => {
         toast.error("Имэйл хаяг бүртгэлтэй байна.", { className: 'custom-toast error' });
