@@ -16,7 +16,7 @@ export default function ProductCard(props: Props) {
             <div className="relative aspect-[3/4] bg-slate-400 rounded-xl overflow-hidden " >
                 <Image className="hover:scale-125 duration-700" src="/image.jpg" width={2000} height={2000} alt="picture" />
                 <button className="absolute top-4 right-4" onClick={() => setIsSaved(x => !x)}>
-                    <Heart fill={`${isSaved ? "black" : "transparent"}`} className={`${isSaved ? 'text-black' : 'text-black'} duration-500  text-2xl`} />
+                <Heart onClick={()=>setIsSaved(x =>!x)} strokeWidth={1} fill={`${isSaved ? "black" : "transparent"}`} className="duration-500"/>
                 </button>
             </div>
             <div className="md:text-base text-sm">
