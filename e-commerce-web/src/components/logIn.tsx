@@ -33,8 +33,8 @@ export default function Login() {
           });
 
           if (res.ok) {
-              const { accessToken } = await res.json();
-              localStorage.setItem("accessToken", accessToken);
+              const { authtoken } = await res.json();
+              localStorage.setItem("authtoken", authtoken);
               toast.success("Амжилттай нэвтэрлээ.", { className: 'custom-toast success' });
               window.location.href = "/";
           } else if (res.status === 401) {

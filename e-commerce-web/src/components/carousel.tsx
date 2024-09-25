@@ -32,7 +32,7 @@ export default function Component() {
   }, [api, currentIndex])
 
   return (
-    <div className="w-[880px] h-[446px] border border-gray-300 overflow-hidden rounded-2xl">
+    <div className="w-[1040px] h-[446px] border border-gray-300 overflow-hidden rounded-2xl">
       <Carousel setApi={setApi} className="w-full h-full">
         <CarouselContent>
           {[1, 2, 3, 4, 5].map((number) => (
