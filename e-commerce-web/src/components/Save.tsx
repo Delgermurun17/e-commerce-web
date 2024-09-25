@@ -87,7 +87,7 @@ export function Save() {
               >
                 <Heart
                   className="duration-700"
-                  fill={filledCards.has(card.id) ? "none" : "black"}
+                  fill={filledCards.has(card.id) ? "transparent" : "black"}
                   color="black"
                   style={{ cursor: "pointer" }}
                 />
@@ -99,3 +99,4 @@ export function Save() {
     </div>
   );
 }
+  
