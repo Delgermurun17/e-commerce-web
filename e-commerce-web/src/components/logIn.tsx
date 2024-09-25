@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { Eye, EyeOff } from "lucide-react";
+import { CircleAlert, Eye, EyeOff } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import './styles.css'; 
 import { useState } from "react";
@@ -46,7 +46,15 @@ export default function Login() {
               setPasswordIncorrect(true)
           }
       } catch (error) {
-          toast.error("An error occurred. Please try again.", { className: 'custom-toast error' });
+          toast.error(<div className="text-[#EF4444] flex gap-3">
+            <div className="pt-1">
+                <CircleAlert size={16}/>
+            </div>
+            <div className="flex flex-col gap-1">
+            <div className="text-base font-medium">Холболт салсан байна.</div>
+            <div className="text-sm font-normal">Түр хүлээгээд дахин оролдоно уу.</div>
+            </div>
+          </div>), { className: 'custom-toast error'};
       }
   };
       const customToast = {
