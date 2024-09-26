@@ -60,6 +60,5 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) {
     if (!jwt.verify(authtoken + "", ACCESS_TOKEN_SECRET)) {
       return res.sendStatus(403);
     }
-  
     next();
   }

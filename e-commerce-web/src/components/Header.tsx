@@ -31,6 +31,7 @@ async function fetcher(pathname: string) {
     return (
         <header className="w-full bg-black text-white p-[16px_24px] mx-auto">
             <div className="max-w-[1392px] mx-auto flex justify-between h-9">
+                <div className="flex gap-80">
                 <div className="flex items-center gap-8">
                     <Link href={"/"}><div className="flex gap-2 items-center cursor-pointer">
                         <svg
@@ -61,6 +62,7 @@ async function fetcher(pathname: string) {
                     <div className="size-6 flex justify-center items-center"><Search strokeWidth={1} size={20}/></div>
                     <input type="search" placeholder="Бүтээгдэхүүн хайх" className="bg-transparent outline-none"/>
                     </div>
+                </div>
                 </div>
                 <div className="flex gap-6 items-center">
                         <Link href={"/saved"}><Heart strokeWidth={1} /></Link>

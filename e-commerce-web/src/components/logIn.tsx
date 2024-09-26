@@ -36,8 +36,9 @@ export default function Login() {
               const { authtoken } = await res.json();
               localStorage.setItem("authtoken", authtoken);
               toast.success("Амжилттай нэвтэрлээ.", { className: 'custom-toast success' });
-              window.location.href = "/";
-          } else if (res.status === 401) {
+              setTimeout(() => {
+                window.location.href = "/";
+            }, 1000);          } else if (res.status === 401) {
               toast.error("Хэрэглэгч бүртгэлгүй байна.", { className: 'custom-toast error' });
               return  setEmailExist(true)
           } else if (res.status === 403) {

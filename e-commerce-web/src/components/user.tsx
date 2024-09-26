@@ -1,12 +1,63 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { toast, Toaster } from "sonner";
+
+async function fetcher(pathname: string) {
+  const token = localStorage.getItem("authtoken") || "";
+
+  const data = await fetch(`http://localhost:4000${pathname}`, {
+    headers: {
+      authtoken: token,
+    },
+  }).then((res) => res.json());
+
+  return data;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+}
+
+function exit(){
+  toast(<div className="font-medium text-lg">Бүртэлээс гарлаа.</div>)
+  setTimeout(() => {
+    localStorage.removeItem("authtoken")
+    window.location.href = "/login";
+}, 1200);
+}
 
 export default function Userpage() {
   const [activeSection, setActiveSection] = useState("Хэрэглэгчийн хэсэг");
   const [isOrderVisible1, setOrderVisible1] = useState(false);
   const [isOrderVisible2, setOrderVisible2] = useState(false);
+  const [user, setUser] = useState<User | null>(null); // Changed to User | null
+
+  useEffect(() => {
+    fetcher("/user")
+      .then((data: User | User[]) => {
+        if (Array.isArray(data)) {
+          if (data.length > 0) {
+            setUser(data[0]);
+          } else {
+            setUser(null);
+          }
+        } else if (data && typeof data === "object") {
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+        setUser(null);
+      });
+  }, []);
 
   const orders = [
     {
@@ -80,41 +131,36 @@ export default function Userpage() {
           <div className="py-6">
             <hr />
           </div>
-          {activeSection === "Хэрэглэгчийн хэсэг" && (
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="surname" className="font-medium leading-[14px] text-sm">
-                  Овог:
-                </label>
-                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="font-medium leading-[14px] text-sm">
-                  Нэр:
-                </label>
-                <input id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="phone" className="font-medium leading-[14px] text-sm">
-                  Утасны дугаар:
-                </label>
-                <input id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="font-medium leading-[14px] text-sm">
-                  Имэйл хаяг:
-                </label>
-                <input id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="address" className="font-medium leading-[14px] text-sm ">
-                  Хаяг:
-                </label>
-                <textarea id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none	" />
-              </div>
-              <div className="flex justify-end">
-                <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
-              </div>
+          {user && (
+            <div>
+              {activeSection === "Хэрэглэгчийн хэсэг" && (
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="surname" className="font-medium leading-[14px] text-sm">Овог:</label>
+                    <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="font-medium leading-[14px] text-sm">Нэр:</label>
+                    <input value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="phone" className="font-medium leading-[14px] text-sm">Утасны дугаар:</label>
+                    <input value={user.phoneNumber} id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="email" className="font-medium leading-[14px] text-sm">Имэйл хаяг:</label>
+                    <input value={user.email} id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="address" className="font-medium leading-[14px] text-sm">Хаяг:</label>
+                    <textarea value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
+                    <Button onClick={exit} className="hover:bg-gray-800">Гарах</Button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -182,6 +228,7 @@ export default function Userpage() {
           )}
         </div>
       </div>
+          <Toaster />
     </div>
   );
 }

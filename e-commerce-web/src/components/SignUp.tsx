@@ -56,14 +56,14 @@ function reset(){
   }
 
   function final(){
-    if (!name) return setNameConfirm(true)
+    if (!name)  setNameConfirm(true)
+    if (!email)  setEmailConfirm(true)
+    if (!password)  setPasswordEmpty(true)
+    if (!passwordConfirm) return setPasswordConfirmEmpty(true)
     if (name.length < 2) return setNamelengthConfrim(true)
-    if (!email) return setEmailConfirm(true)
     if (!emailIsValid) return setEmailValidConfirm(true)
-    if (!password) return setPasswordEmpty(true)
     if (password.length < 8) return setPasswordlenghtConfrim(true)
     if (!passwordValid) return setPasswordValidConfirm(true)
-    if (!passwordConfirm) return setPasswordConfirmEmpty(true)
     return submit()
 }
 
