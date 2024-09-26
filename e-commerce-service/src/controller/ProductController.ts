@@ -28,7 +28,9 @@ export const createProduct = async (req: Request, res: Response) => {
             description,
             productCode,
             price,
-            quantity, } = req.body
+            quantity, 
+            images, 
+        } = req.body
 
         const user = await ProductModel.create({
             productName,
@@ -36,11 +38,13 @@ export const createProduct = async (req: Request, res: Response) => {
             productCode,
             price,
             quantity,
+            images, 
+            createdAt: new Date()
         })
         res.send(user)
     }
     catch (error) {
-        res.status(400).json({ errorMessage: "Create doesn't working!" })
+        res.status(400).json({ errorMessage: "Create doesn't working!" , error})
     }
 }
 export const updateProduct = async (req: Request, res: Response) => {
@@ -49,7 +53,8 @@ export const updateProduct = async (req: Request, res: Response) => {
             description,
             productCode,
             price,
-            quantity, } = req.body;
+            quantity,
+            } = req.body;
         const { id } = req.params;
         const update = await ProductModel.findByIdAndUpdate(id, {
             productName,

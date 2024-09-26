@@ -24,6 +24,8 @@ import { Button } from "@/components/ui/button"
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
+import Link from "next/link";
+import Menu from "@/components/menu";
 
 
 export default function Page() {
@@ -43,17 +45,6 @@ export default function Page() {
     const open = create === "new" || !!editingId
     const { toast } = useToast()
 
-    interface Menu {
-        name: string;
-        icon: any;
-        value: string
-    }
-    const menu: Menu[] = [{ name: "Хяналтын самбар", icon: Grid2X2, value: "control" },
-    { name: "Захиалга", icon: Clipboard, value: "order" },
-    { name: "Орлого", icon: Tag, value: "income" },
-    { name: "Бүтээгдэхүүн", icon: SquareChartGantt, value: "product" },
-    { name: "Тохиргоо", icon: Settings, value: "settings" }
-    ]
 
 
     interface Product {
@@ -87,11 +78,12 @@ export default function Page() {
             .then(data => setProducts(data))
     }
 
-    function deleteProduct(id: string) {
-        fetch(`http://localhost:4000/products/${id}`,
+    async function deleteProduct(id: string) {
+        await fetch(`http://localhost:4000/products/${id}`,
             {
                 method: 'DELETE'
             })
+            .then(()=>getProducts())
 
     }
 
@@ -112,6 +104,7 @@ export default function Page() {
             }
         )
             .then(() => {
+                getProducts()
                 setLoading(false);
                 toast({ description: "Successfully updated." });
                 reset()
@@ -148,34 +141,29 @@ export default function Page() {
 
     useEffect(() => {
         getProducts();
-    }, [products]);
+    }, []);
 
     function onClose() {
         router.push('?')
     }
 
-
-
     return (
         <div className="flex bg-[#FFFFFF] text-black">
-            <div className="w-[222px] h-screen font-bold text-base flex flex-col gap-4 mt-4">
-                <Toaster />
-                {menu.map(m =>
-                    <div className={`py-2 px-4 flex gap-2 ${menuItem === m.value ? `bg-[#ECEDF0]` : ''}`} key={m.name} onClick={() => setMenuItem(m.value)}>
-                        <m.icon />
-                        {m.name}
-                    </div>
-                )}
-            </div>
+             <Toaster />
+             <Menu/>
+
             <div className="bg-[#ECEDF0] w-full">
-                <div className={`${menuItem === "product" ? "block" : "hidden"}`}>
+                <div>
                     <div className="flex gap-8 py-4 border-b-2 px-8">
                         <div>Бүтээгдэхүүн</div>
                         <div>Ангилал</div>
                     </div>
-                    <div className="px-8">
-                        <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button>
-                        <Dialog open={open}>
+                    <Link href="/products/new" className="px-8">
+                        <Button> + Бүтээгдэхүүн нэмэх</Button>
+                    </Link>
+                    <div className="px-8 mt-10">
+                        {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
+                        {/* <Dialog open={open}>
                             <DialogContent onClose={() => router.push('?')}>
                                 <DialogHeader>
                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -214,7 +202,7 @@ export default function Page() {
                                     </DialogDescription>
                                 </DialogHeader>
                             </DialogContent>
-                        </Dialog>
+                        </Dialog> */}
                         <Table className="">
                             <TableCaption>Products list</TableCaption>
                             <TableHeader >
@@ -239,7 +227,8 @@ export default function Page() {
                                         <TableCell>sold</TableCell>
                                         <TableCell >date</TableCell>
                                         <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
-                                            <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button>
+                                            {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
+                                            <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
                                             <button onClick={() => deleteProduct(p._id)}><Trash2 /></button>
                                         </TableCell>
                                     </TableRow>
