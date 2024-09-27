@@ -36,7 +36,6 @@ export default function Page() {
     const [quantity, setQuantity] = useState<number | string>('');
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [menuItem, setMenuItem] = useState<string>("product")
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -45,32 +44,29 @@ export default function Page() {
     const open = create === "new" || !!editingId
     const { toast } = useToast()
 
-
-
     interface Product {
         _id: string;
         productName: String,
         productCode: String,
         price: number,
         quantity: number,
-        // Add other product properties here, if needed
     }
 
 
-    function createProduct() {
-        fetch(`http://localhost:4000/products`,
-            {
-                method: 'POST',
-                body: JSON.stringify({
-                    productName,
-                    description,
-                    productCode,
-                    price,
-                    quantity,
-                }),
-                headers: { "Content-type": "application/json; charset=UTF-8" }
-            })
-    }
+    // function createProduct() {
+    //     fetch(`http://localhost:4000/products`,
+    //         {
+    //             method: 'POST',
+    //             body: JSON.stringify({
+    //                 productName,
+    //                 description,
+    //                 productCode,
+    //                 price,
+    //                 quantity,
+    //             }),
+    //             headers: { "Content-type": "application/json; charset=UTF-8" }
+    //         })
+    // }
 
     function getProducts() {
         fetch(`http://localhost:4000/products`)
@@ -87,30 +83,30 @@ export default function Page() {
 
     }
 
-    function updateProduct(id: string) {
-        setLoading(true)
+    // function updateProduct(id: string) {
+    //     setLoading(true)
 
-        fetch(`http://localhost:4000/products/${id}`,
-            {
-                method: "PUT",
-                body: JSON.stringify({
-                    productName,
-                    description,
-                    productCode,
-                    price,
-                    quantity,
-                }),
-                headers: { "Content-type": "application/json; charset=UTF-8" }
-            }
-        )
-            .then(() => {
-                getProducts()
-                setLoading(false);
-                toast({ description: "Successfully updated." });
-                reset()
-                onClose()
-            })
-    }
+    //     fetch(`http://localhost:4000/products/${id}`,
+    //         {
+    //             method: "PUT",
+    //             body: JSON.stringify({
+    //                 productName,
+    //                 description,
+    //                 productCode,
+    //                 price,
+    //                 quantity,
+    //             }),
+    //             headers: { "Content-type": "application/json; charset=UTF-8" }
+    //         }
+    //     )
+    //         .then(() => {
+    //             getProducts()
+    //             setLoading(false);
+    //             toast({ description: "Successfully updated." });
+    //             reset()
+    //             onClose()
+    //         })
+    // }
     function reset() {
         setProductName(""),
             setDescription(""),
@@ -240,8 +236,6 @@ export default function Page() {
 
                 </div>
             </div>
-
-
         </div>
     );
 }

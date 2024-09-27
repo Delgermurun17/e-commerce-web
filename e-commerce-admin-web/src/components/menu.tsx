@@ -7,7 +7,7 @@ export default function Menu(){
         icon: any;
         value: string
     }
-    const menu: Menu[] = [{ name: "Хяналтын самбар", icon: Grid2X2, value: "control" },
+    const menu: Menu[] = [{ name: "Хяналтын самбар", icon: Grid2X2, value: "" },
     { name: "Захиалга", icon: Clipboard, value: "order" },
     { name: "Орлого", icon: Tag, value: "income" },
     { name: "Бүтээгдэхүүн", icon: SquareChartGantt, value: "products" },
