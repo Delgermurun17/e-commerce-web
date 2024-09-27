@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Clipboard, Grid2X2, Pencil, Settings, SquareChartGantt, Tag, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -26,6 +26,14 @@ import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 import Link from "next/link";
 import Menu from "@/components/menu";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
 
 
 export default function Page() {
@@ -52,22 +60,6 @@ export default function Page() {
         quantity: number,
     }
 
-
-    // function createProduct() {
-    //     fetch(`http://localhost:4000/products`,
-    //         {
-    //             method: 'POST',
-    //             body: JSON.stringify({
-    //                 productName,
-    //                 description,
-    //                 productCode,
-    //                 price,
-    //                 quantity,
-    //             }),
-    //             headers: { "Content-type": "application/json; charset=UTF-8" }
-    //         })
-    // }
-
     function getProducts() {
         fetch(`http://localhost:4000/products`)
             .then(res => res.json())
@@ -79,40 +71,8 @@ export default function Page() {
             {
                 method: 'DELETE'
             })
-            .then(()=>getProducts())
+            .then(() => getProducts())
 
-    }
-
-    // function updateProduct(id: string) {
-    //     setLoading(true)
-
-    //     fetch(`http://localhost:4000/products/${id}`,
-    //         {
-    //             method: "PUT",
-    //             body: JSON.stringify({
-    //                 productName,
-    //                 description,
-    //                 productCode,
-    //                 price,
-    //                 quantity,
-    //             }),
-    //             headers: { "Content-type": "application/json; charset=UTF-8" }
-    //         }
-    //     )
-    //         .then(() => {
-    //             getProducts()
-    //             setLoading(false);
-    //             toast({ description: "Successfully updated." });
-    //             reset()
-    //             onClose()
-    //         })
-    // }
-    function reset() {
-        setProductName(""),
-            setDescription(""),
-            setProductCode(""),
-            setPrice(""),
-            setQuantity("")
     }
 
     useEffect(() => {
@@ -145,8 +105,8 @@ export default function Page() {
 
     return (
         <div className="flex bg-[#FFFFFF] text-black">
-             <Toaster />
-             <Menu/>
+            <Toaster />
+            <Menu />
 
             <div className="bg-[#ECEDF0] w-full">
                 <div>
@@ -157,6 +117,20 @@ export default function Page() {
                     <Link href="/products/new" className="px-8">
                         <Button> + Бүтээгдэхүүн нэмэх</Button>
                     </Link>
+
+                    <Select>
+                        <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Үнэ" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="light">Үнэ өсөхөөр</SelectItem>
+                            <SelectItem value="dark">Үнэ буурахаар</SelectItem>
+                            <SelectItem value="system">Хямдралын хувиар</SelectItem>
+                        </SelectContent>
+                    </Select>
+
+
+
                     <div className="px-8 mt-10">
                         {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
                         {/* <Dialog open={open}>
