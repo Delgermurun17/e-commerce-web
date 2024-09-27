@@ -6,6 +6,6 @@ export const userRouter = express.Router()
 
 userRouter
 .get('/user',checkAuth, getUser)
-.post('/users', createUsers)
-.put('/users/:id', updateUsers)
-.delete('/users/:id', deleteUsers)
+.post('/user', createUsers)
+.put('/user/:id', updateUsers)
+.delete('/user/:id', deleteUsers)

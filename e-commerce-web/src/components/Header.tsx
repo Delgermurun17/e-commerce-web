@@ -55,7 +55,7 @@ async function fetcher(pathname: string) {
                         <p className="text-sm">ECOMMERCE</p>
                     </div></Link>
                     <Link href={"/category"}>
-                    <button className="text-sm font-normal">Ангилал</button></Link>
+                    <div className="text-sm font-normal">Ангилал</div></Link>
                 </div>
                 <div className="rounded-full p-[8px_16px] bg-[#18181B] w-[300px] h-10">
                     <div className="flex gap-2 items-center">

@@ -70,7 +70,7 @@ export default function Login() {
                 <div className="flex flex-col gap-12">
                     <div className="flex flex-col gap-4 items-center">
                         <div className="flex flex-col gap-1">                   
-                            <input type="email" className={`h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black ${emailConfirm && (!email ? "!border-[#E11D48]" : null)} ${emailExist && "!border-[#E11D48]"}`} placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input type="email" className={`h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black ${emailConfirm && (!email ? "!border-[#E11D48]" : null)} ${emailExist && "!border-[#E11D48]"}`} placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} />
                             {emailConfirm && (!email ? <div className="px-3 text-[#E11D48] text-xs font-normal">Имэйл хаяг оруулна уу</div> : null)}
                         </div>
                         <div className="flex flex-col gap-1 relative">

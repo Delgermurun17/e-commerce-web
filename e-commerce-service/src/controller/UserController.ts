@@ -58,6 +58,9 @@ export const createUsers = async (req: Request, res: Response) => {
         res.status(400).json({ errorMessage: "Create doesn't working!" })
     }
 }
+
+
+
 export const updateUsers = async (req: Request, res: Response) => {
     try {
         const { name, email, password, phoneNumber, address } = req.body;
@@ -69,6 +72,9 @@ export const updateUsers = async (req: Request, res: Response) => {
         res.status(400).json({ errorMessage: "Edit doesn't working!" })
     }
 }
+
+
+
 export const deleteUsers = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { toast, Toaster } from "sonner";
+import { General } from "./General";
 
 async function fetcher(pathname: string) {
   const token = localStorage.getItem("authtoken") || "";
@@ -12,7 +13,6 @@ async function fetcher(pathname: string) {
       authtoken: token,
     },
   }).then((res) => res.json());
-
   return data;
 }
 
@@ -36,7 +36,9 @@ export default function Userpage() {
   const [activeSection, setActiveSection] = useState("Хэрэглэгчийн хэсэг");
   const [isOrderVisible1, setOrderVisible1] = useState(false);
   const [isOrderVisible2, setOrderVisible2] = useState(false);
-  const [user, setUser] = useState<User | null>(null); // Changed to User | null
+  const [user, setUser] = useState<User | null>(null); 
+  const [change, setChange] = useState(true)
+  const [step, setStep] = useState("")
 
   useEffect(() => {
     fetcher("/user")
@@ -122,6 +124,18 @@ export default function Userpage() {
               className="text-left hover:underline font-medium text-sm leading-5 py-2 pl-4 w-full"
             >
               Захиалгын түүх
+            </button>
+          </div>
+          <div
+            className={`${
+              activeSection === "Ерөнхий тохиргоо" ? "bg-white" : "bg-gray-100"
+            } w-[244px] rounded-2xl`}
+          >
+            <button
+              onClick={() => setActiveSection("Ерөнхий тохиргоо")}
+              className="text-left hover:underline font-medium text-sm leading-5 py-2 pl-4 w-full"
+            >
+              Ерөнхий тохиргоо
             </button>
           </div>
         </div>
@@ -224,6 +238,17 @@ export default function Userpage() {
                   </div>
                 )}
               </div>
+            </div>
+          )}
+          {activeSection === "Ерөнхий тохиргоо" && (
+            <div>
+              {change &&  <div className="flex flex-col gap-4 font-medium">
+                  <div className=""><button onClick={() => { setChange(false); setStep("1"); }} className="cursor-pointer hover:underline border-black">Имэйл хаяг солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("2"); }} className="cursor-pointer hover:underline border-black">Утасны дугаар солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("3"); }} className="cursor-pointer hover:underline border-black">Нууц үг солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("4"); }} className="cursor-pointer hover:underline border-black">Бүртэл устгах</button></div>
+              </div>}
+              {!change &&  <General save={() => setChange(true)} step={step} setStep={setStep}/>}
             </div>
           )}
         </div>

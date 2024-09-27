@@ -111,7 +111,7 @@ function submit() {
               {name && namelengthConfirm && (name.length < 2 ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нэр богино байна</div> : null)}
             </div>
             <div className="flex flex-col gap-1">
-              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black" type="email" placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input className="h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black" type="email" placeholder="Имэйл хаяг" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} />
               {emailConfirm && (!email ? <div className="px-3 text-[#E11D48] text-xs font-normal">Имэйл хаяг оруулна уу</div> : null)}
               {emailValidConfirm && (!emailIsValid ? <div className="px-3 text-[#E11D48] text-xs font-normal">Зөв имэйл хаяг оруулна уу</div> : null)}
             </div>
