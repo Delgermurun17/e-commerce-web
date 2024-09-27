@@ -3,9 +3,8 @@ import Menu from "@/components/menu";
 
 export default function Home() {
   return (
-    <div >
-      <Menu/>
-      
+    <div className="flex bg-[#FFFFFF] text-black">
+      <Menu/>   
     </div>
   );
 }

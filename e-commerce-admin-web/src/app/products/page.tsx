@@ -33,6 +33,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import Image from "next/image";
 
 
 
@@ -45,6 +46,7 @@ export default function Page() {
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(false)
 
+
     const router = useRouter()
     const searchParams = useSearchParams()
     const create = searchParams.get('create')
@@ -54,10 +56,12 @@ export default function Page() {
 
     interface Product {
         _id: string;
-        productName: String,
-        productCode: String,
+        productName: string,
+        productCode: string,
         price: number,
         quantity: number,
+        createdAt: string,
+        images?: string[]
     }
 
     function getProducts() {
@@ -173,11 +177,13 @@ export default function Page() {
                                 </DialogHeader>
                             </DialogContent>
                         </Dialog> */}
+                        
                         <Table className="">
                             <TableCaption>Products list</TableCaption>
                             <TableHeader >
                                 <TableRow>
-                                    <TableHead className="w-[100px]">Product Name</TableHead>
+                                    <TableHead className="w-[100px]"></TableHead>
+                                    <TableHead>Product Name</TableHead>
                                     <TableHead>Category</TableHead>
                                     <TableHead>Price</TableHead>
                                     <TableHead>Quantity</TableHead>
@@ -190,12 +196,18 @@ export default function Page() {
                             <TableBody>
                                 {products.map(p =>
                                     <TableRow key={p._id}>
-                                        <TableCell className="font-medium">{p.productName}</TableCell>
+                                        <TableCell className="font-medium">
+                                            {p.images && p.images.length > 0 &&
+                                             <Image alt="" src={p.images[0]} width={100} height={100}/>
+                                            }
+                                           
+                                        </TableCell>
+                                        <TableCell>{p.productName}</TableCell>
                                         <TableCell>category</TableCell>
                                         <TableCell>{p.price}</TableCell>
                                         <TableCell>{p.quantity}</TableCell>
                                         <TableCell>sold</TableCell>
-                                        <TableCell >date</TableCell>
+                                        <TableCell >{p.createdAt}</TableCell>
                                         <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
                                             {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
                                             <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
