@@ -38,7 +38,6 @@ export function General({ save, step, setStep }: GeneralProps) {
                 const data = await fetcher("/user");
                 setUser(data);
             } catch (error) {
-                toast.error('Error fetching user data');
             }
         };
         fetchUser();
@@ -81,7 +80,7 @@ export function General({ save, step, setStep }: GeneralProps) {
                     <Button onClick={() => {
                         updateUser();
                         save();
-                    }}>Утасны дугаар солих</Button> </div>
+                    }}>Имэйл хаяг солих</Button> </div>
                 </div>
             }
             {step === "2" && 
@@ -115,7 +114,7 @@ export function General({ save, step, setStep }: GeneralProps) {
                     <Button onClick={() => {
                         updateUser();
                         save();
-                    }}>Утасны дугаар солих</Button> </div>
+                    }}>Нууц үг солих</Button> </div>
                 </div>
             }
             {step === "4" && 

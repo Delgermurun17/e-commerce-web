@@ -39,6 +39,7 @@ export default function Userpage() {
   const [user, setUser] = useState<User | null>(null); 
   const [change, setChange] = useState(true)
   const [step, setStep] = useState("")
+  const [update, setUpdate] = useState(false)
 
   useEffect(() => {
     fetcher("/user")
@@ -151,27 +152,30 @@ export default function Userpage() {
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-2">
                     <label htmlFor="surname" className="font-medium leading-[14px] text-sm">Овог:</label>
-                    <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                    {!update ? <input disabled id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" /> : <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="name" className="font-medium leading-[14px] text-sm">Нэр:</label>
-                    <input value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                    {!update ? <input disabled value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" /> : <input value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />}
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="phone" className="font-medium leading-[14px] text-sm">Утасны дугаар:</label>
-                    <input value={user.phoneNumber} id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                    <input disabled value={user.phoneNumber} id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium leading-[14px] text-sm">Имэйл хаяг:</label>
-                    <input value={user.email} id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                    <input disabled value={user.email} id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="address" className="font-medium leading-[14px] text-sm">Хаяг:</label>
-                    <textarea value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" />
+                    {!update ? <textarea disabled value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" /> : <textarea value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" />}
                   </div>
                   <div className="flex justify-end gap-2">
-                    <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
-                    <Button onClick={exit} className="hover:bg-gray-800">Гарах</Button>
+                    {!update ?
+                    <><Button onClick={() => setUpdate(true)} className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
+                    <Button onClick={exit} className="hover:bg-gray-800">Гарах</Button></> : 
+                    <><Button onClick={() => setUpdate(false)} className="w-[212px] hover:bg-gray-800">Шинэчлэх</Button>
+                    <Button onClick={() => setUpdate(false)} className="hover:bg-gray-800">Буцах</Button></>}
                   </div>
                 </div>
               )}
