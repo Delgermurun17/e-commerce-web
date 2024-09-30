@@ -1,12 +1,39 @@
-import { Heart, Search, ShoppingCart } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
-const Header = () => {
+
+async function fetcher(pathname: string) {
+    const token = localStorage.getItem("authtoken") || "";
+  
+    const data = await fetch(`http://localhost:4000${pathname}`, {
+      headers: {
+        authtoken: token,
+      },
+    }).then((res) => res.json());
+  
+    return data;
+  }
+
+
+  const Header= () => {
+    const [auth, setAuth] = useState("")
+
+    useEffect(() => {
+        fetcher("/auth")
+            .then((data) => setAuth(data))
+            .catch((error) => console.error(error));
+    }, []);
+
+
     return (
         <header className="w-full bg-black text-white p-[16px_24px] mx-auto">
             <div className="max-w-[1392px] mx-auto flex justify-between h-9">
+                <div className="flex gap-80">
                 <div className="flex items-center gap-8">
-                    <div className="flex gap-2 items-center">
+                    <Link href={"/"}><div className="flex gap-2 items-center cursor-pointer">
                         <svg
                             width="32"
                             height="28"
@@ -26,9 +53,9 @@ const Header = () => {
                             />
                         </svg>
                         <p className="text-sm">ECOMMERCE</p>
-                    </div>
+                    </div></Link>
                     <Link href={"/category"}>
-                    <button className="text-sm font-normal">Ангилал</button></Link>
+                    <div className="text-sm font-normal">Ангилал</div></Link>
                 </div>
                 <div className="rounded-full p-[8px_16px] bg-[#18181B] w-[300px] h-10">
                     <div className="flex gap-2 items-center">
@@ -36,18 +63,30 @@ const Header = () => {
                     <input type="search" placeholder="Бүтээгдэхүүн хайх" className="bg-transparent outline-none"/>
                     </div>
                 </div>
+                </div>
                 <div className="flex gap-6 items-center">
                         <Link href={"/saved"}><Heart strokeWidth={1} /></Link>
-                        <Link href={"/order"}><ShoppingCart strokeWidth={1} /></Link>
-                    <div className="flex gap-2 text-sm font-medium">
-                        
-                        <Link href={"/signup"}><button className="rounded-full p-2 border border-blue-900 hover:opacity-85 duration-150 h-9">
-                            Бүртгүүлэх
-                        </button></Link>
-                        <Link href={"/login"}><button className="bg-blue-600 rounded-3xl hover:opacity-85 p-[8px_12px] h-9">
-                            Нэвтрэх
-                        </button></Link>
-                    </div>
+                        <Link href={"/order"}><ShoppingCart strokeWidth={1} /></Link>        
+                    {auth ? 
+                        <div>
+                            <Link href={"/user"}>
+                                <User strokeWidth={1}/>
+                            </Link>
+                        </div> 
+                        :    
+                        <div className="flex gap-2 text-sm font-medium">
+                            <Link href={"/signup"}>
+                                <button className="rounded-full p-2 border border-blue-900 hover:opacity-85 duration-150 h-9">
+                                    Бүртгүүлэх
+                                </button>
+                            </Link>
+                            <Link href={"/login"}>
+                                <button className="bg-blue-600 rounded-3xl hover:opacity-85 p-[8px_12px] h-9">
+                                    Нэвтрэх
+                                </button>
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
         </header>

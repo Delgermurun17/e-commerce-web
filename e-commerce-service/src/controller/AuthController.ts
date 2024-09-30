@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 import { UserModel } from "../model/UserModel"
 import bcrypt from "bcrypt"
 import "dotenv/config"
@@ -32,12 +32,12 @@ export const login = async (req: Request, res: Response) => {
 
         const isEqual = await bcrypt.compare(password, user.password);
         if (isEqual) {
-            const accessToken = jwt.sign(
+            const authtoken = jwt.sign(
                 { userId: user._id, email: user.email },
                 ACCESS_TOKEN_SECRET,
                 { expiresIn: "2h" }
             );
-            return res.json({ accessToken });
+            return res.json({ authtoken });
         }
 
         res.status(403).json({ message: "Password is incorrect!" });
@@ -46,3 +46,19 @@ export const login = async (req: Request, res: Response) => {
         res.status(500).json({ message: "An error occurred during login.", error });
     }
 };
+
+
+export function checkAuth(req: Request, res: Response, next: NextFunction) {
+    const authtoken = req.headers["authtoken"];
+  
+    console.log({ authtoken });
+  
+    if (!authtoken) {
+      return res.sendStatus(403);
+    }
+  
+    if (!jwt.verify(authtoken + "", ACCESS_TOKEN_SECRET)) {
+      return res.sendStatus(403);
+    }
+    next();
+  }
