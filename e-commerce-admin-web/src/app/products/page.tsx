@@ -34,6 +34,7 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import Image from "next/image";
+import dayjs from 'dayjs'
 
 
 
@@ -45,6 +46,7 @@ export default function Page() {
     const [quantity, setQuantity] = useState<number | string>('');
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [filterByPrice, setFilterByPrice] = useState<string>("")
 
 
     const router = useRouter()
@@ -99,6 +101,8 @@ export default function Page() {
             })
     }
 
+
+
     useEffect(() => {
         getProducts();
     }, []);
@@ -107,35 +111,43 @@ export default function Page() {
         router.push('?')
     }
 
+    function getProductsFilterById() {
+        fetch(`http://localhost:4000/products`)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }
+
+
+    console.log(filterByPrice)
     return (
         <div className="flex bg-[#FFFFFF] text-black">
             <Toaster />
             <Menu />
 
             <div className="bg-[#ECEDF0] w-full">
-                <div>
-                    <div className="flex gap-8 py-4 border-b-2 px-8">
+                <div className="px-8">
+                    <div className="flex gap-8 py-4 border-b-2">
                         <div>Бүтээгдэхүүн</div>
                         <div>Ангилал</div>
                     </div>
-                    <Link href="/products/new" className="px-8">
+                    <Link href="/products/new">
                         <Button> + Бүтээгдэхүүн нэмэх</Button>
                     </Link>
 
-                    <Select>
+                    <Select onValueChange={setFilterByPrice}>
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Үнэ" />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="light">Үнэ өсөхөөр</SelectItem>
-                            <SelectItem value="dark">Үнэ буурахаар</SelectItem>
-                            <SelectItem value="system">Хямдралын хувиар</SelectItem>
+                            <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                            <SelectItem value="2">Үнэ буурахаар</SelectItem>
+                            <SelectItem value="3">Хямдралын хувиар</SelectItem>
                         </SelectContent>
                     </Select>
 
 
 
-                    <div className="px-8 mt-10">
+                    <div className="mt-10">
                         {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
                         {/* <Dialog open={open}>
                             <DialogContent onClose={() => router.push('?')}>
@@ -177,7 +189,7 @@ export default function Page() {
                                 </DialogHeader>
                             </DialogContent>
                         </Dialog> */}
-                        
+
                         <Table className="">
                             <TableCaption>Products list</TableCaption>
                             <TableHeader >
@@ -198,16 +210,28 @@ export default function Page() {
                                     <TableRow key={p._id}>
                                         <TableCell className="font-medium">
                                             {p.images && p.images.length > 0 &&
-                                             <Image alt="" src={p.images[0]} width={100} height={100}/>
+                                                <div className="w-14 h-14 rounded-full overflow-hidden">
+                                                    <Image alt="" src={p.images[0]} width={100} height={100} />
+                                                </div>
                                             }
-                                           
+
                                         </TableCell>
                                         <TableCell>{p.productName}</TableCell>
                                         <TableCell>category</TableCell>
                                         <TableCell>{p.price}</TableCell>
-                                        <TableCell>{p.quantity}</TableCell>
+                                        <TableCell>
+                                            {p.quantity}
+                                        </TableCell>
+
                                         <TableCell>sold</TableCell>
-                                        <TableCell >{p.createdAt}</TableCell>
+                                        {p.createdAt ?
+                                            <TableCell>
+                                                {dayjs(p.createdAt).format('YYYY-MM-DD')}
+                                            </TableCell> :
+                                            <TableCell></TableCell>}
+
+
+
                                         <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
                                             {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
                                             <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
