@@ -35,6 +35,7 @@ import {
 } from "@/components/ui/select"
 import Image from "next/image";
 import dayjs from 'dayjs'
+import { useQueryState } from 'nuqs'
 
 
 
@@ -46,8 +47,8 @@ export default function Page() {
     const [quantity, setQuantity] = useState<number | string>('');
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [filterByPrice, setFilterByPrice] = useState<string>("")
-
+    const [filterByPrice, setFilterByPrice] = useQueryState<string>("price")
+    console.log(filterByPrice)
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -111,14 +112,14 @@ export default function Page() {
         router.push('?')
     }
 
-    function getProductsFilterById() {
-        fetch(`http://localhost:4000/products`)
+    function getProductsFilterByPrice() {
+        fetch(`http://localhost:4000/products?price=${filterByPrice}`)
             .then(res => res.json())
             .then(data => setProducts(data))
     }
 
 
-    console.log(filterByPrice)
+  
     return (
         <div className="flex bg-[#FFFFFF] text-black">
             <Toaster />
@@ -134,14 +135,14 @@ export default function Page() {
                         <Button> + Бүтээгдэхүүн нэмэх</Button>
                     </Link>
 
-                    <Select onValueChange={setFilterByPrice}>
+                    <Select onValueChange={setFilterByPrice} >
                         <SelectTrigger className="w-[180px]">
                             <SelectValue placeholder="Үнэ" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                            <SelectItem value="2">Үнэ буурахаар</SelectItem>
-                            <SelectItem value="3">Хямдралын хувиар</SelectItem>
+                            <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                            {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
                         </SelectContent>
                     </Select>
 
@@ -206,7 +207,8 @@ export default function Page() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {products.map(p =>
+                                 {/* {console.log} */}
+                                {products?.map(p =>
                                     <TableRow key={p._id}>
                                         <TableCell className="font-medium">
                                             {p.images && p.images.length > 0 &&

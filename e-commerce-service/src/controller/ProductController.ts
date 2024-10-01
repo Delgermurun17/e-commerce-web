@@ -3,15 +3,17 @@ import { ProductModel } from "../model/ProductModel";
 
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const users = await ProductModel.find()
-        res.send(users)
+        const { price = -1} = req.query
+        const products = await ProductModel.find({}, null, { sort: { price: Number(price) } }).limit(10)
+        res.send(products)
     }
     catch (error) {
+        console.log(error)
         res.status(400).json({ errorMessage: "Error" })
     }
 }
 
-export const getProductById= async (req: Request, res: Response) => {
+export const getProductById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const users = await ProductModel.findById(id)
@@ -28,8 +30,8 @@ export const createProduct = async (req: Request, res: Response) => {
             description,
             productCode,
             price,
-            quantity, 
-            images, 
+            quantity,
+            images,
         } = req.body
 
         const user = await ProductModel.create({
@@ -38,13 +40,13 @@ export const createProduct = async (req: Request, res: Response) => {
             productCode,
             price,
             quantity,
-            images, 
+            images,
             createdAt: new Date()
         })
         res.send(user)
     }
     catch (error) {
-        res.status(400).json({ errorMessage: "Create doesn't working!" , error})
+        res.status(400).json({ errorMessage: "Create doesn't working!", error })
     }
 }
 export const updateProduct = async (req: Request, res: Response) => {
@@ -54,7 +56,7 @@ export const updateProduct = async (req: Request, res: Response) => {
             productCode,
             price,
             quantity,
-            } = req.body;
+        } = req.body;
         const { id } = req.params;
         const update = await ProductModel.findByIdAndUpdate(id, {
             productName,
