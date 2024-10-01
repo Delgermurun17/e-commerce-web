@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import { Button } from './ui/button';
 
 
 const LoadingSpinner = () => (
@@ -33,10 +34,11 @@ const App = () => {
   }, []);
 
   return (
-    <div>
+    <div className='mx-auto'>
       <style>{styles}</style>
       {loading && <LoadingSpinner />} {/* Show spinner while loading */}
     </div>
+
   );
 };
 

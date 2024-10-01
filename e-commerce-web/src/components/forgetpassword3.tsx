@@ -5,8 +5,11 @@ import CountdownTimer from "@/components/CountdownTimer";
 import Image from "next/image";
 import { useState } from "react";
 
+interface forgetpassword {
+    onNext: () => void;
+}
 
-export default function ForgetPassword3() {
+export default function ForgetPassword3({onNext}: forgetpassword) {
     const [resetTimer, setResetTimer] = useState<boolean>(false);
 
     const handleResetClick = () => {
@@ -25,10 +28,10 @@ export default function ForgetPassword3() {
                         <Input />
                         <Input />
                         <Input />
-                        <Input />
+                        <Input onClick={onNext}/>
                     </div>
                 </div>
-                <button onClick={handleResetClick} className="text-slate-400 flex justify-center items-center gap-1 underline">
+                <button onClick={handleResetClick } className="text-slate-400 flex justify-center items-center gap-1 underline">
                     Дахин эхлэх(<CountdownTimer reset={resetTimer} />)
                 </button>
 
