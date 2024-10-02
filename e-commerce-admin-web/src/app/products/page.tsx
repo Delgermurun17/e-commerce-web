@@ -47,8 +47,10 @@ export default function Page() {
     const [quantity, setQuantity] = useState<number | string>('');
     const [products, setProducts] = useState<Product[]>([])
     const [loading, setLoading] = useState<boolean>(false)
-    const [filterByPrice, setFilterByPrice] = useQueryState<string>("price")
-    console.log(filterByPrice)
+    const [filterByPrice, setFilterByPrice] = useQueryState("price", { defaultValue: '' });
+    const [filterByCategory, setFilterByCategory] = useQueryState("cat", { defaultValue: '' });
+    const [filterByDate, setFilterByDate] = useQueryState("date", { defaultValue: '' });
+    
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -102,11 +104,15 @@ export default function Page() {
             })
     }
 
-
-
     useEffect(() => {
         getProducts();
     }, []);
+
+
+
+    useEffect(() => {
+        getProductsFilterByPrice()
+    }, [filterByPrice]);
 
     function onClose() {
         router.push('?')
@@ -119,7 +125,7 @@ export default function Page() {
     }
 
 
-  
+
     return (
         <div className="flex bg-[#FFFFFF] text-black">
             <Toaster />
@@ -131,24 +137,47 @@ export default function Page() {
                         <div>Бүтээгдэхүүн</div>
                         <div>Ангилал</div>
                     </div>
-                    <Link href="/products/new">
-                        <Button> + Бүтээгдэхүүн нэмэх</Button>
+                    <Link href="/products/new" >
+                        <Button className="mt-4"> + Бүтээгдэхүүн нэмэх</Button>
                     </Link>
 
-                    <Select onValueChange={setFilterByPrice} >
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Үнэ" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                            <SelectItem value="-1">Үнэ буурахаар</SelectItem>
-                            {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
-                        </SelectContent>
-                    </Select>
+                    <div className="flex gap-8">
+                        <Select onValueChange={setFilterByCategory} >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Ангилал" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
+                            </SelectContent>
+                        </Select>
 
+                        <Select onValueChange={setFilterByPrice} >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Үнэ" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
+                            </SelectContent>
+                        </Select>
 
+                        <Select onValueChange={setFilterByDate} >
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Сараар" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
+                            </SelectContent>
+                        </Select>
 
-                    <div className="mt-10">
+                    </div>
+
+                    <div className="mt-4">
                         {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
                         {/* <Dialog open={open}>
                             <DialogContent onClose={() => router.push('?')}>
@@ -207,7 +236,7 @@ export default function Page() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                 {/* {console.log} */}
+                                {/* {console.log} */}
                                 {products?.map(p =>
                                     <TableRow key={p._id}>
                                         <TableCell className="font-medium">
