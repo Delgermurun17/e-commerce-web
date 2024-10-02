@@ -1,34 +1,38 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import App from "./forgetpasswordloader";
+import Loading from "./forgetpasswordloader";
 
 
 interface forgetpassword {
     onNext: () => void;
 }
 
-export default function ({ onNext }: forgetpassword) {
+export default function Forgetpassword1 ({ onNext }: forgetpassword) {
     const [loading, setLoading] = useState(false);
 
-    const forgetPassword = () => {
+
+    const sendCode = () => {
         try {
             setLoading(true)
-            // fetch
-            setLoading(false)
+            //fetch
+            console.log('gmail taarsan')
+            // setLoading(false)
+            //send code
+            onNext()
         } catch (error) {
             console.log(error)
         }
+
     }
     return (
         <div className="flex flex-col gap-6">
             <p className="text-2xl font-bold text-center">Нууц үг сэргээх</p>
             <div className="w-80 mx-auto flex flex-col gap-6">
-                {loading && <App></App>}
-                {!loading &&
+                {loading ? < Loading /> :
                     <>
                         <Input className="border border-none rounded-2xl shadow-md" placeholder="Имэйл хаяг оруулах" />
-                        <Button onClick={onNext}>Илгээх</Button>
+                        <Button onClick={sendCode}>Илгээх</Button>
                     </>
                 }
             </div>

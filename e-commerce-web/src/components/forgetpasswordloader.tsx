@@ -25,11 +25,11 @@ const styles = `
   }
 `;
 
-const App = () => {
+const Loading = () => {
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 5000); // Simulate loading
+    const timer = setTimeout(() => setLoading(false), 3000); // Simulate loading
     return () => clearTimeout(timer);
   }, []);
 
@@ -42,4 +42,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Loading;
