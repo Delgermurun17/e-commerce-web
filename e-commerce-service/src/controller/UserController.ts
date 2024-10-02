@@ -1,6 +1,9 @@
 import { Request, Response, } from "express";
 import { UserModel } from "../model/UserModel";
 import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt"
+import "dotenv/config"
+
 
 // export const getUsers = async (req: Request, res: Response) => {
 //     const authtoken = req.headers["authtoken"];
@@ -24,7 +27,6 @@ export const getUser = async (req: Request, res: Response) => {
 
     const data = jwt.decode(authtoken as string);
 
-    // Check if the token is valid and contains userId
     if (typeof data !== 'object' || data === null || !('userId' in data)) {
         return res.status(401).json({ errorMessage: "Invalid token" });
     }
@@ -34,7 +36,6 @@ export const getUser = async (req: Request, res: Response) => {
         if (!user) {
             return res.status(404).json({ errorMessage: "User not found" });
         }
-        // Send only the necessary user information
         res.json({
             _id: user._id,
             name: user.name,
@@ -43,7 +44,7 @@ export const getUser = async (req: Request, res: Response) => {
             address: user.address,
         });
     } catch (error) {
-        console.error(error); // Log the error for debugging
+        console.error(error); 
         res.status(500).json({ errorMessage: "Error retrieving user" });
     }
 };
@@ -60,12 +61,41 @@ export const createUsers = async (req: Request, res: Response) => {
 }
 
 
+export const confirmMethod = async (req: Request, res: Response) => {
+    try {
+        const { password } = req.body;
+        const _id = req.headers['userid']; // Retrieve user ID from headers
+
+        if (!password || !_id) {
+            return res.status(400).json({ message: "Password and User ID are required!" });
+        }
+
+        const user = await UserModel.findOne({ _id });
+        if (!user) {
+            return res.status(401).json({ message: "User not found!" });
+        }
+        
+        const isEqual = await bcrypt.compare(password, user.password);
+        console.log(isEqual)
+        if (!isEqual) {
+            return res.status(401).json({ message: "Invalid password!" });
+        }
+        return res.status(200).json({ message: "Password confirmed!" });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error"});
+    }
+};
+
+
 
 export const updateUsers = async (req: Request, res: Response) => {
     try {
         const { name, email, password, phoneNumber, address } = req.body;
+
         const { id } = req.params;
-        const update = await UserModel.findByIdAndUpdate(id, { name, email, password, phoneNumber, address })
+        const hashedPassword = await bcrypt.hash(String(password), Number(process.env.SALT_SECRET))
+        const update = await UserModel.findByIdAndUpdate(id, { name, email, password: hashedPassword, phoneNumber, address })
         res.send(update)
     }
     catch (error) {
