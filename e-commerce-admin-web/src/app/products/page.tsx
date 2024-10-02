@@ -50,7 +50,8 @@ export default function Page() {
     const [filterByPrice, setFilterByPrice] = useQueryState("price", { defaultValue: '' });
     const [filterByCategory, setFilterByCategory] = useQueryState("cat", { defaultValue: '' });
     const [filterByDate, setFilterByDate] = useQueryState("date", { defaultValue: '' });
-    
+    const [tab, setTab] = useState<string>("product")
+
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -111,7 +112,8 @@ export default function Page() {
 
 
     useEffect(() => {
-        getProductsFilterByPrice()
+        (filterByPrice) &&
+            getProductsFilterByPrice()
     }, [filterByPrice]);
 
     function onClose() {
@@ -124,8 +126,6 @@ export default function Page() {
             .then(data => setProducts(data))
     }
 
-
-
     return (
         <div className="flex bg-[#FFFFFF] text-black">
             <Toaster />
@@ -133,53 +133,52 @@ export default function Page() {
 
             <div className="bg-[#ECEDF0] w-full">
                 <div className="px-8">
-                    <div className="flex gap-8 py-4 border-b-2">
-                        <div>Бүтээгдэхүүн</div>
-                        <div>Ангилал</div>
+                    <div className="flex gap-8 pt-4 border-b-2">
+                        <div onClick={() => setTab("product")} className={tab === "product" ? "border-b-black border-b-2" : ""}>Бүтээгдэхүүн</div>
+                        <div onClick={() => setTab("category")} className={tab === "category" ? "border-b-black border-b-2" : ""}>Ангилал</div>
                     </div>
-                    <Link href="/products/new" >
-                        <Button className="mt-4"> + Бүтээгдэхүүн нэмэх</Button>
-                    </Link>
+                    <div className={tab === "product" ? "block" : "hidden"}>
+                        <Link href="/products/new" >
+                            <Button className="mt-4"> + Бүтээгдэхүүн нэмэх</Button>
+                        </Link>
 
-                    <div className="flex gap-8">
-                        <Select onValueChange={setFilterByCategory} >
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Ангилал" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
-                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
-                            </SelectContent>
-                        </Select>
+                        <div className="flex gap-8">
+                            <Select onValueChange={setFilterByCategory} >
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Ангилал" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                    <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                </SelectContent>
+                            </Select>
 
-                        <Select onValueChange={setFilterByPrice} >
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Үнэ" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
-                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
-                            </SelectContent>
-                        </Select>
+                            <Select onValueChange={setFilterByPrice} >
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Үнэ" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                    <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                    {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
+                                </SelectContent>
+                            </Select>
 
-                        <Select onValueChange={setFilterByDate} >
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Сараар" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                                <SelectItem value="-1">Үнэ буурахаар</SelectItem>
-                                {/* <SelectItem value="-discount">Хямдралын хувиар</SelectItem> */}
-                            </SelectContent>
-                        </Select>
+                            <Select onValueChange={setFilterByDate} >
+                                <SelectTrigger className="w-[180px]">
+                                    <SelectValue placeholder="Сараар" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
+                                    <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                </SelectContent>
+                            </Select>
 
-                    </div>
+                        </div>
 
-                    <div className="mt-4">
-                        {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
-                        {/* <Dialog open={open}>
+                        <div className="mt-4">
+                            {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
+                            {/* <Dialog open={open}>
                             <DialogContent onClose={() => router.push('?')}>
                                 <DialogHeader>
                                     <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -220,59 +219,108 @@ export default function Page() {
                             </DialogContent>
                         </Dialog> */}
 
-                        <Table className="">
-                            <TableCaption>Products list</TableCaption>
-                            <TableHeader >
-                                <TableRow>
-                                    <TableHead className="w-[100px]"></TableHead>
-                                    <TableHead>Product Name</TableHead>
-                                    <TableHead>Category</TableHead>
-                                    <TableHead>Price</TableHead>
-                                    <TableHead>Quantity</TableHead>
-                                    <TableHead>Sold</TableHead>
-                                    <TableHead >Date</TableHead>
-                                    <TableHead className="text-right"></TableHead>
+                            <Table className="">
+                                <TableCaption>Products list</TableCaption>
+                                <TableHeader >
+                                    <TableRow>
+                                        <TableHead className="w-[100px]"></TableHead>
+                                        <TableHead>Product Name</TableHead>
+                                        <TableHead>Category</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead>Quantity</TableHead>
+                                        <TableHead>Sold</TableHead>
+                                        <TableHead >Date</TableHead>
+                                        <TableHead className="text-right"></TableHead>
 
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {/* {console.log} */}
-                                {products?.map(p =>
-                                    <TableRow key={p._id}>
-                                        <TableCell className="font-medium">
-                                            {p.images && p.images.length > 0 &&
-                                                <div className="w-14 h-14 rounded-full overflow-hidden">
-                                                    <Image alt="" src={p.images[0]} width={100} height={100} />
-                                                </div>
-                                            }
-
-                                        </TableCell>
-                                        <TableCell>{p.productName}</TableCell>
-                                        <TableCell>category</TableCell>
-                                        <TableCell>{p.price}</TableCell>
-                                        <TableCell>
-                                            {p.quantity}
-                                        </TableCell>
-
-                                        <TableCell>sold</TableCell>
-                                        {p.createdAt ?
-                                            <TableCell>
-                                                {dayjs(p.createdAt).format('YYYY-MM-DD')}
-                                            </TableCell> :
-                                            <TableCell></TableCell>}
-
-
-
-                                        <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
-                                            {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
-                                            <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
-                                            <button onClick={() => deleteProduct(p._id)}><Trash2 /></button>
-                                        </TableCell>
                                     </TableRow>
-                                )}
+                                </TableHeader>
+                                <TableBody>
+                                    {/* {console.log} */}
+                                    {products?.map(p =>
+                                        <TableRow key={p._id}>
+                                            <TableCell className="font-medium">
+                                                {p.images && p.images.length > 0 &&
+                                                    <div className="w-14 h-14 rounded-full overflow-hidden">
+                                                        <Image alt="" src={p.images[0]} width={100} height={100} />
+                                                    </div>
+                                                }
 
-                            </TableBody>
-                        </Table>
+                                            </TableCell>
+                                            <TableCell>{p.productName}</TableCell>
+                                            <TableCell>category</TableCell>
+                                            <TableCell>{p.price}</TableCell>
+                                            <TableCell>
+                                                {p.quantity}
+                                            </TableCell>
+
+                                            <TableCell>sold</TableCell>
+                                            {p.createdAt ?
+                                                <TableCell>
+                                                    {dayjs(p.createdAt).format('YYYY-MM-DD')}
+                                                </TableCell> :
+                                                <TableCell></TableCell>}
+
+
+
+                                            <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
+                                                {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
+                                                <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
+                                                <button onClick={() => deleteProduct(p._id)}><Trash2 /></button>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+
+                                </TableBody>
+                            </Table>
+                        </div>
+                    </div>
+                    <div className={tab === "category" ? "block" : "hidden"}>
+                        Category
+                        {/* <Button onClick={() => { reset(); setOpen(true) }} variant="outline" className="my-4">
+                            + Add New Category
+                        </Button>
+                        <Dialog open={open}>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Add Category</DialogTitle>
+                                    <hr />
+                                    <DialogDescription className="flex gap-4">
+                                        <Popover>
+                                            <PopoverTrigger><CategoryIcon iconName={icon} color={color} /></PopoverTrigger>
+                                            <PopoverContent >
+                                                <div className="grid grid-cols-4 gap-2">
+                                                    {categoryIcons.map(({ name, Icon }) =>
+                                                        <div className={`relative w-8 h-8 flex justify-center items-center rounded-lg
+                      ${icon === name ? "bg-blue-300 border-blue-950" : ""}`} value={name} key={name}
+                                                            onClick={() => setIcon(name)}>
+                                                            {<Icon />}
+                                                        </div>)}
+                                                </div>
+                                                <hr className="my-4" />
+                                                <div className="flex gap-1">
+                                                    {categoryColors.map(({ name, value }) =>
+                                                        <div key={name} className="rounded-full h-8 w-8 flex justify-center items-center" style={{ background: value }}
+                                                            onClick={() => setColor(name)}>
+                                                            {color === name && <Check className="text-white w-4" />}
+                                                        </div>)}
+                                                </div>
+                                            </PopoverContent>
+                                        </Popover>
+                                        <Input placeholder="Name" type="text" value={newCategory} disabled={loading}
+                                            onChange={(event) => { setNewCategory(event.target.value) }} />
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogFooter>
+                                    {editingCategory ? (
+                                        <Button onClick={updateCategory} className="bg-green-700 hover:bg-green-900" disabled={loading}>Update</Button>
+                                    ) : (
+                                        <Button onClick={createNew} className="bg-green-700 hover:bg-green-900" disabled={loading}>Add</Button>
+                                    )}
+                                    <Button onClick={() => setOpen(false)}>Cancel</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog> */}
+
                     </div>
 
                 </div>
