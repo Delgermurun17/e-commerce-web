@@ -19,17 +19,15 @@ async function fetcher(pathname: string) {
 
 
   const Header= () => {
-    const [auth, setAuth] = useState("")
+    const [auth, setAuth] = useState<string | null>(null);
 
     useEffect(() => {
         fetcher("/auth")
             .then((data) => setAuth(data))
             .catch((error) => console.error(error));
     }, []);
-    const [savedCount, setSavedCount] = useState(() => {
-        const count = localStorage.getItem("savedCount");
-        return count !== null ? count : null; 
-    });
+    const [savedCount, setSavedCount] = useState("0")
+
     useEffect(() => {
         const handleStorageChange = () => {
             const count = localStorage.getItem("savedCount");
