@@ -3,6 +3,7 @@
 import { Heart, Star } from "lucide-react"
 import { useEffect, useState } from "react"
 import { Button } from "./ui/button"
+import ProductCard from "./productCard"
 
 
 export const Detail= () => {
@@ -59,7 +60,7 @@ export const Detail= () => {
 
     const [show, setShow] = useState<boolean>(true)
     return (
-        <div className="w-[1040px] mx-auto flex flex-col gap-20 mt-[100px]">
+        <div className="w-[1040px] mx-auto flex flex-col gap-20 mt-14 mb-24">
             <div className="flex gap-5">
                 <div className="w-[67px] h-[392px] grid gap-2 pt-[100px]">
                     {photo.map((p) => (
@@ -71,15 +72,15 @@ export const Detail= () => {
                     <div className="flex flex-col gap-6">
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-2">
-                                <div>new</div>
+                                <div className="font-semibold text-xs leading-4 border border-blue-600 p-1 w-14 text-center rounded-2xl">шинэ</div>
                                 <div className="flex gap-2 items-center">
-                                    <div>product name</div>
+                                    <div className="font-bold text-2xl leading-8">Wildflower Hoodie</div>
                                     <div className="size-10 flex justify-center items-center"><Heart onClick={()=>setIsSaved(x =>!x)} strokeWidth={1} fill={`${isSaved ? "black" : "transparent"}`} className="duration-500"/> </div>
                                 </div>
-                                <div>product details</div>
+                                <div className="font-normal text-base leading-6">Зэрлэг цэцгийн зурагтай даавуун материалтай цамц</div>
                             </div>
                             <div className="flex flex-col gap-2">
-                                <div>Size</div>
+                                <div className="font-normal text-sm leading-5">Хэмжээний заавар</div>
                                 <div className="flex gap-1">{product.map((pr) => (
                                     <div onClick={() => {pr.stock > 0  && setSelectedSize(pr.size);
                                         pr.stock > 0  && reset()
@@ -154,7 +155,14 @@ export const Detail= () => {
                     </div>
                 </div>
             </div>
-            <div>Holbootoi baraa</div>
+            <div className="flex flex-col gap-6 ">
+            <h1 className="font-bold text-3xl leading-9">Холбоотой бараа</h1>
+              <div className="grid grid-cols-4 mx-auto gap-5 mb-24">
+              {[...Array(8)].map((_, index) => (
+               <ProductCard key={index} className="w-[244px]"/>
+               ))}
+              </div>
+            </div>
         </div>
     )
 }

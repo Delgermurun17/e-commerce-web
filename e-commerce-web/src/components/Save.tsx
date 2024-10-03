@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 // Card-ийн өгөгдлийн бүтэц тодорхойлох
 interface CardData {
@@ -68,7 +69,7 @@ export function Save() {
               transition: "height 0.7s ease-out, opacity 0.7s ease-out",
             }}
           >
-            <div className="w-[100px] h-[100px] rounded-xl bg-gradient-to-r from-sky-900 to-slate-300"></div>
+            <Image src={"/card.png"} alt="card" width={100} height={100} className="rounded-xl"></Image>
             <div className="flex flex-col w-[402px]">
               <div className="gap-1 text-black">
                 <h1 className="font-normal text-base leading-6">{card.title}</h1>
@@ -89,7 +90,7 @@ export function Save() {
               >
                 <Heart
                   className="duration-700"
-                  fill={filledCards.has(card.id) ? "none" : "black"}
+                  fill={filledCards.has(card.id) ? "transparent" : "black"}
                   color="black"
                   style={{ cursor: "pointer" }}
                 />
@@ -101,3 +102,4 @@ export function Save() {
     </div>
   );
 }
+  

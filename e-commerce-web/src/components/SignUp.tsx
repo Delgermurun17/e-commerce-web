@@ -101,7 +101,7 @@ function submit() {
     };
  
   return (
-    <div className="flex flex-col gap-6 items-center pt-[100px] h-[800px]">
+    <div className="flex flex-col gap-6 items-center pt-[140px] h-[1000px]">
         <div className="py-2 font-medium text-2xl">Бүртгүүлэх</div>
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-4">
