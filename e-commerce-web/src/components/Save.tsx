@@ -69,7 +69,7 @@ export function Save() {
               transition: "height 0.7s ease-out, opacity 0.7s ease-out",
             }}
           >
-            <Image src={"/card.png"} alt="card" width={100} height={100} className="rounded-xl"></Image>
+            <Image priority={true} src={"/card.png"} alt="card" width={100} height={100} style={{ width: '100px', height: '100px' }} className="rounded-xl object-cover hover:object-fill"></Image>
             <div className="flex flex-col w-[402px]">
               <div className="gap-1 text-black">
                 <h1 className="font-normal text-base leading-6">{card.title}</h1>

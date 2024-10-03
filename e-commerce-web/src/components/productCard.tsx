@@ -15,7 +15,7 @@ export default function ProductCard(props: Props) {
     return (
         <div className={`${className} cursor-pointer`}>
             <div className="relative aspect-[3/4] bg-slate-400 rounded-xl overflow-hidden " >
-                <Link href={"/product"}><Image priority={true} className="hover:scale-125 duration-700" src="/image.jpg" width={2000} height={2000} alt="picture" /></Link>
+                <Link href={"/product"}><Image priority={true} className="hover:scale-125 duration-700" src="/card.png" width={2000} height={2000} alt="picture" /></Link>
                 <button className="absolute top-4 right-4" onClick={() => setIsSaved(x => !x)}>
                     <Heart fill={`${isSaved ? "black" : "transparent"}`} className={`${isSaved ? 'text-black' : 'text-black'} duration-500  text-2xl`} />
                 </button>
