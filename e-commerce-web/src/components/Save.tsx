@@ -1,6 +1,6 @@
 "use client";
 // React болон бусад хэрэгслүүдийг импортлоно
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
 import { Button } from "./ui/button";
 import Image from "next/image";
@@ -19,15 +19,17 @@ const initialCardData: CardData[] = [
   { id: 3, title: "Local Styles Crewneck", price: "350,000₮" },
 ];
 
-// Save функцийн компонент
 export function Save() {
-  // Card-ийн төрлийг удирдах state
   const [cards, setCards] = useState<CardData[]>(initialCardData);
-  // Хартны төлөвийг удирдах state
   const [filledCards, setFilledCards] = useState<Set<number>>(new Set());
 
-  // Save count тооцох, одоогоор card-ийн тооноос хамаарна
   const savedCount = cards.length;
+
+  useEffect(() => {
+    // Save the savedCount to localStorage
+    localStorage.setItem('savedCount', JSON.stringify(savedCount));
+    window.dispatchEvent(new Event('storageChange'));
+  }, [savedCount]);
 
   // Хартны товчлуур дарсан үед гүйцэтгэх үйлдэл
   const handleHeartClick = (id: number) => {

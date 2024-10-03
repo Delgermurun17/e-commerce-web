@@ -31,7 +31,7 @@ export function General({ save, step, setStep }: GeneralProps) {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [user, setUser] = useState<{ _id?: string; email?: string; phoneNumber?: string; password?: string } | null>(null);
-    
+    const [confirmMethod, setConfirmMethod] = useState("")
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -43,13 +43,93 @@ export function General({ save, step, setStep }: GeneralProps) {
         fetchUser();
     }, []);
 
-    const updateUser = async () => {
+    const checkMethod = async () => {
+        if (!confirmMethod) return toast.error("Confirm is required!");
+    
+        const token = localStorage.getItem("authtoken") || ""; // Get the auth token
+        const userId = user?._id; // Get the user ID from state
+    
+        // Construct headers conditionally
+        const headers: HeadersInit = {
+            "Content-Type": "application/json",
+            authtoken: token,
+        };
+    
+        // Only add userid if it exists
+        if (userId) {
+            headers['userid'] = userId;
+        }
+    
+        try {
+            const res = await fetch("http://localhost:4000/method", {
+                method: "POST",
+                body: JSON.stringify({ password: confirmMethod }),
+                headers,
+            });
+            
+            if (res.ok) {
+                updateEmail();
+                save()
+            } else if (res.status === 401) {
+                toast.error("Нууц үг буруу байна.");
+            } else {
+                const errorData = await res.json();
+                toast.error(errorData.message || "An unexpected error occurred.");
+            }
+        } catch (error) {
+            toast.error('Error while checking method: ');
+        }
+    };
+    
+    
+
+    const updateEmail = async () => {
         if (!user?._id) return;
 
         try {
             const response = await fetch(`http://localhost:4000/user/${user._id}`, {
                 method: "PUT",
-                body: JSON.stringify({ email, phoneNumber, password }),
+                body: JSON.stringify({ email }),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update user');
+            }
+            toast("Successfully changed.");
+        } catch (error) {
+            toast.error('Error updating user data');
+        }
+    };
+    const updatePhoneNumber = async () => {
+        if (!user?._id) return;
+
+        try {
+            const response = await fetch(`http://localhost:4000/user/${user._id}`, {
+                method: "PUT",
+                body: JSON.stringify({ phoneNumber }),
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8",
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update user');
+            }
+            toast("Successfully changed.");
+        } catch (error) {
+            toast.error('Error updating user data');
+        }
+    };
+    const updatePassword = async () => {
+        if (!user?._id) return;
+
+        try {
+            const response = await fetch(`http://localhost:4000/user/${user._id}`, {
+                method: "PUT",
+                body: JSON.stringify({ password }),
                 headers: {
                     "Content-Type": "application/json; charset=UTF-8",
                 },
@@ -67,19 +147,26 @@ export function General({ save, step, setStep }: GeneralProps) {
     return (
         <div className="font-medium">
             {step === "1" && 
-                <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-8">
                     <div>Имэйл хаяг солих</div>
+                    <div><p>Нууц үгээ оруулна уу</p>
+                    <input 
+                        onChange={(e) => setConfirmMethod(e.target.value)} 
+                        type="password" 
+                        id="password" 
+                        className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black w-full mt-1" 
+                    /></div>
+                    <div><p>Шинэ имэйл хаягаа оруулна уу</p>
                     <input 
                         onChange={(e) => setEmail(e.target.value)} 
                         type="email" 
                         id="email" 
-                        className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" 
-                    />
+                        className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black w-full mt-1" 
+                    /></div>
                     <div className="flex gap-2">
                     <Button onClick={save}>Буцах</Button>
                     <Button onClick={() => {
-                        updateUser();
-                        save();
+                        checkMethod()
                     }}>Имэйл хаяг солих</Button> </div>
                 </div>
             }
@@ -95,7 +182,7 @@ export function General({ save, step, setStep }: GeneralProps) {
                     <div className="flex gap-2">
                     <Button onClick={save}>Буцах</Button>
                     <Button onClick={() => {
-                        updateUser();
+                        updatePhoneNumber();
                         save();
                     }}>Утасны дугаар солих</Button> </div>
                 </div>
@@ -112,7 +199,7 @@ export function General({ save, step, setStep }: GeneralProps) {
                     <div className="flex gap-2">
                     <Button onClick={save}>Буцах</Button>
                     <Button onClick={() => {
-                        updateUser();
+                        updatePassword();
                         save();
                     }}>Нууц үг солих</Button> </div>
                 </div>
@@ -127,7 +214,9 @@ export function General({ save, step, setStep }: GeneralProps) {
                         id="password" 
                         className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" 
                     />
-                    <Button onClick={save}>Бүртэл устгах</Button>
+                    <div className="flex gap-2">
+                    <Button onClick={save}>Буцах</Button>
+                    <Button onClick={save}>Бүртэл устгах</Button></div>
                 </div>
             }
             <Toaster />

@@ -1,5 +1,5 @@
 import express from "express";
-import { createUsers, deleteUsers, getUser, updateUsers } from "../controller/UserController";
+import { confirmMethod, createUsers, deleteUsers, getUser, updateUsers } from "../controller/UserController";
 import { checkAuth } from "../controller/AuthController";
 
 export const userRouter = express.Router()
@@ -9,3 +9,4 @@ userRouter
 .post('/user', createUsers)
 .put('/user/:id', updateUsers)
 .delete('/user/:id', deleteUsers)
+.post('/method', confirmMethod)

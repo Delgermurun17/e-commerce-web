@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
@@ -26,7 +26,24 @@ async function fetcher(pathname: string) {
             .then((data) => setAuth(data))
             .catch((error) => console.error(error));
     }, []);
+    const [savedCount, setSavedCount] = useState(() => {
+        const count = localStorage.getItem("savedCount");
+        return count !== null ? count : null; 
+    });
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const count = localStorage.getItem("savedCount");
+            if (count !== null) {
+                setSavedCount(count);
+            }
+        };
+        window.addEventListener('storageChange', handleStorageChange);
+        return () => {
+            window.removeEventListener('storageChange', handleStorageChange);
+        };
+    }, []);
 
+    
 
     return (
         <header className="w-full bg-black text-white p-[16px_24px] mx-auto">
@@ -65,7 +82,7 @@ async function fetcher(pathname: string) {
                 </div>
                 </div>
                 <div className="flex gap-6 items-center">
-                        <Link href={"/saved"}><Heart strokeWidth={1} /></Link>
+                        <Link href={"/saved"} className="relative"><Heart strokeWidth={1}/>{savedCount === "0"  ? null : <div className="absolute rounded-full size-4 bg-[#2563EB] top-[-6px] right-[-8px] text-[10px] leading-4 font-normal text-center">{savedCount}</div>}</Link>
                         <Link href={"/order"}><ShoppingCart strokeWidth={1} /></Link>        
                     {auth ? 
                         <div>
