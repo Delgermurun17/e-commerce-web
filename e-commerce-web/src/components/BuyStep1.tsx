@@ -15,9 +15,8 @@ const initialCardData: CardData[] = [
     { id: 1, title: "Chunky Glyph Tee", price: 140000, stock: 10 },
     { id: 2, title: "Doodle Hoodie", price: 120000, stock: 10 },
     { id: 3, title: "Local Styles Crewneck", price: 100000, stock: 10 },
-    { id: 4, title: "Local Styles Crewneck", price: 150000, stock: 10 },
 ];
-
+    
 interface BuyStepOneProps {
     onNext: () => void;
 }
