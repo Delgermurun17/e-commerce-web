@@ -3,10 +3,12 @@ import { UserModel } from "../model/UserModel"
 import bcrypt from "bcrypt"
 import "dotenv/config"
 import jwt from "jsonwebtoken"
-
+import { OtpModel } from "../model/OTPModel"
+import nodemailer from 'nodemailer'
 
 const SALT_SECRET = process.env.SALT_SECRET || ""
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "";
+const GOOGLE_SECRET = process.env.GOOGLE_SECRET || ""
 export const register = async (req: Request, res: Response) => {
     try {
         const createdAt = new Date().toISOString()
@@ -62,3 +64,52 @@ export function checkAuth(req: Request, res: Response, next: NextFunction) {
     }
     next();
   }
+
+
+export const generateOtp = async ( req:Request, res: Response) => {
+    const { email } = req.body;
+
+    const otp = Math.floor(Math.random() * 8999) + 1000;
+
+    try{
+        await OtpModel.create({email, otp});
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: '88delgeree@gmail.com',
+                pass: GOOGLE_SECRET,
+            },
+        });
+
+        await transporter.sendMail({
+            from: '88delgeree@gmail.com',
+            to: email,
+            subject: 'OTP Verification',
+            html: `<p>Your OTP for verification is: <b>${otp}</b></p>`
+        })
+        res.status(200).send('OTP sent successfully')
+    }
+    catch(error){
+        console.error(error)
+        res.status(400).send('OTP send failed.')
+    }
+}
+
+export const verifyOtp = async ( req:Request, res: Response) => { 
+    const { email, otp } = req.body
+
+    try{
+        const otpRecord = await OtpModel.findOne({ email, otp}).exec()
+
+        if(otpRecord){
+            res.status(200).send('OTP verified successfully')
+        }else{
+            res.status(400).send('Invalid OTP')
+        }
+    }catch(error){
+        console.error(error)
+        res.status(500).send('Error verifying OTP')
+    }
+    
+}
