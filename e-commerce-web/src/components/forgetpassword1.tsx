@@ -10,14 +10,19 @@ interface forgetpassword {
 
 export default function Forgetpassword1 ({ onNext }: forgetpassword) {
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState("")
 
 
-    const sendCode = () => {
+    const sendCode = async () => {
         try {
             setLoading(true)
-            //fetch
+            await fetch("http://localhost:4000/generate", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+                headers: { "Content-Type": "application/json" },
+            });
             console.log('gmail taarsan')
-            // setLoading(false)
+            setLoading(false)
             //send code
             onNext()
         } catch (error) {
@@ -31,7 +36,7 @@ export default function Forgetpassword1 ({ onNext }: forgetpassword) {
             <div className="w-80 mx-auto flex flex-col gap-6">
                 {loading ? < Loading /> :
                     <>
-                        <Input className="border border-none rounded-2xl shadow-md" placeholder="Имэйл хаяг оруулах" />
+                        <input type="email" id="email" className={`h-9 rounded-2xl border border-zinc-200 p-3 w-[334px] outline-none focus:border-black`} placeholder="Имэйл хаяг оруулах" value={email} onChange={(e) => setEmail(e.target.value.toLowerCase())} />
                         <Button onClick={sendCode}>Илгээх</Button>
                     </>
                 }
