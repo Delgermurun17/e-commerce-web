@@ -32,7 +32,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [price, setPrice] = useState<number | string>('');
     const [quantity, setQuantity] = useState<number | string>('');
     const [loading, setLoading] = useState<boolean>(false)
-    const [images, setImages] = useState<string[]>()
+    const [images, setImages] = useState<string[]>([])
     const [hidden, setHidden] = useState<boolean>(true)
     const editingId = params.editingId
     const { toast } = useToast()
@@ -41,24 +41,22 @@ export default function Page({ params }: { params: { editingId: string } }) {
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const imageUrls: string[] = []
-
         const files = event.currentTarget.files
         Array.from(files ?? []).forEach((file) => {
             const imageUrl = URL.createObjectURL(file)
             imageUrls.push(imageUrl)
         })
-
-        setImages(imageUrls)
+        setImages(s => [...s, ...imageUrls])
         setFiles(files)
     }
-
 
     const handleUpload = async () => {
 
         if (!files) return;
         const formData = new FormData();
-        formData.append("image", files[0]);
+        Array.from(files ?? []).forEach((file, i) => { formData.append("image", file, file.name); })
 
+        console.log(formData)
         try {
             setLoading(true)
             const response = await fetch("http://localhost:4000/upload", {
@@ -187,24 +185,21 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                                 <Image src={i} width={100} height={100} className="w-20 h-20 object-cover" alt="image" />
                                             </Card>)}
                                         <Card className="w-20 aspect-square flex justify-center items-center"><ImageIcon className={loading ? "hidden" : "block"} />
-                                            {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
+                                            <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span>
                                         </Card>
                                         <Card className="w-20 aspect-square flex justify-center items-center"><ImageIcon className={loading ? "hidden" : "block"} />
-                                            {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
+                                            <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span>
                                         </Card>
                                         <Card className="w-20 aspect-square flex justify-center items-center"><ImageIcon className={loading ? "hidden" : "block"} />
-                                            {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
+                                            <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span>
                                         </Card>
                                     </div>
                                     <div className="rounded-full w-8 h-8 bg-gray-500 flex justify-center items-center" onClick={() => setHidden(s => !s)}>
                                         <Plus className={loading ? "hidden" : "block"} />
-                                        {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
+                                        <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span>
                                     </div>
                                     <div className={`${hidden ? "hidden" : ""}`}>
-                                        <Label htmlFor="picture">Picture</Label>
-                                        {/* <Input id="picture" type="file" onChange={handleFileChange} /> */}
-                                        <input type="file" onChange={handleFileChange}></input>
-
+                                        <Input type="file" onChange={handleFileChange} multiple />
                                     </div>
 
                                 </div>

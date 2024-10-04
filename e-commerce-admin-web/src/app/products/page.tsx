@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2} from 'lucide-react';
 import {
     Dialog,
     DialogContent,
@@ -36,6 +36,13 @@ import {
 import Image from "next/image";
 import dayjs from 'dayjs'
 import { useQueryState } from 'nuqs'
+
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
+  
 
 
 
@@ -274,50 +281,7 @@ export default function Page() {
                     </div>
                     <div className={tab === "category" ? "block" : "hidden"}>
                         Category
-                        {/* <Button onClick={() => { reset(); setOpen(true) }} variant="outline" className="my-4">
-                            + Add New Category
-                        </Button>
-                        <Dialog open={open}>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Add Category</DialogTitle>
-                                    <hr />
-                                    <DialogDescription className="flex gap-4">
-                                        <Popover>
-                                            <PopoverTrigger><CategoryIcon iconName={icon} color={color} /></PopoverTrigger>
-                                            <PopoverContent >
-                                                <div className="grid grid-cols-4 gap-2">
-                                                    {categoryIcons.map(({ name, Icon }) =>
-                                                        <div className={`relative w-8 h-8 flex justify-center items-center rounded-lg
-                      ${icon === name ? "bg-blue-300 border-blue-950" : ""}`} value={name} key={name}
-                                                            onClick={() => setIcon(name)}>
-                                                            {<Icon />}
-                                                        </div>)}
-                                                </div>
-                                                <hr className="my-4" />
-                                                <div className="flex gap-1">
-                                                    {categoryColors.map(({ name, value }) =>
-                                                        <div key={name} className="rounded-full h-8 w-8 flex justify-center items-center" style={{ background: value }}
-                                                            onClick={() => setColor(name)}>
-                                                            {color === name && <Check className="text-white w-4" />}
-                                                        </div>)}
-                                                </div>
-                                            </PopoverContent>
-                                        </Popover>
-                                        <Input placeholder="Name" type="text" value={newCategory} disabled={loading}
-                                            onChange={(event) => { setNewCategory(event.target.value) }} />
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <DialogFooter>
-                                    {editingCategory ? (
-                                        <Button onClick={updateCategory} className="bg-green-700 hover:bg-green-900" disabled={loading}>Update</Button>
-                                    ) : (
-                                        <Button onClick={createNew} className="bg-green-700 hover:bg-green-900" disabled={loading}>Add</Button>
-                                    )}
-                                    <Button onClick={() => setOpen(false)}>Cancel</Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog> */}
+                       
 
                     </div>
 
@@ -326,3 +290,4 @@ export default function Page() {
         </div>
     );
 }
+
