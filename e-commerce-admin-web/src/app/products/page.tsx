@@ -235,35 +235,31 @@ export default function Page() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {/* {console.log} */}
+
                                     {products?.map(p =>
                                         <TableRow key={p._id}>
                                             <TableCell className="font-medium">
-                                                {p.images && p.images.length > 0 &&
+                                                {p?.images && p?.images?.length > 0 &&
                                                     <div className="w-14 h-14 rounded-full overflow-hidden">
-                                                        <Image alt="" src={p.images[0]} width={100} height={100} />
+                                                        {p?.images[0] && <Image alt="" src={p.images[0]} width={100} height={100} />}
                                                     </div>
                                                 }
 
                                             </TableCell>
-                                            <TableCell>{p.productName}</TableCell>
+                                            <TableCell>{p?.productName}</TableCell>
                                             <TableCell>category</TableCell>
-                                            <TableCell>{p.price}</TableCell>
+                                            <TableCell>{p?.price}</TableCell>
                                             <TableCell>
-                                                {p.quantity}
+                                                {p?.quantity}
                                             </TableCell>
 
                                             <TableCell>sold</TableCell>
-                                            {p.createdAt ?
+                                            {p?.createdAt ?
                                                 <TableCell>
                                                     {dayjs(p.createdAt).format('YYYY-MM-DD')}
                                                 </TableCell> :
                                                 <TableCell></TableCell>}
-
-
-
                                             <TableCell className="text-right text-[4px] flex gap-4 text-slate-400">
-                                                {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
                                                 <Link href={`/products/${p._id}`}><button><Pencil /></button></Link>
                                                 <button onClick={() => deleteProduct(p._id)}><Trash2 /></button>
                                             </TableCell>
@@ -271,6 +267,8 @@ export default function Page() {
                                     )}
 
                                 </TableBody>
+                                {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
+
                             </Table>
                         </div>
                     </div>

@@ -2,7 +2,6 @@
 import { Input } from "@/components/ui/input";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button"
-import { Toaster } from "@/components/ui/toaster"
 import { useToast } from "@/hooks/use-toast"
 import { Label } from "@/components/ui/label"
 import Image from "next/image";
@@ -33,37 +32,32 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [price, setPrice] = useState<number | string>('');
     const [quantity, setQuantity] = useState<number | string>('');
     const [loading, setLoading] = useState<boolean>(false)
-    const [image, setImage] = useState<FileList | null>(null)
     const [images, setImages] = useState<string[]>()
     const [hidden, setHidden] = useState<boolean>(true)
-
     const editingId = params.editingId
     const { toast } = useToast()
+    const [files, setFiles] = useState<FileList | null>(null)
+
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const imageUrls: string[] = []
+
         const files = event.currentTarget.files
-        console.log(files)
+        Array.from(files ?? []).forEach((file) => {
+            const imageUrl = URL.createObjectURL(file)
+            imageUrls.push(imageUrl)
+        })
 
-        const url = URL.createObjectURL(files[0]);
-        if (files) { setImage(url) }
-
+        setImages(imageUrls)
+        setFiles(files)
     }
 
 
     const handleUpload = async () => {
-        // cloudinary 
-        // let urls = []; 
-        // if (image)
-        //     Array.from(image).forEach((img) => {
-        //         let url = cloudinary.upload(img);
 
-        //         urls.push(url)
-        //     })
-
-
-        if (!image) return;
+        if (!files) return;
         const formData = new FormData();
-        formData.append("image", image);
+        formData.append("image", files[0]);
 
         try {
             setLoading(true)
@@ -73,8 +67,9 @@ export default function Page({ params }: { params: { editingId: string } }) {
             })
             const data = await response.json()
             console.log(data.secure_url)
-            setImages((s) => [...(s || []), data.secure_url])
             setLoading(false)
+
+            return data.secure_url
         } catch (error) {
             console.error("error uploading file:", error)
         }
@@ -105,7 +100,8 @@ export default function Page({ params }: { params: { editingId: string } }) {
     }
 
     async function createProduct() {
-        fetch(`http://localhost:4000/products`,
+        const imageUrl = await handleUpload()
+        await fetch(`http://localhost:4000/products`,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -114,7 +110,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
                     productCode,
                     price,
                     quantity,
-                    images,
+                    images: [imageUrl],
                 }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             })
@@ -134,16 +130,10 @@ export default function Page({ params }: { params: { editingId: string } }) {
         }
     }, [editingId])
 
-    useEffect(() => {
-        handleUpload()
-    }, [image])
-
     function getProductById(id: string) {
-        // console.log(editingId)
         fetch(`http://localhost:4000/products/${id}`)
             .then(res => res.json())
             .then((data) => {
-                // console.log(data)
                 setProductName(data.productName),
                     setDescription(data.description),
                     setProductCode(data.productCode),
@@ -164,17 +154,19 @@ export default function Page({ params }: { params: { editingId: string } }) {
                     <div className="flex flex-col gap-4">
                         <Card>
                             <CardContent>
-                                <Label htmlFor="picture">Бүтээгдэхүүний нэр</Label>
+                                <Label htmlFor="productName">Бүтээгдэхүүний нэр</Label>
                                 <Input
                                     placeholder="Product Name"
                                     value={productName}
                                     onChange={e => setProductName(e.target.value)}
+                                    id="productName"
                                 />
-                                <Label htmlFor="picture">Нэмэлт мэдээлэл</Label>
+                                <Label htmlFor="description">Нэмэлт мэдээлэл</Label>
                                 <Input
                                     placeholder="Description"
                                     value={description}
                                     onChange={e => setDescription(e.target.value)}
+                                    id="description"
                                 />
                                 <Label htmlFor="picture">Барааны код</Label>
                                 <Input
@@ -199,10 +191,10 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                         </Card>
                                         <Card className="w-20 aspect-square flex justify-center items-center"><ImageIcon className={loading ? "hidden" : "block"} />
                                             {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
-                                            </Card>
+                                        </Card>
                                         <Card className="w-20 aspect-square flex justify-center items-center"><ImageIcon className={loading ? "hidden" : "block"} />
                                             {/* <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span> */}
-                                            </Card>
+                                        </Card>
                                     </div>
                                     <div className="rounded-full w-8 h-8 bg-gray-500 flex justify-center items-center" onClick={() => setHidden(s => !s)}>
                                         <Plus className={loading ? "hidden" : "block"} />
@@ -212,7 +204,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                         <Label htmlFor="picture">Picture</Label>
                                         {/* <Input id="picture" type="file" onChange={handleFileChange} /> */}
                                         <input type="file" onChange={handleFileChange}></input>
-                                        <img src={image} alt="" />
+
                                     </div>
 
                                 </div>
