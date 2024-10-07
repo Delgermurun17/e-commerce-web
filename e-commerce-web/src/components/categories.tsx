@@ -40,7 +40,7 @@ export default function Categories() {
     return (
         <div>
             <div className="mb-8">
-                <p className="font-bold text-base mb-2">Ангилалa</p>
+                <p className="font-bold text-base mb-2">Ангилал</p>
                 <ul>
                     {categories.map(cat => (
                         <li key={cat.id} className="py-1 flex gap-2 justify-left items-center text-sm">
