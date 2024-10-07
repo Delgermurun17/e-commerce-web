@@ -25,6 +25,10 @@ export default function ForgetPassword3({onNext}: forgetpassword) {
     //         console.log(error)
     //     }
     // }
+
+    const [input, setInput] = useState("")
+    console.log({input})
+
     return (
         <div>
             <div className="flex flex-col gap-12">
@@ -32,14 +36,11 @@ export default function ForgetPassword3({onNext}: forgetpassword) {
                     <Image alt="mail" src="/mail.png" width={96} height={96} className="mx-auto" />
                     <div className="text-center">
                         <p className="text-base font-bold">Баталгаажуулах</p>
-                        <p>“mujo@nest.edu.mn” хаягт илгээсэн баталгаажуулах кодыг оруулна уу</p>
+                        <p>“{}” хаягт илгээсэн баталгаажуулах кодыг оруулна уу</p>
                     </div>
-                    <div className="flex w-[221px] mx-auto">
-                        <Input />
-                        <Input />
-                        <Input />
-                        <Input onClick={onNext}/>
-                    </div>
+                    <form className="flex w-[221px] mx-auto">
+                        <input onChange={(e) => setInput(e.target.value)} className="h-14 w-56 px-6 text-4xl font-medium tracking-[27px]" maxLength={4}/>
+                    </form>
                 </div>
                 <button onClick={handleResetClick } className="text-slate-400 flex justify-center items-center gap-1 underline">
                     Дахин эхлэх(<CountdownTimer reset={resetTimer} />)
