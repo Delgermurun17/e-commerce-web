@@ -21,6 +21,24 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
+
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
+
+
 
 import Link from "next/link";
 import { ImageIcon, Plus } from "lucide-react";
@@ -36,25 +54,30 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [hidden, setHidden] = useState<boolean>(true)
     const editingId = params.editingId
     const { toast } = useToast()
-    const [files, setFiles] = useState<FileList | null>(null)
+    const [files, setFiles] = useState<FileList[]>([])
 
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const imageUrls: string[] = []
-        const files = event.currentTarget.files
-        Array.from(files ?? []).forEach((file) => {
+        const newFiles = event.currentTarget.files
+        Array.from(newFiles ?? []).forEach((file) => {
             const imageUrl = URL.createObjectURL(file)
             imageUrls.push(imageUrl)
         })
-        setImages(s => [...s, ...imageUrls])
-        setFiles(files)
+        setImages(s => [...s, ...imageUrls]);
+
+        if (newFiles) {
+            setFiles([...files, newFiles]);
+        }
     }
 
     const handleUpload = async () => {
 
         if (!files) return;
         const formData = new FormData();
-        Array.from(files ?? []).forEach((file, i) => { formData.append("image", file, file.name); })
+        files.forEach(fileList => {
+            Array.from(fileList ?? []).forEach((file) => { formData.append("image", file, file.name); })
+        })
 
         console.log(formData)
         try {
@@ -198,6 +221,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                         <Plus className={loading ? "hidden" : "block"} />
                                         <span className={`loading loading-spinner loading-lg ${loading ? "block" : "hidden"}`}></span>
                                     </div>
+
                                     <div className={`${hidden ? "hidden" : ""}`}>
                                         <Input type="file" onChange={handleFileChange} multiple />
                                     </div>
@@ -256,6 +280,23 @@ export default function Page({ params }: { params: { editingId: string } }) {
                         <Card>
                             <CardContent>
                                 Төрөл
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead className="w-[100px]">Өнгө</TableHead>
+                                            <TableHead>Хэмжээ</TableHead>
+                                            <TableHead className="text-right">Үлдэгдэл тоо ширхэг</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell className="font-medium"></TableCell>
+                                            <TableCell></TableCell>
+                                            <TableCell className="text-right"></TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+
 
                             </CardContent>
                         </Card>
