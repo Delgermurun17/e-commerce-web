@@ -48,13 +48,19 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [description, setDescription] = useState<string>('');
     const [productCode, setProductCode] = useState<string>('');
     const [price, setPrice] = useState<number | string>('');
-    const [quantity, setQuantity] = useState<number | string>('');
     const [loading, setLoading] = useState<boolean>(false)
     const [images, setImages] = useState<string[]>([])
     const [hidden, setHidden] = useState<boolean>(true)
     const editingId = params.editingId
     const { toast } = useToast()
     const [files, setFiles] = useState<FileList[]>([])
+    const [color, setColor] = useState<string>('')
+    const [size , setSize] = useState<string>('')
+    const [quantity, setQuantity] = useState<number | string>('');
+    const [types, setTypes] = useState<{color: string, size: string, quantity: number}[]>([]);
+    const addTypeToArray = () => {
+        setTypes([...types, {color, size, quantity: Number(quantity)}]);
+    }
 
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -239,13 +245,6 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                     type="number"
                                     onChange={e => setPrice(e.target.value)}
                                 />
-                                <Label htmlFor="picture">Үлдэгдэл тоо ширхэг</Label>
-                                <Input
-                                    placeholder="Quantity"
-                                    value={quantity}
-                                    type="number"
-                                    onChange={e => setQuantity(e.target.value)}
-                                />
                             </CardContent>
                         </Card>
                     </div>
@@ -286,13 +285,34 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                             <TableHead className="w-[100px]">Өнгө</TableHead>
                                             <TableHead>Хэмжээ</TableHead>
                                             <TableHead className="text-right">Үлдэгдэл тоо ширхэг</TableHead>
+                                            <TableHead className="text-right"></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell className="font-medium"></TableCell>
-                                            <TableCell></TableCell>
-                                            <TableCell className="text-right"></TableCell>
+                                            <TableCell className="font-medium">
+                                                <Input
+                                                    placeholder="Өнгө"
+                                                    value={color}
+                                                    type="text"
+                                                    onChange={e => setColor(e.target.value)} />
+                                            </TableCell>
+                                            <TableCell>
+                                                <Input
+                                                    placeholder="Өнгө"
+                                                    value={size}
+                                                    type="text"
+                                                    onChange={e => setSize(e.target.value)} />
+                                            </TableCell>
+                                            <TableCell className="Үлдэгдэл">
+                                                <Input placeholder=""
+                                                    value={quantity}
+                                                    type="text"
+                                                    onChange={e => setQuantity(e.target.value)} />
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <Button ><Plus /></Button>
+                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
