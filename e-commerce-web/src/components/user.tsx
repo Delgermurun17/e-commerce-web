@@ -1,12 +1,66 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { toast, Toaster } from "sonner";
+import { General } from "./General";
+
+async function fetcher(pathname: string) {
+  const token = localStorage.getItem("authtoken") || "";
+
+  const data = await fetch(`http://localhost:4000${pathname}`, {
+    headers: {
+      authtoken: token,
+    },
+  }).then((res) => res.json());
+  return data;
+}
+
+interface User {
+  _id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+}
+
+function exit(){
+  toast(<div className="font-medium text-lg">Бүртэлээс гарлаа.</div>)
+  setTimeout(() => {
+    localStorage.removeItem("authtoken")
+    window.location.href = "/login";
+}, 1200);
+}
 
 export default function Userpage() {
   const [activeSection, setActiveSection] = useState("Хэрэглэгчийн хэсэг");
   const [isOrderVisible1, setOrderVisible1] = useState(false);
   const [isOrderVisible2, setOrderVisible2] = useState(false);
+  const [user, setUser] = useState<User | null>(null); 
+  const [change, setChange] = useState(true)
+  const [step, setStep] = useState("")
+  const [update, setUpdate] = useState(false)
+
+  useEffect(() => {
+    fetcher("/user")
+      .then((data: User | User[]) => {
+        if (Array.isArray(data)) {
+          if (data.length > 0) {
+            setUser(data[0]);
+          } else {
+            setUser(null);
+          }
+        } else if (data && typeof data === "object") {
+          setUser(data);
+        } else {
+          setUser(null);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error);
+        setUser(null);
+      });
+  }, []);
 
   const orders = [
     {
@@ -46,8 +100,8 @@ export default function Userpage() {
   const totalAmount = orders.reduce((sum, order) => sum + order.quantity * order.price, 0);
 
   return (
-    <div className="bg-gray-100 py-16 px-48">
-      <div className="flex gap-5 mt-16">
+    <div className="bg-gray-100 pt-[100px] h-[800px] flex justify-center">
+      <div className="flex gap-5">
         <div className="flex flex-col gap-1">
           <div
             className={`${
@@ -73,49 +127,58 @@ export default function Userpage() {
               Захиалгын түүх
             </button>
           </div>
+          <div
+            className={`${
+              activeSection === "Ерөнхий тохиргоо" ? "bg-white" : "bg-gray-100"
+            } w-[244px] rounded-2xl`}
+          >
+            <button
+              onClick={() => setActiveSection("Ерөнхий тохиргоо")}
+              className="text-left hover:underline font-medium text-sm leading-5 py-2 pl-4 w-full"
+            >
+              Ерөнхий тохиргоо
+            </button>
+          </div>
         </div>
 
-        <div className="w-full max-w-[620px]">
+        <div className="w-[620px]">
           <p className="font-bold text-lg leading-7">{activeSection}</p>
-          <div className="py-7">
+          <div className="py-6">
             <hr />
           </div>
-
-          {activeSection === "Хэрэглэгчийн хэсэг" && (
-            <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-2">
-                <label htmlFor="surname" className="font-medium leading-[14px] text-sm">
-                  Овог:
-                </label>
-                <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="name" className="font-medium leading-[14px] text-sm">
-                  Нэр:
-                </label>
-                <input id="name" className="h-7 rounded-2xl border border-zinc-200 p-3" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="phone" className="font-medium leading-[14px] text-sm">
-                  Утасны дугаар:
-                </label>
-                <input id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="font-medium leading-[14px] text-sm">
-                  Имэйл хаяг:
-                </label>
-                <input id="email" className="h-7 rounded-2xl border border-zinc-200 p-3" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="address" className="font-medium leading-[14px] text-sm">
-                  Хаяг:
-                </label>
-                <input id="address" className="h-24 rounded-2xl border border-zinc-200 p-3" />
-              </div>
-              <div className="flex justify-end">
-                <Button className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
-              </div>
+          {user && (
+            <div>
+              {activeSection === "Хэрэглэгчийн хэсэг" && (
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="surname" className="font-medium leading-[14px] text-sm">Овог:</label>
+                    {!update ? <input disabled id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" /> : <input id="surname" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="name" className="font-medium leading-[14px] text-sm">Нэр:</label>
+                    {!update ? <input disabled value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" /> : <input value={user.name} id="name" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />}
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="phone" className="font-medium leading-[14px] text-sm">Утасны дугаар:</label>
+                    <input disabled value={user.phoneNumber} id="phone" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="email" className="font-medium leading-[14px] text-sm">Имэйл хаяг:</label>
+                    <input disabled value={user.email} id="email" className="h-7 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="address" className="font-medium leading-[14px] text-sm">Хаяг:</label>
+                    {!update ? <textarea disabled value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" /> : <textarea value={user.address} id="address" className="h-24 rounded-2xl border border-zinc-200 p-3 outline-none focus:border-black resize-none" />}
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    {!update ?
+                    <><Button onClick={() => setUpdate(true)} className="w-[212px] hover:bg-gray-800">Мэдээлэл шинэчлэх</Button>
+                    <Button onClick={exit} className="hover:bg-gray-800">Гарах</Button></> : 
+                    <><Button onClick={() => setUpdate(false)} className="w-[212px] hover:bg-gray-800">Шинэчлэх</Button>
+                    <Button onClick={() => setUpdate(false)} className="hover:bg-gray-800">Буцах</Button></>}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -181,8 +244,20 @@ export default function Userpage() {
               </div>
             </div>
           )}
+          {activeSection === "Ерөнхий тохиргоо" && (
+            <div>
+              {change &&  <div className="flex flex-col gap-4 font-medium">
+                  <div className=""><button onClick={() => { setChange(false); setStep("1"); }} className="cursor-pointer hover:underline border-black">Имэйл хаяг солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("2"); }} className="cursor-pointer hover:underline border-black">Утасны дугаар солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("3"); }} className="cursor-pointer hover:underline border-black">Нууц үг солих</button></div>
+                  <div className=""><button onClick={() => { setChange(false); setStep("4"); }} className="cursor-pointer hover:underline border-black">Бүртэл устгах</button></div>
+              </div>}
+              {!change &&  <General save={() => setChange(true)} step={step} setStep={setStep}/>}
+            </div>
+          )}
         </div>
       </div>
+          <Toaster />
     </div>
   );
 }

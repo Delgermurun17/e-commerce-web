@@ -4,17 +4,15 @@ import { userRouter } from './router/UserRouter';
 import { authRouter } from './router/AuthRouter';
 import { productRouter } from './router/ProductRouter';
 import { uploadRouter } from './router/UploadRouter';
-const cors = require('cors')
+import cors from 'cors';
+
 
 const app = express();
 const port = 4000;
 connect()
-app.use(cors())
 app.use(express.json())
-
-
+app.use(cors());
 app.get('/', (req, res) => {
-
 });
 
 app.use(userRouter)

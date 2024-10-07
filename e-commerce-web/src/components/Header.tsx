@@ -1,13 +1,54 @@
-import { Heart, Search, ShoppingCart } from "lucide-react";
-import { Input } from "@/components/ui/input";
+"use client";
+
+import { use, useEffect, useState } from "react";
+import { Heart, Search, ShoppingCart, User } from "lucide-react";
 import Link from "next/link";
 
-const Header = () => {
+
+async function fetcher(pathname: string) {
+    const token = localStorage.getItem("authtoken") || "";
+  
+    const data = await fetch(`http://localhost:4000${pathname}`, {
+      headers: {
+        authtoken: token,
+      },
+    }).then((res) => res.json());
+  
+    return data;
+  }
+
+
+  const Header= () => {
+    const [auth, setAuth] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetcher("/auth")
+            .then((data) => setAuth(data))
+            .catch((error) => console.error(error));
+    }, []);
+    const [savedCount, setSavedCount] = useState("0")
+
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const count = localStorage.getItem("savedCount");
+            if (count !== null) {
+                setSavedCount(count);
+            }
+        };
+        window.addEventListener('storageChange', handleStorageChange);
+        return () => {
+            window.removeEventListener('storageChange', handleStorageChange);
+        };
+    }, []);
+
+    
+
     return (
-        <header className="max-w-full p-2 bg-black text-white mx-auto">
-            <div className="max-w-[1440px] mx-auto flex justify-between py-3 px-5">
+        <header className="w-full bg-black text-white p-[16px_24px] mx-auto">
+            <div className="max-w-[1392px] mx-auto flex justify-between h-9">
+                <div className="flex gap-80">
                 <div className="flex items-center gap-8">
-                    <div className="flex gap-2 items-center">
+                    <Link href={"/"}><div className="flex gap-2 items-center cursor-pointer">
                         <svg
                             width="32"
                             height="28"
@@ -27,31 +68,40 @@ const Header = () => {
                             />
                         </svg>
                         <p className="text-sm">ECOMMERCE</p>
-                    </div>
+                    </div></Link>
                     <Link href={"/category"}>
-                    <button className="text-slate-300 text-sm">Ангилал</button></Link>
+                    <div className="text-sm font-normal">Ангилал</div></Link>
                 </div>
-                <div className="flex items-center rounded-full bg-zinc-900 border-none px-4 w-[300px]">
-                    <Search />
-                    <Input
-                        type="search"
-                        placeholder="Бүтээгдэхүүн хайх"
-                        className="border-none text-zinc-500"
-                    />
+                <div className="rounded-full p-[8px_16px] bg-[#18181B] w-[300px] h-10">
+                    <div className="flex gap-2 items-center">
+                    <div className="size-6 flex justify-center items-center"><Search strokeWidth={1} size={20}/></div>
+                    <input type="search" placeholder="Бүтээгдэхүүн хайх" className="bg-transparent outline-none"/>
+                    </div>
                 </div>
-                <div className="flex gap-5 items-center">
-                    <div className="gap-6 flex">
-                        <Heart className="relative" strokeWidth={1} />
-                        <ShoppingCart strokeWidth={1} />
-                    </div>
-                    <div className="flex gap-2">
-                        <button className="rounded-full p-2 hover:bg-opacity-80 border border-blue-900 hover:opacity-80">
-                            Бүртгүүлэх
-                        </button>
-                        <button className="bg-blue-600 rounded-3xl p-2 hover:bg-blue-500 px-4">
-                            Нэвтрэх
-                        </button>
-                    </div>
+                </div>
+                <div className="flex gap-6 items-center">
+                        <Link href={"/saved"} className="relative"><Heart strokeWidth={1}/>{savedCount === "0"  ? null : <div className="absolute rounded-full size-4 bg-[#2563EB] top-[-6px] right-[-8px] text-[10px] leading-4 font-normal text-center">{savedCount}</div>}</Link>
+                        <Link href={"/order"}><ShoppingCart strokeWidth={1} /></Link>        
+                    {auth ? 
+                        <div>
+                            <Link href={"/user"}>
+                                <User strokeWidth={1}/>
+                            </Link>
+                        </div> 
+                        :    
+                        <div className="flex gap-2 text-sm font-medium">
+                            <Link href={"/signup"}>
+                                <button className="rounded-full p-2 border border-blue-900 hover:opacity-85 duration-150 h-9">
+                                    Бүртгүүлэх
+                                </button>
+                            </Link>
+                            <Link href={"/login"}>
+                                <button className="bg-blue-600 rounded-3xl hover:opacity-85 p-[8px_12px] h-9">
+                                    Нэвтрэх
+                                </button>
+                            </Link>
+                        </div>
+                    }
                 </div>
             </div>
         </header>
