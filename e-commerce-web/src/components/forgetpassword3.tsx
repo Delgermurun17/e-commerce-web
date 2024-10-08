@@ -7,8 +7,7 @@ import { Eye, EyeOff } from "lucide-react";
 
 
 export default function ForgetPassword4() {
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -20,14 +19,13 @@ export default function ForgetPassword4() {
         setShowPasswordConfirm((prev) => !prev);
     };
 
-    console.log({ name, email, password, passwordConfirm });
+    console.log({  password, passwordConfirm });
 
     const hasUppercase = /[A-Z]/.test(password);
     const hasLowercase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>-_+=]/.test(password);
     const passwordsAreSame = password === passwordConfirm && password !== "";
-    const emailIsValid = /[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}/.test(email);
     const passwordValid = hasUppercase && hasLowercase && hasNumber && hasSpecialChar
 
     const [passwordEmpty, setPasswordEmpty] = useState(false)
@@ -40,8 +38,6 @@ export default function ForgetPassword4() {
         setPasswordlenghtConfrim(false)
         setPasswordValidConfirm(false)
         setPasswordValidConfirm(false)
-        setName("")
-        setEmail("")
         setPassword("")
         setPasswordConfirm("")
     }
@@ -88,7 +84,7 @@ export default function ForgetPassword4() {
 
 
     return (
-        <div className="flex flex-col gap-6 items-center pt-[100px] h-[800px]">
+        <div className="flex flex-col gap-6 items-center">
             <div className="py-2 font-medium text-2xl">Шинэ нууц сэргээх</div>
             <div className="flex flex-col gap-12">
                 <div className="flex flex-col gap-4">
