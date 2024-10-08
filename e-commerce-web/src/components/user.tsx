@@ -8,7 +8,7 @@ import { General } from "./General";
 async function fetcher(pathname: string) {
   const token = localStorage.getItem("authtoken") || "";
 
-  const data = await fetch(`http://localhost:4000${pathname}`, {
+  const data = await fetch(`https://e-commerce-service-api.vercel.app${pathname}`, {
     headers: {
       authtoken: token,
     },
