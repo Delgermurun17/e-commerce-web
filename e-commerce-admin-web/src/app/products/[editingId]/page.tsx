@@ -31,14 +31,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-
-
-
 
 import Link from "next/link";
 import { ImageIcon, Plus } from "lucide-react";
@@ -55,12 +47,13 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const { toast } = useToast()
     const [files, setFiles] = useState<FileList[]>([])
     const [color, setColor] = useState<string>('')
-    const [size , setSize] = useState<string>('')
+    const [size, setSize] = useState<string>('')
     const [quantity, setQuantity] = useState<number | string>('');
-    const [types, setTypes] = useState<{color: string, size: string, quantity: number}[]>([]);
+    const [types, setTypes] = useState<{ color: string, size: string, quantity: number }[]>([]);
     const addTypeToArray = () => {
-        setTypes([...types, {color, size, quantity: Number(quantity)}]);
+        setTypes([...types, { color, size, quantity: Number(quantity) }]);
     }
+    const colors=[]
 
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -291,24 +284,40 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell className="font-medium">
-                                                <Input
-                                                    placeholder="Өнгө"
-                                                    value={color}
-                                                    type="text"
-                                                    onChange={e => setColor(e.target.value)} />
+                                                <Select onValueChange={setColor} defaultValue={color}>
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder="Өнгө" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="light">Light</SelectItem>
+                                                        <SelectItem value="dark">Dark</SelectItem>
+                                                        <SelectItem value="system">System</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
                                             </TableCell>
                                             <TableCell>
-                                                <Input
-                                                    placeholder="Өнгө"
-                                                    value={size}
-                                                    type="text"
-                                                    onChange={e => setSize(e.target.value)} />
+                                                <Select onValueChange={setSize} defaultValue={size}>
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder="Хэмжээ" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="light">Light</SelectItem>
+                                                        <SelectItem value="dark">Dark</SelectItem>
+                                                        <SelectItem value="system">System</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
                                             </TableCell>
-                                            <TableCell className="Үлдэгдэл">
-                                                <Input placeholder=""
-                                                    value={quantity}
-                                                    type="text"
-                                                    onChange={e => setQuantity(e.target.value)} />
+                                            <TableCell >
+                                                <Select onValueChange={setQuantity} defaultValue={String(quantity)}>
+                                                    <SelectTrigger className="w-[180px]">
+                                                        <SelectValue placeholder="Үлдэгдэл" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="light">Light</SelectItem>
+                                                        <SelectItem value="dark">Dark</SelectItem>
+                                                        <SelectItem value="system">System</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <Button ><Plus /></Button>
