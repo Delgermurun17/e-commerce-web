@@ -68,7 +68,7 @@ function reset(){
 }
 
 function submit() {
-    fetch("http://localhost:4000/register", {
+    fetch("https://e-commerce-service-api.vercel.app/register", {
       method: "POST",
       body: JSON.stringify({
         name,

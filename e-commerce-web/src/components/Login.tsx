@@ -26,7 +26,7 @@ export default function Login() {
 
     const submit = async () => {
       try {
-          const res = await fetch("http://localhost:4000/login", {
+          const res = await fetch("https://e-commerce-service-api.vercel.app/login", {
               method: "POST",
               body: JSON.stringify({ email, password }),
               headers: { "Content-Type": "application/json" },
@@ -79,7 +79,7 @@ export default function Login() {
                             {passwordConfirm && (!password ? <div className="px-3 text-[#E11D48] text-xs font-normal">Нууц үг оруулна уу</div> : null)}
                         </div>
                         <Button onClick={confirm} className="w-[334px]">Нэвтрэх</Button>
-                        <Link className="text-sm text-gray-500 border-b-2 w-fit" href={"/"}>Нууц үг мартсан</Link>
+                        <Link className="text-sm text-gray-500 border-b-2 w-fit" href={"/forgetpassword"}>Нууц үг мартсан</Link>
                     </div>
                     <Link href={"/signup"}><Button className="w-[334px] bg-white border !border-[#2563EB] text-[#2563EB]">Бүртгүүлэх</Button></Link>
                 </div>

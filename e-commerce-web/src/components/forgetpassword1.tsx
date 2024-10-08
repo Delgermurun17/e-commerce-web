@@ -28,7 +28,7 @@ export default function Forgetpassword1 ({ onNext }: forgetpassword) {
     const verify = async (otp: string) => {
         try {
             setLoading(true);
-            const res = await fetch("http://localhost:4000/verify", {
+            const res = await fetch("https://e-commerce-service-api.vercel.app/verify", {
                 method: "POST",
                 body: JSON.stringify({ email, otp }), // Use the passed otp
                 headers: { "Content-Type": "application/json" },
@@ -51,7 +51,7 @@ export default function Forgetpassword1 ({ onNext }: forgetpassword) {
     const sendCode = async () => {
         try {
             setLoading(true)
-            await fetch("http://localhost:4000/generate", {
+            await fetch("https://e-commerce-service-api.vercel.app/generate", {
                 method: "POST", 
                 body: JSON.stringify({ email }),
                 headers: { "Content-Type": "application/json" },

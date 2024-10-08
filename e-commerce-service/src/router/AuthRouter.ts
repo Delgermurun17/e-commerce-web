@@ -1,4 +1,4 @@
-import express from "express";
+import express , {Router} from "express";
 import { checkAuth, generateOtp, login, register, verifyOtp } from "../controller/AuthController";
 import { getUser } from "../controller/UserController";
 
