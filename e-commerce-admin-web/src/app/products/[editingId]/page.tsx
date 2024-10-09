@@ -367,7 +367,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
                 </div>
                 <div className="px-8 py-4 flex justify-right ">
                     {editingId === 'new' ?
-                        (<Button onClick={() => { createProduct() }} disabled={loading}>Submit</Button>) :
+                        (<Button onClick={() => { createProduct() }} disabled={loading}>Submitt</Button>) :
                         (<Button onClick={() => updateProduct(editingId)} disabled={loading}>Update product information</Button>)}
                 </div>
 
