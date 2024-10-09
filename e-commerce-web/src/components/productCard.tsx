@@ -19,10 +19,10 @@ export default function ProductCard(props: Props) {
 
     return (
         <div className={`${className} cursor-pointer`}>
-            <div className="relative aspect-[3/4] bg-slate-400 rounded-xl overflow-hidden object-fill" >
+            <div className="relative aspect-[3/4] bg-slate-400 rounded-xl overflow-hidden " >
                 <Link href={"/product"}>
                     {image &&
-                        <Image priority={true} className="hover:scale-125 duration-700" src={image} width={2000} height={2000} alt="picture" />
+                        <Image priority={true} className="hover:scale-125 duration-700 object-cover w-full h-full" src={image} width={2000} height={2000} alt="picture" />
                     }
                 </Link>
                 <button className="absolute top-4 right-4" onClick={() => setIsSaved(x => !x)}>
