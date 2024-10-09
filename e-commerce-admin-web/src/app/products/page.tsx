@@ -42,6 +42,7 @@ import {
     PopoverContent,
     PopoverTrigger,
   } from "@/components/ui/popover"
+import CategoriesPage from "@/components/category";
   
 
 
@@ -280,7 +281,7 @@ export default function Page() {
                         </div>
                     </div>
                     <div className={tab === "category" ? "block" : "hidden"}>
-                        Category
+                        <CategoriesPage/>
                        
 
                     </div>

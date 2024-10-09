@@ -13,7 +13,9 @@ const schema = new Schema({
     description: String,
     viewsCount: Number,
     createdAt: Date,
-    updatedAt: Date  
+    updatedAt: Date,
+    types: [],
+    tag: String
 })
 
 export const ProductModel= model("Product", schema)

@@ -31,14 +31,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-
-
-
 
 import Link from "next/link";
 import { ImageIcon, Plus } from "lucide-react";
@@ -48,13 +40,45 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [description, setDescription] = useState<string>('');
     const [productCode, setProductCode] = useState<string>('');
     const [price, setPrice] = useState<number | string>('');
-    const [quantity, setQuantity] = useState<number | string>('');
     const [loading, setLoading] = useState<boolean>(false)
     const [images, setImages] = useState<string[]>([])
     const [hidden, setHidden] = useState<boolean>(true)
     const editingId = params.editingId
     const { toast } = useToast()
     const [files, setFiles] = useState<FileList[]>([])
+    const [color, setColor] = useState<string>('')
+    const [size, setSize] = useState<string>('')
+    const [quantity, setQuantity] = useState<number | string>('');
+    const [types, setTypes] = useState<{ color: string, size: string, quantity: number }[]>([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+    const [tag, setTag] = useState<string>('')
+
+    interface Category {
+        _id: string;
+        name: string;
+        subcategories: string[];
+    }
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    const colors: string[] = ["хар", "цагаан", "ногоон", "хөх", "улаан", "шар"]
+    const sizes: string[] = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
+
+    const getCategories = async () => {
+        const response = await fetch('http://localhost:4000/categories');
+        const data = await response.json();
+        setCategories(data);
+    };
+
+    const addTypeToArray = async () => {
+        await setTypes([...types, { color, size, quantity: Number(quantity) }]);
+        setQuantity("")
+        setColor("")
+        setSize("")
+    }
+
+    useEffect(() => {
+        getCategories();
+    }, []);
 
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -130,11 +154,14 @@ export default function Page({ params }: { params: { editingId: string } }) {
                     description,
                     productCode,
                     price,
-                    quantity,
                     images: [imageUrl],
+                    categoryId: selectedCategoryId,
+                    types,
+                    tag
                 }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             })
+        await reset()
     }
 
     function reset() {
@@ -142,7 +169,10 @@ export default function Page({ params }: { params: { editingId: string } }) {
             setDescription(""),
             setProductCode(""),
             setPrice(""),
-            setQuantity("")
+            setImages([])
+            setSelectedCategoryId("")
+            setTypes([])
+            setTag("")
     }
 
     useEffect(() => {
@@ -239,41 +269,23 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                     type="number"
                                     onChange={e => setPrice(e.target.value)}
                                 />
-                                <Label htmlFor="picture">Үлдэгдэл тоо ширхэг</Label>
-                                <Input
-                                    placeholder="Quantity"
-                                    value={quantity}
-                                    type="number"
-                                    onChange={e => setQuantity(e.target.value)}
-                                />
                             </CardContent>
                         </Card>
                     </div>
                     <div className="flex flex-col gap-4">
                         <Card>
                             <CardContent>
-                                <Select>
+                                Ангилал
+                                <Select onValueChange={setSelectedCategoryId}>
                                     <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Theme" />
+                                        <SelectValue placeholder="Ангилал cонгох" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="light">Light</SelectItem>
-                                        <SelectItem value="dark">Dark</SelectItem>
-                                        <SelectItem value="system">System</SelectItem>
+                                        {categories.map((category) => (
+                                            <SelectItem value={category._id}>{category.name}</SelectItem>
+                                        ))}
                                     </SelectContent>
                                 </Select>
-                                <Select>
-                                    <SelectTrigger className="w-[180px]">
-                                        <SelectValue placeholder="Theme" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="light">Light</SelectItem>
-                                        <SelectItem value="dark">Dark</SelectItem>
-                                        <SelectItem value="system">System</SelectItem>
-                                    </SelectContent>
-                                </Select>
-
-
                             </CardContent>
                         </Card>
 
@@ -285,14 +297,53 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                         <TableRow>
                                             <TableHead className="w-[100px]">Өнгө</TableHead>
                                             <TableHead>Хэмжээ</TableHead>
-                                            <TableHead className="text-right">Үлдэгдэл тоо ширхэг</TableHead>
+                                            <TableHead >Үлдэгдэл тоо ширхэг</TableHead>
+                                            <TableHead className="text-right"></TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
+                                        {types?.map((item, index) => (
+                                            <TableRow key={index} >
+                                                <TableCell>{item.color}</TableCell>
+                                                <TableCell>{item.size}</TableCell>
+                                                <TableCell className="text-center">{item.quantity}</TableCell>
+                                            </TableRow>))}
+
                                         <TableRow>
-                                            <TableCell className="font-medium"></TableCell>
-                                            <TableCell></TableCell>
-                                            <TableCell className="text-right"></TableCell>
+                                            <TableCell className="font-medium">
+                                                <Select onValueChange={setColor} value={color}>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Өнгө" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {colors.map((color: string) => (
+                                                            <SelectItem value={color} key={color}>{color}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Select onValueChange={setSize} value={size}>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Хэмжээ" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {sizes.map((size) => (<SelectItem value={size} key={size} >{size} </SelectItem>))}
+
+                                                    </SelectContent>
+                                                </Select>
+                                            </TableCell>
+                                            <TableCell >
+                                                <Input
+                                                    placeholder="Үлдэгдэл"
+                                                    value={String(quantity)}
+                                                    type="number"
+                                                    onChange={e => setQuantity(e.target.value)}
+                                                />
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <Button onClick={addTypeToArray}><Plus /></Button>
+                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
@@ -306,9 +357,9 @@ export default function Page({ params }: { params: { editingId: string } }) {
                                 <Label htmlFor="picture">Таг</Label>
                                 <Input
                                     placeholder="Таг нэмэх"
-                                    value={price}
-                                    type="number"
-                                    onChange={e => setPrice(e.target.value)}
+                                    value={tag}
+                                    type="text"
+                                    onChange={e => setTag(e.target.value)}
                                 />
                             </CardContent>
                         </Card>
@@ -316,7 +367,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
                 </div>
                 <div className="px-8 py-4 flex justify-right ">
                     {editingId === 'new' ?
-                        (<Button onClick={() => { createProduct() }} disabled={loading}>Submit</Button>) :
+                        (<Button onClick={() => { createProduct() }} disabled={loading}>Submitt</Button>) :
                         (<Button onClick={() => updateProduct(editingId)} disabled={loading}>Update product information</Button>)}
                 </div>
 

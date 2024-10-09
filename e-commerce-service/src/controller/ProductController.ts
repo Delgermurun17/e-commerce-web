@@ -4,7 +4,7 @@ import { ProductModel } from "../model/ProductModel";
 export const getProduct = async (req: Request, res: Response) => {
     try {
         const { price = -1} = req.query
-        const products = await ProductModel.find({}, null, { sort: { price: Number(price) } }).limit(10)
+        const products = await ProductModel.find({}, null, { sort: { price: Number(price) } })
         res.send(products)
     }
     catch (error) {
@@ -32,6 +32,9 @@ export const createProduct = async (req: Request, res: Response) => {
             price,
             quantity,
             images,
+            categoryId,
+            types,
+            tag
         } = req.body
 
         const user = await ProductModel.create({
@@ -41,6 +44,9 @@ export const createProduct = async (req: Request, res: Response) => {
             price,
             quantity,
             images,
+            categoryId,
+            types,
+            tag,
             createdAt: new Date()
         })
         res.send(user)
