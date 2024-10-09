@@ -311,6 +311,7 @@ export const Detail = () => {
           {[...Array(8)].map((_, index) => (
             <ProductCard key={index} className="w-[244px]" /> // Холбоотой бараа
           ))}
+          df
         </div>
       </div>
     </div>
