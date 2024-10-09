@@ -34,7 +34,8 @@ export const createProduct = async (req: Request, res: Response) => {
             images,
             categoryId,
             types,
-            tag
+            tag,
+            sold
         } = req.body
 
         const user = await ProductModel.create({
@@ -47,6 +48,7 @@ export const createProduct = async (req: Request, res: Response) => {
             categoryId,
             types,
             tag,
+            sold,
             createdAt: new Date()
         })
         res.send(user)

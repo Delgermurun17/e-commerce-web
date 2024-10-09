@@ -1,6 +1,7 @@
 'use client'
 import { Checkbox } from "@/components/ui/checkbox"
 import { useQueryState } from 'nuqs'
+import { useEffect, useState } from 'react';
 
 
 type Category = {
@@ -36,6 +37,16 @@ export default function Categories() {
             ? [...selectedSizes, size].join(',')
             : selectedSizes.filter(s => s !== size).join(','));
     };
+    const [categories, setCategories] = useState<Category[]>([]);
+    const getCategories = async () => {
+        const response = await fetch('http://localhost:4000/categories');
+        const data = await response.json();
+        setCategories(data);
+      };
+    
+      useEffect(() => {
+        getCategories();
+      }, []);
 
     return (
         <div>
