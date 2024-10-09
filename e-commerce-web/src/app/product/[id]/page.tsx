@@ -1,14 +1,65 @@
 "use client"
 
+import ProductCard from "@/components/productCard";
+import { Button } from "@/components/ui/button";
 import { Heart, Star } from "lucide-react"
+import Image from "next/image";
 import { useEffect, useState } from "react"
-import { Button } from "./ui/button"
-import ProductCard from "./productCard"
 
+interface Product {
+    productName: string;
+    productCode: string;
+    categoryId: string;
+    price: number; 
+    quantity: number;
+    thumbnails: string;
+    images: string[]; 
+    coupon: string;
+    salePercent: number;
+    description: string;
+    viewsCount: number;
+    createdAt: Date;
+    updatedAt: Date;
+    types: {color: string, size: string, quantity: number}
+    tag: string;
+    sold: number;
+}
 
-export const Detail= () => {
-    const price = 120000;
+interface PageProps {
+    params: {
+        id: string;
+    };
+}
 
+export default function Page({ params }: PageProps) {
+    const [data, setData] = useState<Product[]>([]);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            const productId = params?.id; 
+
+            if (!productId) {
+                console.error("No ID provided");
+                return;
+            }
+
+            try {
+                const response = await fetch(`http://localhost:4000/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const fetchedData = await response.json();
+                setData(Array.isArray(fetchedData) ? fetchedData : [fetchedData]);
+            } catch (error) {
+                console.error("Fetch error:", error);
+            }
+        };
+
+        fetchData();
+    }, [params]);
+
+const products = data.find(d => d.price !== undefined); // Find a product with a defined price
+const price = products ? products.price : 0;
     const photo = [
         { photo: "p1" },
         { photo: "p2" },
@@ -60,25 +111,50 @@ export const Detail= () => {
 
     const [show, setShow] = useState<boolean>(true)
     return (
+
+
+        
         <div className="w-[1040px] mx-auto flex flex-col gap-20 mt-14 mb-24">
             <div className="flex gap-5">
+            {Array.isArray(data) && data.length > 0 ? (
+                                data.map((p) => (
+                <>
                 <div className="w-[67px] h-[392px] grid gap-2 pt-[100px]">
                     {photo.map((p) => (
                         <div className={`size-[67px] rounded ${selectedPhoto === p.photo ? "border border-black" : ""}`} onClick={() => setSelectedPhoto(p.photo)} key={p.photo}>{p.photo}</div>
                     ))}
                 </div>
-                <div className="w-[422px] h-[521px] rounded-2xl border-[2px] border-black text-center content-center text-5xl">{selectedPhoto}</div>
+                <div key={p.productCode} className="w-[422px] h-[521px] rounded-2xl text-center content-center text-5xl"><Image src={p.images[0]} alt="img" width={422} height={521} />
+                </div>
+                </>))
+                            ) : (
+                                null
+                            )}
+
+                
                 <div className="pt-[100px] flex flex-col gap-[55px]">
-                    <div className="flex flex-col gap-6">
+
+                {Array.isArray(data) && data.length > 0 ? (
+                                data.map((p) => (
+                    <div key={p.productCode} className="flex flex-col gap-6">
                         <div className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-2">
-                                <div className="font-semibold text-xs leading-4 border border-blue-600 p-1 w-14 text-center rounded-2xl">шинэ</div>
-                                <div className="flex gap-2 items-center">
-                                    <div className="font-bold text-2xl leading-8">Wildflower Hoodie</div>
-                                    <div className="size-10 flex justify-center items-center"><Heart onClick={()=>setIsSaved(x =>!x)} strokeWidth={1} fill={`${isSaved ? "black" : "transparent"}`} className="duration-500"/> </div>
-                                </div>
-                                <div className="font-normal text-base leading-6">Зэрлэг цэцгийн зурагтай даавуун материалтай цамц</div>
-                            </div>
+                       
+                                    <div className="flex flex-col gap-2">
+                                        <div className="font-semibold text-xs leading-4 border border-blue-600 p-1 w-14 text-center rounded-2xl">шинэ</div>
+                                        <div className="flex gap-2 items-center">
+                                            <div className="font-bold text-2xl leading-8">{p.productName}</div>
+                                            <div className="size-10 flex justify-center items-center">
+                                                <Heart
+                                                    onClick={() => setIsSaved(x => !x)}
+                                                    strokeWidth={1}
+                                                    fill={`${isSaved ? "black" : "transparent"}`}
+                                                    className="duration-500"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="font-normal text-base leading-6">{p.description}</div>
+                                    </div>
+
                             <div className="flex flex-col gap-2">
                                 <div className="font-normal text-sm leading-5">Хэмжээний заавар</div>
                                 <div className="flex gap-1">{product.map((pr) => (
@@ -97,7 +173,13 @@ export const Detail= () => {
                             <div className="text-xl font-bold tracking-wide flex">{totalPrice}<div>₮</div></div>
                             <Button className="cursor-pointer w-[175px]" disabled={currentStock === 0}>Сагсанд нэмэх</Button>
                         </div>
-                    </div>
+                    </div>))
+                            ) : (
+                                null
+                            )}
+
+
+
                     <div className="flex flex-col gap-6 max-w-[551px] ">
                     <div>
                         <div className="flex gap-4 text-sm font-normal">
@@ -155,6 +237,9 @@ export const Detail= () => {
                     </div>
                 </div>
             </div>
+
+
+
             <div className="flex flex-col gap-6 ">
             <h1 className="font-bold text-3xl leading-9">Холбоотой бараа</h1>
               <div className="grid grid-cols-4 mx-auto gap-5 mb-24">

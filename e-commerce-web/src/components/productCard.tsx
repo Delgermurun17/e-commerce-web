@@ -8,11 +8,12 @@ type Props = {
     className?: string,
     image?: string,
     name?: string,
-    price?: number
+    price?: number,
+    id: string
 }
 
 export default function ProductCard(props: Props) {
-    const { className, image, name, price } = props;
+    const { className, image, name, price, id } = props;
     const [isSaved, setIsSaved] = useState<boolean>(false)
     
 
@@ -20,7 +21,7 @@ export default function ProductCard(props: Props) {
     return (
         <div className={`${className} cursor-pointer`}>
             <div className="relative aspect-[3/4] bg-slate-400 rounded-xl overflow-hidden " >
-                <Link href={"/product"}>
+                <Link href={`/product/${id}`}>
                     {image &&
                         <Image priority={true} className="hover:scale-125 duration-700 object-cover w-full h-full" src={image} width={2000} height={2000} alt="picture" />
                     }
@@ -30,7 +31,7 @@ export default function ProductCard(props: Props) {
                 </button>
             </div>
             <div className="md:text-base text-sm cursor-default">
-                <Link href={"/product"}><p className="font-normal">{name}</p></Link>
+                <Link href={`/product/${id}`}><p className="font-normal">{name}</p></Link>
                 <p className="font-bold">{price}₮</p>
             </div>
         </div>

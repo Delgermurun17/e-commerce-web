@@ -34,7 +34,7 @@ export default function Page() {
       </div>
       <div className="col-span-3 grid md:grid-cols-3 grid-cols-2 gap-5">
       {products.map((product, index) => (
-          <ProductCard key={index} image={product.images?.[0]} name={product.productName} price={product.price}/>
+          <ProductCard key={index} image={product.images?.[0]} name={product.productName} price={product.price} id={product._id}/>
         ))}
       </div>
     </div>
