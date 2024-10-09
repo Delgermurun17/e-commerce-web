@@ -312,6 +312,7 @@ export const Detail = () => {
             <ProductCard key={index} className="w-[244px]" /> // Холбоотой бараа
           ))}
         </div>
+        <div>dfwef</div>
       </div>
     </div>
   );
