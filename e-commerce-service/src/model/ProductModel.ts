@@ -15,7 +15,8 @@ const schema = new Schema({
     createdAt: Date,
     updatedAt: Date,
     types: [],
-    tag: String
+    tag: String, 
+    sold: Number
 })
 
 export const ProductModel= model("Product", schema)

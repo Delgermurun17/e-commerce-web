@@ -59,6 +59,7 @@ export default function Page() {
     const [filterByCategory, setFilterByCategory] = useQueryState("cat", { defaultValue: '' });
     const [filterByDate, setFilterByDate] = useQueryState("date", { defaultValue: '' });
     const [tab, setTab] = useState<string>("product")
+    
 
 
     const router = useRouter()
@@ -75,7 +76,9 @@ export default function Page() {
         price: number,
         quantity: number,
         createdAt: string,
-        images?: string[]
+        images?: string[],
+        categoryId: string,
+        sold: number
     }
 
     function getProducts() {
@@ -255,13 +258,13 @@ export default function Page() {
 
                                             </TableCell>
                                             <TableCell>{p?.productName}</TableCell>
-                                            <TableCell></TableCell>
+                                            <TableCell>{p?.categoryId}</TableCell>
                                             <TableCell>{p?.price}</TableCell>
                                             <TableCell>
                                                 {p?.quantity}
                                             </TableCell>
 
-                                            <TableCell>sold</TableCell>
+                                            <TableCell>{p?.sold}</TableCell>
                                             {p?.createdAt ?
                                                 <TableCell>
                                                     {dayjs(p.createdAt).format('YYYY-MM-DD')}
