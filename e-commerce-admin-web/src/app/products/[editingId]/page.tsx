@@ -50,8 +50,9 @@ export default function Page({ params }: { params: { editingId: string } }) {
     const [size, setSize] = useState<string>('')
     const [quantity, setQuantity] = useState<number | string>('');
     const [types, setTypes] = useState<{ color: string, size: string, quantity: number }[]>([]);
-    const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
+    const [selectedCategoryName, setSelectedCategoryName] = useState<string | null>(null);
     const [tag, setTag] = useState<string>('')
+    const [sold, setSold] = useState<number | string>(0);
 
     interface Category {
         _id: string;
@@ -111,10 +112,10 @@ export default function Page({ params }: { params: { editingId: string } }) {
                 body: formData
             })
             const data = await response.json()
-            console.log(data.secure_url)
+            // console.log(data.secure_url)
             setLoading(false)
 
-            return data.secure_url
+            return data;
         } catch (error) {
             console.error("error uploading file:", error)
         }
@@ -145,7 +146,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
     }
 
     async function createProduct() {
-        const imageUrl = await handleUpload()
+        const images = await handleUpload()
         await fetch(`http://localhost:4000/products`,
             {
                 method: 'POST',
@@ -154,10 +155,11 @@ export default function Page({ params }: { params: { editingId: string } }) {
                     description,
                     productCode,
                     price,
-                    images: [imageUrl],
-                    categoryId: selectedCategoryId,
+                    images: images,
+                    categoryId: selectedCategoryName,
                     types,
-                    tag
+                    tag,
+                    sold
                 }),
                 headers: { "Content-type": "application/json; charset=UTF-8" }
             })
@@ -170,7 +172,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
             setProductCode(""),
             setPrice(""),
             setImages([])
-            setSelectedCategoryId("")
+            setSelectedCategoryName("")
             setTypes([])
             setTag("")
     }
@@ -276,13 +278,13 @@ export default function Page({ params }: { params: { editingId: string } }) {
                         <Card>
                             <CardContent>
                                 Ангилал
-                                <Select onValueChange={setSelectedCategoryId}>
+                                <Select onValueChange={setSelectedCategoryName}>
                                     <SelectTrigger className="w-[180px]">
                                         <SelectValue placeholder="Ангилал cонгох" />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((category) => (
-                                            <SelectItem value={category._id}>{category.name}</SelectItem>
+                                            <SelectItem value={category.name}>{category.name}</SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
