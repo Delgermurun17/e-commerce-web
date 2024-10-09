@@ -306,7 +306,7 @@ export const Detail = () => {
       </div>
       {/* Холбоотой бараануудын хэсэг */}
       <div className="flex flex-col gap-6">
-        <h1 className="font-bold text-3xl leading-9">Холбоотой бараа</h1>
+        <h1 className="font-bold text-3xl leading-9">Холбоотой бараа </h1>
         <div className="grid grid-cols-4 mx-auto gap-5 mb-24">
           {[...Array(8)].map((_, index) => (
             <ProductCard key={index} className="w-[244px]" /> // Холбоотой бараа
