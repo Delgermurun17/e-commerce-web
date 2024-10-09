@@ -5,6 +5,7 @@ import { authRouter } from './router/AuthRouter';
 import { productRouter } from './router/ProductRouter';
 import { uploadRouter } from './router/UploadRouter';
 import cors from 'cors';
+import { categoryRouter } from './router/CategoryRouter';
 
 
 const app = express();
@@ -19,6 +20,7 @@ app.use(userRouter)
 app.use(authRouter)
 app.use(productRouter)
 app.use(uploadRouter)
+app.use(categoryRouter)
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
