@@ -36,16 +36,8 @@ import {
 import Image from "next/image";
 import dayjs from 'dayjs'
 import { useQueryState } from 'nuqs'
-
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-  } from "@/components/ui/popover"
 import CategoriesPage from "@/components/category";
   
-
-
 
 export default function Page() {
     const [productName, setProductName] = useState<string>('');
@@ -59,6 +51,12 @@ export default function Page() {
     const [filterByCategory, setFilterByCategory] = useQueryState("cat", { defaultValue: '' });
     const [filterByDate, setFilterByDate] = useQueryState("date", { defaultValue: '' });
     const [tab, setTab] = useState<string>("product")
+    const [categories, setCategories] = useState<Category[]>([]);
+    interface Category {
+        _id: string;
+        name: string;
+        subcategories: string[];
+      }
     
 
 
@@ -78,8 +76,15 @@ export default function Page() {
         createdAt: string,
         images?: string[],
         categoryId: string,
-        sold: number
+        sold: number, 
+        types: { color: string, size: string, quantity: number }[]
     }
+
+    const getCategories = async () => {
+        const response = await fetch('http://localhost:4000/categories');
+        const data = await response.json();
+        setCategories(data);
+      };
 
     function getProducts() {
         fetch(`http://localhost:4000/products`)
@@ -118,6 +123,7 @@ export default function Page() {
 
     useEffect(() => {
         getProducts();
+        getCategories();
     }, []);
 
 
@@ -136,6 +142,15 @@ export default function Page() {
             .then(res => res.json())
             .then(data => setProducts(data))
     }
+
+    function totalQuantity(types: { quantity: number }[]): number {
+        let sum = 0;
+        for (let i = 0; i < types.length; i++) {
+            sum += types[i].quantity;
+        }
+        return sum;
+    }
+    
 
     return (
         <div className="flex bg-[#FFFFFF] text-black">
@@ -159,8 +174,8 @@ export default function Page() {
                                     <SelectValue placeholder="Ангилал" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
-                                    <SelectItem value="-1">Үнэ буурахаар</SelectItem>
+                                    {categories.map((category)=>(
+                                        <SelectItem value={category._id}>{category.name}</SelectItem>))}   
                                 </SelectContent>
                             </Select>
 
@@ -261,7 +276,7 @@ export default function Page() {
                                             <TableCell>{p?.categoryId}</TableCell>
                                             <TableCell>{p?.price}</TableCell>
                                             <TableCell>
-                                                {p?.quantity}
+                                                {totalQuantity(p?.types)}                 
                                             </TableCell>
 
                                             <TableCell>{p?.sold}</TableCell>
