@@ -255,7 +255,7 @@ export default function Page() {
 
                                             </TableCell>
                                             <TableCell>{p?.productName}</TableCell>
-                                            <TableCell>category</TableCell>
+                                            <TableCell></TableCell>
                                             <TableCell>{p?.price}</TableCell>
                                             <TableCell>
                                                 {p?.quantity}
