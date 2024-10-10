@@ -1,5 +1,4 @@
-import { Detail } from "@/components/Detail";
-import ProductCard from "@/components/productCard";
+import { Detail } from "@/components/comment";
 
 export default function Page() {
     return (
