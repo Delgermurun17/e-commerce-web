@@ -3,18 +3,22 @@ import { ProductModel } from "../model/ProductModel";
 
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const { selectedSizes, selectedCategories } = req.query
+        const { selectedSizes, selectedCategories} = req.query
+        const categoryIds = String(selectedCategories).split(",")
 
-        console.log({selectedCategories})
-        const categoryIds=String(selectedCategories).split(",")
-        console.log(categoryIds)
-
-        const { price = -1 } = req.query
+        const { price = -1 , } = req.query
 
         if (selectedSizes || selectedCategories) {
-            const products = await ProductModel.find({ categoryId: { $in: categoryIds } })
-            console.log(products)
-            res.send(products)
+            console.log("selectedCategories is null", selectedCategories)
+            if (selectedSizes === "" || selectedCategories === "") {
+                const products = await ProductModel.find()
+                res.send(products)
+            } else {
+                const products = await ProductModel.find({ categoryId: { $in: categoryIds } })
+                res.send(products)
+            }
+
+
         } else {
             const products = await ProductModel.find({}, null, { sort: { price: Number(price) } })
             res.send(products)

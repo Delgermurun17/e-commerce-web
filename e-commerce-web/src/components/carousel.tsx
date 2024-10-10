@@ -38,7 +38,7 @@ export default function Component(props: Props) {
   }, [api, currentIndex])
 
   return (
-    <div className="w-[1040px] h-[446px] border border-gray-300 overflow-hidden rounded-2xl">
+    <div className="max-w-[1040px] max-h-[446px] border border-gray-300 overflow-hidden rounded-2xl">
       <Carousel setApi={setApi} className="w-full h-full">
         <CarouselContent>
           {products.map((p) => (

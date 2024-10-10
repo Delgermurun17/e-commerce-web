@@ -7,6 +7,26 @@ import ProductCard from "./productCard"
 
 
 export const Detail= () => {
+    const [products, setProducts] = useState<Product[]>([])
+    interface Product {
+      _id: string;
+      productName: string,
+      productCode: string,
+      price: number,
+      quantity: number,
+      createdAt: string,
+      images?: string[]
+    }
+  
+    function getProducts() {
+      fetch(`http://localhost:4000/products`)
+        .then(res => res.json())
+        .then(data => setProducts(data))
+    }
+    useEffect(() => {
+      getProducts();
+    }, []);
+
     const price = 120000;
 
     const photo = [
@@ -158,8 +178,8 @@ export const Detail= () => {
             <div className="flex flex-col gap-6 ">
             <h1 className="font-bold text-3xl leading-9">Холбоотой бараа</h1>
               <div className="grid grid-cols-4 mx-auto gap-5 mb-24">
-              {[...Array(8)].map((_, index) => (
-               <ProductCard key={index} className="w-[244px]"/>
+              {products.map((product) => (
+               <ProductCard key={product._id} className="w-[244px]" image={product.images?.[0]} name={product.productName} price={product.price}/>
                ))}
               </div>
             </div>

@@ -12,14 +12,6 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Pencil, Trash2} from 'lucide-react';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Toaster } from "@/components/ui/toaster"
@@ -58,8 +50,6 @@ export default function Page() {
         subcategories: string[];
       }
     
-
-
     const router = useRouter()
     const searchParams = useSearchParams()
     const create = searchParams.get('create')
@@ -131,14 +121,14 @@ export default function Page() {
     useEffect(() => {
         (filterByPrice) &&
             getProductsFilterByPrice()
-    }, [filterByPrice]);
+    }, [filterByPrice, filterByCategory]);
 
     function onClose() {
         router.push('?')
     }
 
     function getProductsFilterByPrice() {
-        fetch(`http://localhost:4000/products?price=${filterByPrice}`)
+        fetch(`http://localhost:4000/products?price=${filterByPrice}&&cat=${filterByCategory}`)
             .then(res => res.json())
             .then(data => setProducts(data))
     }
@@ -190,7 +180,7 @@ export default function Page() {
                                 </SelectContent>
                             </Select>
 
-                            <Select onValueChange={setFilterByDate} >
+                            {/* <Select onValueChange={setFilterByDate} >
                                 <SelectTrigger className="w-[180px]">
                                     <SelectValue placeholder="Сараар" />
                                 </SelectTrigger>
@@ -198,52 +188,11 @@ export default function Page() {
                                     <SelectItem value="1">Үнэ өсөхөөр</SelectItem>
                                     <SelectItem value="-1">Үнэ буурахаар</SelectItem>
                                 </SelectContent>
-                            </Select>
+                            </Select> */}
 
                         </div>
 
                         <div className="mt-4">
-                            {/* <Button onClick={() => { reset(); router.push(`?create=new`) }} variant="outline" className="my-8">+Add a product</Button> */}
-                            {/* <Dialog open={open}>
-                            <DialogContent onClose={() => router.push('?')}>
-                                <DialogHeader>
-                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
-                                    <DialogDescription>
-                                        <Input
-                                            placeholder="Product Name"
-                                            value={productName}
-                                            onChange={e => setProductName(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Description"
-                                            value={description}
-                                            onChange={e => setDescription(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Product Code"
-                                            value={productCode}
-                                            onChange={e => setProductCode(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Price"
-                                            value={price}
-                                            type="number"
-                                            onChange={e => setPrice(e.target.value)}
-                                        />
-                                        <Input
-                                            placeholder="Quantity"
-                                            value={quantity}
-                                            type="number"
-                                            onChange={e => setQuantity(e.target.value)}
-                                        />
-                                        {editingId ?
-                                            (<Button onClick={() => updateProduct(editingId)}>Update product information</Button>) :
-                                            (<Button onClick={() => { createProduct(); onClose() }}>Submit</Button>)}
-
-                                    </DialogDescription>
-                                </DialogHeader>
-                            </DialogContent>
-                        </Dialog> */}
 
                             <Table className="">
                                 <TableCaption>Products list</TableCaption>
@@ -293,7 +242,7 @@ export default function Page() {
                                     )}
 
                                 </TableBody>
-                                {/* <button onClick={() => router.push(`?editing=${p._id}`)}><Pencil /></button> */}
+                    
 
                             </Table>
                         </div>

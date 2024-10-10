@@ -1,16 +1,23 @@
 'use client'
+import { Product } from "@/app/category/page";
 import { Checkbox } from "@/components/ui/checkbox"
 import { useQueryState, parseAsArrayOf, parseAsString } from 'nuqs'
-import { useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState } from 'react';
 
 const sizes: string[] = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
-export default function Categories() {
-    interface Category {
-        _id: string;
-        name: string;
-        subcategories: string[];
-    }
+type CategoriesPropsType = {
+    products: Product[]
+    setProducts: (products: Product[]) => void;
+}
+
+interface Category {
+    _id: string;
+    name: string;
+    subcategories: string[];
+}
+
+export default function Categories({ setProducts, products }: CategoriesPropsType) {
     const [categories, setCategories] = useState<Category[]>([]);
     const getCategories = async () => {
         const response = await fetch(`http://localhost:4000/categories`);
@@ -26,13 +33,14 @@ export default function Categories() {
     const [selectedSizes, setSelectedSizes] = useQueryState('selectedSizes', parseAsArrayOf(parseAsString));
 
     useEffect(() => {
+        
         getProductsFiltered();
     }, [selectedCategories, selectedSizes]);
 
     const getProductsFiltered = async () => {
         const response = await fetch(`http://localhost:4000/products?selectedCategories=${selectedCategories}&selectedSizes=${selectedSizes}`);
         const data = await response.json();
-        // setProducts(data);
+        setProducts(data);
     };
 
 
@@ -48,13 +56,13 @@ export default function Categories() {
     };
 
     const handleSizeChange = (size: string) => {
-        if (selectedSizes?.includes(size)){
-            const newValue = selectedSizes.filter(item => item!= size)
-            setSelectedSizes( newValue)
+        if (selectedSizes?.includes(size)) {
+            const newValue = selectedSizes.filter(item => item != size)
+            setSelectedSizes(newValue)
         }
         else {
-            const newValue= selectedSizes? [...selectedSizes, size] : [size]
-            setSelectedSizes( newValue)
+            const newValue = selectedSizes ? [...selectedSizes, size] : [size]
+            setSelectedSizes(newValue)
         }
     };
 
@@ -67,8 +75,8 @@ export default function Categories() {
                         <li key={cat._id} >
                             <label className="py-1 flex gap-2 justify-left items-center text-sm select-none">
                                 <Checkbox
-                                    checked={selectedCategories?.includes(cat._id)}
-                                    onCheckedChange={() => handleCategoryChange(cat._id)}
+                                    checked={selectedCategories?.includes(cat.name)}
+                                    onCheckedChange={() => handleCategoryChange(cat.name)}
                                 />
                                 {cat.name}
                             </label>
