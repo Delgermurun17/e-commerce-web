@@ -20,7 +20,7 @@ interface Category {
 export default function Categories({ setProducts, products }: CategoriesPropsType) {
     const [categories, setCategories] = useState<Category[]>([]);
     const getCategories = async () => {
-        const response = await fetch(`http://localhost:4000/categories`);
+        const response = await fetch(`https://e-commerce-service-api.vercel.app/categories`);
         const data = await response.json();
         setCategories(data);
     };
@@ -38,7 +38,7 @@ export default function Categories({ setProducts, products }: CategoriesPropsTyp
     }, [selectedCategories, selectedSizes]);
 
     const getProductsFiltered = async () => {
-        const response = await fetch(`http://localhost:4000/products?selectedCategories=${selectedCategories}&selectedSizes=${selectedSizes}`);
+        const response = await fetch(`https://e-commerce-service-api.vercel.app/products?selectedCategories=${selectedCategories}&selectedSizes=${selectedSizes}`);
         const data = await response.json();
         setProducts(data);
     };

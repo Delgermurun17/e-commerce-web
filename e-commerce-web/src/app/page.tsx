@@ -17,7 +17,7 @@ export default function Home() {
 
 
   function getProducts() {
-    fetch(`http://localhost:4000/products`)
+    fetch(`https://e-commerce-service-api.vercel.app/products`)
       .then(res => res.json())
       .then(data => setProducts(data))
   }

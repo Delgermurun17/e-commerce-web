@@ -13,7 +13,7 @@ interface GeneralProps {
 async function fetcher(pathname: string) {
     const token = localStorage.getItem("authtoken") || "";
   
-    const response = await fetch(`http://localhost:4000${pathname}`, {
+    const response = await fetch(`https://e-commerce-service-api.vercel.app${pathname}`, {
         headers: {
             authtoken: token,
         },
@@ -61,7 +61,7 @@ export function General({ save, step, setStep }: GeneralProps) {
         }
     
         try {
-            const res = await fetch("http://localhost:4000/method", {
+            const res = await fetch("https://e-commerce-service-api.vercel.app/method", {
                 method: "POST",
                 body: JSON.stringify({ password: confirmMethod }),
                 headers,
@@ -87,7 +87,7 @@ export function General({ save, step, setStep }: GeneralProps) {
         if (!user?._id) return;
 
         try {
-            const response = await fetch(`http://localhost:4000/user/${user._id}`, {
+            const response = await fetch(`https://e-commerce-service-api.vercel.app/user/${user._id}`, {
                 method: "PUT",
                 body: JSON.stringify({ email }),
                 headers: {
@@ -107,7 +107,7 @@ export function General({ save, step, setStep }: GeneralProps) {
         if (!user?._id) return;
 
         try {
-            const response = await fetch(`http://localhost:4000/user/${user._id}`, {
+            const response = await fetch(`https://e-commerce-service-api.vercel.app/user/${user._id}`, {
                 method: "PUT",
                 body: JSON.stringify({ phoneNumber }),
                 headers: {
@@ -127,7 +127,7 @@ export function General({ save, step, setStep }: GeneralProps) {
         if (!user?._id) return;
 
         try {
-            const response = await fetch(`http://localhost:4000/user/${user._id}`, {
+            const response = await fetch(`https://e-commerce-service-api.vercel.app/user/${user._id}`, {
                 method: "PUT",
                 body: JSON.stringify({ password }),
                 headers: {

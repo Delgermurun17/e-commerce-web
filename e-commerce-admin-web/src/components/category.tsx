@@ -15,7 +15,7 @@ const CategoriesPage = () => {
 
 
   const getCategories = async () => {
-    const response = await fetch('http://localhost:4000/categories');
+    const response = await fetch('https://e-commerce-service-api.vercel.app/categories');
     const data = await response.json();
     setCategories(data);
   };
@@ -28,7 +28,7 @@ const CategoriesPage = () => {
 
   const createCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:4000/categories', {
+    const response = await fetch('https://e-commerce-service-api.vercel.app/categories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: categoryName }),

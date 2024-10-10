@@ -68,7 +68,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   const sizes: string[] = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
   const getCategories = async () => {
-    const response = await fetch("http://localhost:4000/categories");
+    const response = await fetch("https://e-commerce-service-api.vercel.app/categories");
     const data = await response.json();
     setCategories(data);
   };
@@ -110,7 +110,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
     console.log(formData);
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:4000/upload", {
+      const response = await fetch("https://e-commerce-service-api.vercel.app/upload", {
         method: "POST",
         body: formData,
       });
@@ -127,7 +127,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   function updateProduct(id: string) {
     setLoading(true);
 
-    fetch(`http://localhost:4000/products/${id}`, {
+    fetch(`https://e-commerce-service-api.vercel.app/products/${id}`, {
       method: "PUT",
       body: JSON.stringify({
         productName,
@@ -146,7 +146,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
 
   async function createProduct() {
     const images = await handleUpload();
-    await fetch(`http://localhost:4000/products`, {
+    await fetch(`https://e-commerce-service-api.vercel.app/products`, {
       method: "POST",
       body: JSON.stringify({
         productName,
@@ -182,7 +182,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   }, [editingId]);
 
   function getProductById(id: string) {
-    fetch(`http://localhost:4000/products/${id}`)
+    fetch(`https://e-commerce-service-api.vercel.app/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProductName(data.productName),
