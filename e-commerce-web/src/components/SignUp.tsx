@@ -68,7 +68,7 @@ function reset(){
 }
 
 function submit() {
-    fetch("https://e-commerce-service-api.vercel.app/register", {
+    fetch("https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/register", {
       method: "POST",
       body: JSON.stringify({
         name,

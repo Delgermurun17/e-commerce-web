@@ -26,7 +26,7 @@ export default function Login() {
 
     const submit = async () => {
       try {
-          const res = await fetch("https://e-commerce-service-api.vercel.app/login", {
+          const res = await fetch("https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/login", {
               method: "POST",
               body: JSON.stringify({ email, password }),
               headers: { "Content-Type": "application/json" },

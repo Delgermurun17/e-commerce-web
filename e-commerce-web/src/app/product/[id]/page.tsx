@@ -45,7 +45,7 @@ export default function Page({ params }: PageProps) {
             }
 
             try {
-                const response = await fetch(`https://e-commerce-service-api.vercel.app/products/${productId}`);
+                const response = await fetch(`https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/products/${productId}`);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }

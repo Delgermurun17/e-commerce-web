@@ -68,7 +68,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   const sizes: string[] = ["Free", "S", "M", "L", "XL", "2XL", "3XL"];
 
   const getCategories = async () => {
-    const response = await fetch("https://e-commerce-service-api.vercel.app/categories");
+    const response = await fetch("https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/categories");
     const data = await response.json();
     setCategories(data);
   };
@@ -110,7 +110,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
     console.log(formData);
     try {
       setLoading(true);
-      const response = await fetch("https://e-commerce-service-api.vercel.app/upload", {
+      const response = await fetch("https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/upload", {
         method: "POST",
         body: formData,
       });
@@ -127,7 +127,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   function updateProduct(id: string) {
     setLoading(true);
 
-    fetch(`https://e-commerce-service-api.vercel.app/products/${id}`, {
+    fetch(`https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/products/${id}`, {
       method: "PUT",
       body: JSON.stringify({
         productName,
@@ -146,7 +146,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
 
   async function createProduct() {
     const images = await handleUpload();
-    await fetch(`https://e-commerce-service-api.vercel.app/products`, {
+    await fetch(`https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/products`, {
       method: "POST",
       body: JSON.stringify({
         productName,
@@ -182,7 +182,7 @@ export default function Page({ params }: { params: { editingId: string } }) {
   }, [editingId]);
 
   function getProductById(id: string) {
-    fetch(`https://e-commerce-service-api.vercel.app/products/${id}`)
+    fetch(`https://e-commerce-service-lowygdfni-delgermuruns-projects-8a2d67b5.vercel.app/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProductName(data.productName),
