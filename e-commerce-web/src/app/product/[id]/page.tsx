@@ -86,7 +86,7 @@ const price = products ? products.price : 0;
 
     const currentStock = product.find(p => p.size === selectedSize)?.stock || 0;
     const comment = [
-        {name: "Saraa", comment: "Ваав материал ёстой гоё  байна 😍"},
+        {name: "Saraa", comment: "Ваав материал ёстой гоё 😍"},
         {name: "Saraa", comment: "🔥🔥🔥"},
         {name: "Saraa", comment: "Ваав материал ёстой гоё  байна"},
         {name: "Saraa", comment: "Ваав материал ёстой гоё харагдаж байна Ваав материал ёстой гоё  байна "},
