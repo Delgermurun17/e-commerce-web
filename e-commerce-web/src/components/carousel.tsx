@@ -43,10 +43,10 @@ export default function Component(props: Props) {
         <CarouselContent>
           {products.map((p) => (
             <CarouselItem key={p._id}>
-              <Card className="w-full h-full border-none shadow-none bg-transparent">
+              <Card className="w-full h-full border-none shadow-none bg-transparent flex justify-center">
                 {/* <CardContent className="flex items-center justify-center h-full"> */}
                   {p.images &&
-                    <Image src={p?.images?.[0]} height={3000} width={3000} className="h-full w-full object-cover" alt="" />
+                    <Image priority={true} src={p?.images?.[0]} height={500} width={500} className="h-[446px] w-500 object-contain" alt="" />
                   }
                 {/* </CardContent> */}
               </Card>
