@@ -4,23 +4,26 @@ import ProductCard from "@/components/productCard";
 import { Suspense } from "react";
 import { useEffect, useState } from "react";
 
+export interface Product {
+  _id: string;
+  productName: string,
+  productCode: string,
+  price: number,
+  quantity: number,
+  createdAt: string,
+  images?: string[]
+}
+
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([])
-  interface Product {
-    _id: string;
-    productName: string,
-    productCode: string,
-    price: number,
-    quantity: number,
-    createdAt: string,
-    images?: string[]
-  }
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
 
   function getProducts() {
     fetch(`http://localhost:4000/products`)
       .then(res => res.json())
       .then(data => setProducts(data))
   }
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -29,7 +32,7 @@ export default function Page() {
     <div className="md:px-[14%] px-[5%] grid grid-cols-4 max-w-[1600px] mx-auto gap-2 pt-14 pb-24">
       <div>
         <Suspense>
-          <Categories />  
+          <Categories products={products} setProducts={setProducts} />
         </Suspense>
       </div>
       <div className="col-span-3 grid md:grid-cols-3 grid-cols-2 gap-5">
