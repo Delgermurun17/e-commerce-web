@@ -20,7 +20,7 @@ interface Product {
     viewsCount: number;
     createdAt: Date;
     updatedAt: Date;
-    types: {color: string, size: string, quantity: number}
+    types: { color: string; size: string; quantity: number }[];
     tag: string;
     sold: number;
 }
@@ -33,10 +33,11 @@ interface PageProps {
 
 export default function Page({ params }: PageProps) {
     const [data, setData] = useState<Product[]>([]);
+    console.log({data})
     
     useEffect(() => {
         const fetchData = async () => {
-            const productId = params?.id; 
+            const productId = params?.id;
 
             if (!productId) {
                 console.error("No ID provided");
@@ -49,7 +50,12 @@ export default function Page({ params }: PageProps) {
                     throw new Error("Network response was not ok");
                 }
                 const fetchedData = await response.json();
-                setData(Array.isArray(fetchedData) ? fetchedData : [fetchedData]);
+                const products = Array.isArray(fetchedData) ? fetchedData : [fetchedData];
+                setData(products);
+
+                if (products.length > 0 && products[0].images.length > 0) {
+                    setSelectedImage(products[0].images[0]);
+                }
             } catch (error) {
                 console.error("Fetch error:", error);
             }
@@ -58,15 +64,9 @@ export default function Page({ params }: PageProps) {
         fetchData();
     }, [params]);
 
-const products = data.find(d => d.price !== undefined); // Find a product with a defined price
+const products = data.find(d => d.price !== undefined); 
 const price = products ? products.price : 0;
-    const photo = [
-        { photo: "p1" },
-        { photo: "p2" },
-        { photo: "p3" },
-        { photo: "p4" },
-    ];
-    const [selectedPhoto, setSelectedPhoto] = useState("p1");
+
     const reset=() => {
         setNumber(1)
     }
@@ -77,10 +77,12 @@ const price = products ? products.price : 0;
         { size: "XL", stock: 10 },
         { size: "2XL", stock: 0 },
     ];
+
     const defaultSize = product.find(pr => pr.stock > 0)?.size || "";
     const [selectedSize, setSelectedSize] = useState<string>(defaultSize);
     const [isSaved, setIsSaved] = useState<boolean>(false);
     const [number, setNumber] = useState<number>(1);
+    const [selectedColor, setSelectedColor] = useState("")
 
     const currentStock = product.find(p => p.size === selectedSize)?.stock || 0;
     const comment = [
@@ -110,6 +112,9 @@ const price = products ? products.price : 0;
     const totalPrice = price * number;
 
     const [show, setShow] = useState<boolean>(true)
+    const [selectedImage, setSelectedImage] = useState<string>("");
+    
+
     return (
 
 
@@ -117,19 +122,26 @@ const price = products ? products.price : 0;
         <div className="w-[1040px] mx-auto flex flex-col gap-20 mt-14 mb-24">
             <div className="flex gap-5">
             {Array.isArray(data) && data.length > 0 ? (
-                                data.map((p) => (
-                <>
-                <div className="w-[67px] h-[392px] grid gap-2 pt-[100px]">
-                    {photo.map((p) => (
-                        <div className={`size-[67px] rounded ${selectedPhoto === p.photo ? "border border-black" : ""}`} onClick={() => setSelectedPhoto(p.photo)} key={p.photo}>{p.photo}</div>
-                    ))}
-                </div>
-                <div key={p.productCode} className="w-[422px] h-[521px] rounded-2xl text-center content-center text-5xl"><Image src={p.images[0]} alt="img" width={422} height={521} />
-                </div>
-                </>))
-                            ) : (
-                                null
-                            )}
+                    data.map((p) => (
+
+            <>         <div className="min-w-[67px] h-[392px] grid gap-2 pt-[100px]">
+                                {p.images.map((img) => (
+                                    <div
+                                    key={img}
+                                        className={`"w-[67px] h-[67px] rounded overflow-hidden cursor-pointer ${selectedImage === img ? "border border-black" : ""}`}
+                                        onClick={() => setSelectedImage(img)}
+                                    >
+                                        <Image style={{ width: '67px', height: 'auto' }} priority={true} src={img} className="min-w-[67px] h-[67px] object-contain" alt={`Image`} width={67} height={67} />
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="min-w-[422px] min-h-[521px] rounded-2xl">
+                                <Image style={{ width: '422px', height: 'auto' }} priority={true} className=" object-contain rounded-2xl" src={selectedImage} alt="Selected product" width={400} height={500} />
+                            </div>
+                        </>
+                    ))
+                ) : null}
+
 
                 
                 <div className="pt-[100px] flex flex-col gap-[55px]">
@@ -154,13 +166,28 @@ const price = products ? products.price : 0;
                                         </div>
                                         <div className="font-normal text-base leading-6">{p.description}</div>
                                     </div>
+                                    
+                                    <div className="flex flex-col gap-2">
+                                        <div className="font-normal text-sm leading-5">Өнгөний сонголт</div>
+                                        <div className="flex gap-2">
+                                        {Array.from(new Set(p.types.map(type => type.color))).map((color, index) => (
+                                            <div 
+                                                key={index} 
+                                                onClick={() => setSelectedColor(color)} 
+                                                className={`border border-black p-1 rounded cursor-pointer ${selectedColor === color ? "bg-black text-white duration-500" : ""}`}
+                                            >
+                                                {color}
+                                            </div>
+                                        ))}
+                                        </div>
+                                    </div>
 
                             <div className="flex flex-col gap-2">
                                 <div className="font-normal text-sm leading-5">Хэмжээний заавар</div>
                                 <div className="flex gap-1">{product.map((pr) => (
                                     <div onClick={() => {pr.stock > 0  && setSelectedSize(pr.size);
                                         pr.stock > 0  && reset()
-                                    }} className={`size-8 rounded-full border border-black cursor-pointer font-normal text-xs text-center content-center ${selectedSize === pr.size ? "bg-black text-white duration-500" : "duration-300"} ${pr.stock === 0 ? "bg-[#E4E4E7] opacity-50 text-black cursor-not-allowed" : ""}`} key={pr.size}>{pr.size}</div>
+                                    }} className={`size-8 rounded-full border border-black cursor-pointer font-normal text-xs text-center content-center ${selectedSize === pr.size && "bg-black text-white duration-500"} ${pr.stock === 0 ? "bg-[#E4E4E7] opacity-50 text-black cursor-not-allowed" : ""}`} key={pr.size}>{pr.size}</div>
                                 ))}</div>
                             </div>
                             <div className="flex gap-1">
@@ -179,7 +206,7 @@ const price = products ? products.price : 0;
                             )}
 
 
-
+                            {/* comment */}
                     <div className="flex flex-col gap-6 max-w-[551px] ">
                     <div>
                         <div className="flex gap-4 text-sm font-normal">

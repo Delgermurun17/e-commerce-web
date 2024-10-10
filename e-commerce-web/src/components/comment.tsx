@@ -309,7 +309,7 @@ export const Detail = () => {
         <h1 className="font-bold text-3xl leading-9">Холбоотой бараа </h1>
         <div className="grid grid-cols-4 mx-auto gap-5 mb-24">
           {[...Array(8)].map((_, index) => (
-            <ProductCard key={index} className="w-[244px]" /> // Холбоотой бараа
+            <ProductCard key={index} className="w-[244px]" id={""} /> // Холбоотой бараа
           ))}
         </div>
       </div>
