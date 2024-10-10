@@ -32,7 +32,7 @@ export default function Home() {
 
       <div className="grid grid-cols-4 w-[1040px] mx-auto gap-4 mb-24">
         {products.map((product, index) => (
-          <ProductCard key={index} className={index === 6 || index === 7 ? ` col-span-2 row-span-2` : ``} image={product.images?.[0]} name={product.productName} price={product.price}/>
+          <ProductCard key={index} className={index === 6 || index === 7 ? ` col-span-2 row-span-2` : ``} image={product.images?.[0]} name={product.productName} price={product.price} id={product._id}/>
         ))}
       </div>
     </main>
