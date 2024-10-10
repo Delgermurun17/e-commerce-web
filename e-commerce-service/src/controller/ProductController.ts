@@ -3,9 +3,22 @@ import { ProductModel } from "../model/ProductModel";
 
 export const getProduct = async (req: Request, res: Response) => {
     try {
-        const { price = -1} = req.query
-        const products = await ProductModel.find({}, null, { sort: { price: Number(price) } })
-        res.send(products)
+        const { selectedSizes, selectedCategories } = req.query
+        const categoryIds=selectedCategories?.split(", ")
+       
+        // console.log(categoryIds)
+
+        const { price = -1 } = req.query
+
+        if (selectedSizes || selectedCategories) {
+            const products = await ProductModel.find({ categoryId: { $in: selectedCategories } })
+            console.log(products)
+            res.send(products)
+        } else {
+            const products = await ProductModel.find({}, null, { sort: { price: Number(price) } })
+            res.send(products)
+        }
+
     }
     catch (error) {
         console.log(error)

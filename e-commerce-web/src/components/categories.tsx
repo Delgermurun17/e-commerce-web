@@ -18,36 +18,45 @@ export default function Categories() {
         setCategories(data);
     };
 
-    const getCategoriesFiltered = async () => {
-        const response = await fetch(`http://localhost:4000/categories?selectedCategories=${selectedCategoriesQuery}&selected`);
-        const data = await response.json();
-        setCategories(data);
-    };
-
     useEffect(() => {
         getCategories();
     }, []);
 
-    const [selectedCategoriesQuery, setSelectedCategoriesQuery] = useQueryState('selectedCategories', parseAsArrayOf(parseAsString));
-    const [selectedSizesQuery, setSelectedSizesQuery] = useQueryState('selectedSizes', parseAsArrayOf(parseAsString));
+    const [selectedCategories, setSelectedCategories] = useQueryState('selectedCategories', parseAsArrayOf(parseAsString));
+    const [selectedSizes, setSelectedSizes] = useQueryState('selectedSizes', parseAsArrayOf(parseAsString));
+
+    useEffect(() => {
+        getProductsFiltered();
+    }, [selectedCategories, selectedSizes]);
+
+    const getProductsFiltered = async () => {
+        const response = await fetch(`http://localhost:4000/products?selectedCategories=${selectedCategories}&selectedSizes=${selectedSizes}`);
+        const data = await response.json();
+        setProducts(data);
+    };
+
 
     const handleCategoryChange = (id: string) => {
-        if (selectedCategoriesQuery?.includes(id)) {
-            const newValue = selectedCategoriesQuery.filter(item => item !== id);
-            setSelectedCategoriesQuery(newValue);
+        if (selectedCategories?.includes(id)) {
+            const newValue = selectedCategories.filter(item => item !== id);
+            setSelectedCategories(newValue);
         }
         else {
-            const newValue = selectedCategoriesQuery ? [...selectedCategoriesQuery, id] : [id];
-            setSelectedCategoriesQuery(newValue);
+            const newValue = selectedCategories ? [...selectedCategories, id] : [id];
+            setSelectedCategories(newValue);
         }
     };
 
-    const handleSizeChange = (size: string, checked: boolean | string) => {
-        setSelectedSizesQuery(checked
-            ? [...selectedSizes, size].join(',')
-            : selectedSizes.filter(s => s !== size).join(','));
+    const handleSizeChange = (size: string) => {
+        if (selectedSizes?.includes(size)){
+            const newValue = selectedSizes.filter(item => item!= size)
+            setSelectedSizes( newValue)
+        }
+        else {
+            const newValue= selectedSizes? [...selectedSizes, size] : [size]
+            setSelectedSizes( newValue)
+        }
     };
-
 
     return (
         <div>
@@ -58,7 +67,7 @@ export default function Categories() {
                         <li key={cat._id} >
                             <label className="py-1 flex gap-2 justify-left items-center text-sm select-none">
                                 <Checkbox
-                                    checked={selectedCategoriesQuery?.includes(cat._id)}
+                                    checked={selectedCategories?.includes(cat._id)}
                                     onCheckedChange={() => handleCategoryChange(cat._id)}
                                 />
                                 {cat.name}
@@ -74,7 +83,7 @@ export default function Categories() {
                     {sizes.map(size => (
                         <li key={size} className="py-1 flex gap-2 justify-left items-center text-sm">
                             <Checkbox
-                                checked={selectedSizes.includes(size)}
+                                checked={selectedSizes?.includes(size)}
                                 onCheckedChange={() => handleSizeChange(size)}
                             />
                             {size}
