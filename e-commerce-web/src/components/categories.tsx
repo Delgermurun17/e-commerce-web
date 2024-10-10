@@ -32,7 +32,7 @@ export default function Categories() {
     const getProductsFiltered = async () => {
         const response = await fetch(`http://localhost:4000/products?selectedCategories=${selectedCategories}&selectedSizes=${selectedSizes}`);
         const data = await response.json();
-        setProducts(data);
+        // setProducts(data);
     };
 
 
